@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Portfolio Frontend
 
-## Getting Started
+Next.js 16 frontend for the `portfolio-app-be` backend. The UI is server-rendered and pulls published project data from the backend API instead of keeping a separate frontend content source.
 
-First, run the development server:
+### Local setup
+
+1. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create the frontend env file:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Default backend URL:
 
-## Learn More
+```bash
+PORTFOLIO_API_BASE_URL=http://localhost:3001/api
+```
 
-To learn more about Next.js, take a look at the following resources:
+3. Start the backend from the sibling repo:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd ../portfolio-app-be
+pnpm start:dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Start the frontend:
 
-## Deploy on Vercel
+```bash
+cd ../portfolio-app-fe
+pnpm dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Implemented routes
+
+- `/` renders the portfolio homepage from `GET /api/projects`
+- `/projects/[slug]` renders a project detail page from `GET /api/projects/:slug`
+
+### Notes
+
+- If the backend is offline, the frontend renders a graceful empty/error state instead of crashing.
+- The current UI is wired to the public backend endpoints. Admin/auth flows can be added on top of the same API later.
