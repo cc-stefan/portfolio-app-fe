@@ -1,85 +1,121 @@
-import { ArrowUpRight } from "lucide-react";
-import { homeSystemNotes } from "../content/home-content";
-import { ActionLink } from "../components/action-link";
-import { BackendStatusBadge } from "../components/backend-status-badge";
-import { PortfolioBackground } from "../components/portfolio-background";
-import { PortfolioHeader } from "../components/portfolio-header";
-import { PortfolioPageShell } from "../components/portfolio-page-shell";
-import { HomeHeroSection } from "../sections/home/home-hero-section";
-import { HomeNotesSection } from "../sections/home/home-notes-section";
-import { HomeOverviewPanel } from "../sections/home/home-overview-panel";
-import { HomeProjectsSection } from "../sections/home/home-projects-section";
-import { HomeStackSection } from "../sections/home/home-stack-section";
-import { getPortfolioHomePageData } from "../server/portfolio-page-data";
+import { SiteShell } from "../components/site-shell";
+import { SiteHeader } from "../components/site-header";
+import { BackendStatusPill } from "../components/backend-status-pill";
+import type { AppLocale } from "../i18n/routing";
+import type { PortfolioDictionary } from "../i18n/types";
+import { HomeCapabilities } from "../sections/home/home-capabilities";
+import { HomeHero } from "../sections/home/home-hero";
+import { HomeInquiry } from "../sections/home/home-inquiry";
+import { HomeMetrics } from "../sections/home/home-metrics";
+import { HomeProcess } from "../sections/home/home-process";
+import { HomeShowcase } from "../sections/home/home-showcase";
+import { getPortfolioHomePageData } from "../api/portfolio-page-data";
 
-export async function PortfolioHomeScreen() {
+interface PortfolioHomeScreenProps {
+  locale: AppLocale;
+  dictionary: PortfolioDictionary;
+}
+
+export async function PortfolioHomeScreen({
+  locale,
+  dictionary,
+}: PortfolioHomeScreenProps) {
   const {
     healthResult,
-    projectsResult,
     projects,
+    projectsResult,
     featuredProjects,
-    leadProjects,
-    secondaryProjects,
     technologies,
     latestProject,
     apiBaseUrl,
+    apiOrigin,
     apiDocsUrl,
   } = await getPortfolioHomePageData();
 
   return (
-    <PortfolioPageShell>
-      <PortfolioBackground />
-
-      <PortfolioHeader
-        actions={
-          <>
-            <BackendStatusBadge result={healthResult} compact />
-            <ActionLink
-              href={apiDocsUrl}
-              external
-              icon={<ArrowUpRight className="size-4" />}
-            >
-              Swagger docs
-            </ActionLink>
-          </>
+    <SiteShell locale={locale} dictionary={dictionary}>
+      <SiteHeader
+        locale={locale}
+        dictionary={dictionary}
+        eyebrow={dictionary.header.tagline}
+        navItems={[
+          { href: "/#overview", label: dictionary.header.navOverview },
+          { href: "/#work", label: dictionary.header.navWork },
+          { href: "/#process", label: dictionary.header.navProcess },
+          { href: "/#contact", label: dictionary.header.navContact },
+        ]}
+        statusSlot={
+          <BackendStatusPill
+            result={healthResult}
+            onlineLabel={dictionary.home.statusOnline}
+            offlineLabel={dictionary.home.statusOffline}
+            unavailableLabel={dictionary.home.statusUnavailable}
+          />
         }
+        secondaryAction={{
+          href: apiDocsUrl,
+          label: dictionary.actions.apiDocs,
+          external: true,
+        }}
+        primaryAction={{
+          href: "/#contact",
+          label: dictionary.actions.startProject,
+        }}
+        className="page-enter"
       />
 
-      <section className="grid gap-12 pb-20 pt-16 lg:grid-cols-[minmax(0,1.1fr)_24rem] lg:items-end lg:pb-24 lg:pt-24">
-        <HomeHeroSection
-          latestProject={latestProject}
-          projectsResult={projectsResult}
-        />
-        <HomeOverviewPanel
-          projects={projects}
-          featuredProjects={featuredProjects}
-          technologies={technologies}
-          latestProject={latestProject}
-          apiBaseUrl={apiBaseUrl}
-        />
-      </section>
+      <main className="flex flex-1 flex-col gap-18 pb-4 pt-10 sm:gap-24 sm:pt-14">
+        <div className="page-enter delay-1">
+          <HomeHero
+            locale={locale}
+            copy={dictionary.home}
+            latestProject={latestProject}
+            technologies={technologies}
+            apiBaseUrl={apiBaseUrl}
+          />
+        </div>
 
-      <HomeStackSection technologies={technologies} />
+        <div className="page-enter delay-2">
+          <HomeMetrics
+            copy={dictionary.home}
+            healthResult={healthResult}
+            projects={projects}
+            featuredProjects={featuredProjects}
+            technologies={technologies}
+            apiBaseUrl={apiBaseUrl}
+          />
+        </div>
 
-      <HomeProjectsSection
-        id="featured"
-        label="Featured work"
-        title="Projects pulled straight from the live backend contract."
-        description="The homepage now hydrates itself from the published project feed, handles empty or offline backend states, and routes into backend-backed detail pages."
-        projects={leadProjects}
-        featuredCards
-      />
+        <div id="work" className="anchor-target section-divider" />
 
-      {secondaryProjects.length > 0 ? (
-        <HomeProjectsSection
-          label="Archive"
-          title="Everything else the API is already ready to ship."
-          description="These cards come from the same backend route, so the portfolio can grow without restructuring the frontend."
-          projects={secondaryProjects}
-        />
-      ) : null}
+        <div className="page-enter delay-2">
+          <HomeShowcase
+            locale={locale}
+            dictionary={dictionary}
+            featuredProjects={featuredProjects}
+            projects={projectsResult.data ?? []}
+            apiOrigin={apiOrigin}
+          />
+        </div>
 
-      <HomeNotesSection notes={homeSystemNotes} />
-    </PortfolioPageShell>
+        <div className="section-divider" />
+
+        <div className="page-enter delay-3">
+          <HomeCapabilities copy={dictionary.home} />
+        </div>
+
+        <div id="process" className="anchor-target section-divider" />
+
+        <div className="page-enter delay-4">
+          <HomeProcess copy={dictionary.home} />
+        </div>
+
+        <div id="contact" className="anchor-target section-divider" />
+
+        <div className="page-enter delay-4">
+          <HomeInquiry dictionary={dictionary} />
+        </div>
+      </main>
+    </SiteShell>
   );
 }

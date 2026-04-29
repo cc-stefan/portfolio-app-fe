@@ -1,75 +1,115 @@
-import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { formatProjectMonth } from "../model/formatters";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight, Code2, Globe } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { localizeHref, type AppLocale } from "../i18n/routing";
+import type { PortfolioDictionary } from "../i18n/types";
 import type { PortfolioProject } from "../model/types";
-import { ProjectActionLinks } from "./project-action-links";
-import { ProjectVisual } from "./project-visual";
-import { TechnologyCloud } from "./technology-cloud";
+import { formatProjectMonth } from "../lib/portfolio-formatters";
+import { resolvePortfolioAssetUrl } from "../lib/resolve-portfolio-asset-url";
 
 interface ProjectCardProps {
   project: PortfolioProject;
-  index: number;
-  featured?: boolean;
-  className?: string;
+  locale: AppLocale;
+  dictionary: PortfolioDictionary;
+  apiOrigin: string;
 }
 
 export function ProjectCard({
   project,
-  index,
-  featured = false,
-  className,
+  locale,
+  dictionary,
+  apiOrigin,
 }: ProjectCardProps) {
-  return (
-    <article
-      className={cn(
-        "group relative overflow-hidden rounded-[2rem] border border-black/10 bg-white/72 p-4 shadow-[0_24px_80px_-48px_rgba(15,23,42,0.45)] backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_32px_100px_-48px_rgba(15,23,42,0.55)]",
-        featured ? "lg:p-5" : "",
-        className,
-      )}
-    >
-      <div className="relative aspect-[16/10] overflow-hidden rounded-[1.6rem] border border-black/10 bg-black/5">
-        <ProjectVisual
-          project={project}
-          index={index}
-          className="transition duration-500 group-hover:scale-[1.04]"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.05),rgba(15,23,42,0.5))]" />
-        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-          <span className="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.24em] text-white backdrop-blur-sm">
-            {project.featured ? "Featured" : "Published"}
-          </span>
-          <span className="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.24em] text-white/80 backdrop-blur-sm">
-            {formatProjectMonth(project.updatedAt)}
-          </span>
-        </div>
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.32em] text-white/72">
-              {project.slug}
-            </p>
-            <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-white sm:text-2xl">
-              {project.title}
-            </p>
-          </div>
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-sm transition group-hover:bg-white group-hover:text-slate-950">
-            <ArrowRight className="size-5" />
-          </div>
-        </div>
-      </div>
+  const projectHref = localizeHref(locale, `/projects/${project.slug}`);
+  const coverImageUrl = resolvePortfolioAssetUrl(project.coverImageUrl, apiOrigin);
 
-      <div className="mt-5 flex flex-col gap-4">
-        <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+  return (
+    <Card variant="interactive" className="group h-full overflow-hidden">
+      <Link
+        href={projectHref}
+        className="block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+      >
+        <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
+          {coverImageUrl ? (
+            <Image
+              src={coverImageUrl}
+              alt={project.title}
+              fill
+              unoptimized
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--surface-muted),var(--card))] px-8 text-center">
+              <p className="text-sm font-medium text-muted-foreground">
+                {project.title}
+              </p>
+            </div>
+          )}
+          <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
+            <div className="flex flex-wrap gap-2">
+              {project.featured ? (
+                <Badge variant="accent">{dictionary.common.featured}</Badge>
+              ) : null}
+              <Badge variant="neutral">
+                {formatProjectMonth(project.updatedAt, locale)}
+              </Badge>
+            </div>
+            <span className="inline-flex size-9 items-center justify-center rounded-lg border border-white/40 bg-white/82 text-slate-950 shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:border-white/10 dark:bg-slate-950/70 dark:text-white">
+              <ArrowUpRight className="size-4" />
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      <CardContent className="flex flex-1 flex-col p-5">
+        <Link
+          href={projectHref}
+          className="text-xl font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+        >
+          {project.title}
+        </Link>
+        <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted-foreground">
           {project.summary}
         </p>
 
-        <TechnologyCloud technologies={project.technologies} limit={4} size="sm" />
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.technologies.length > 0 ? (
+            project.technologies.slice(0, 4).map((technology) => (
+              <Badge key={technology} variant="outline">
+                {technology}
+              </Badge>
+            ))
+          ) : (
+            <Badge variant="outline">{dictionary.common.noTechnologies}</Badge>
+          )}
+        </div>
+      </CardContent>
 
-        <ProjectActionLinks
-          project={project}
-          showCaseStudy
-          className="flex flex-wrap gap-3 pt-2"
-        />
-      </div>
-    </article>
+      <CardFooter className="mt-auto flex flex-wrap items-center gap-2 p-5 pt-0">
+        <Button asChild variant="secondary" size="sm">
+          <Link href={projectHref}>{dictionary.actions.viewProject}</Link>
+        </Button>
+        {project.liveUrl ? (
+          <Button asChild variant="ghost" size="sm">
+            <Link href={project.liveUrl} target="_blank" rel="noreferrer">
+              <Globe className="size-4" />
+              {dictionary.actions.live}
+            </Link>
+          </Button>
+        ) : null}
+        {project.repositoryUrl ? (
+          <Button asChild variant="ghost" size="sm">
+            <Link href={project.repositoryUrl} target="_blank" rel="noreferrer">
+              <Code2 className="size-4" />
+              {dictionary.actions.code}
+            </Link>
+          </Button>
+        ) : null}
+      </CardFooter>
+    </Card>
   );
 }

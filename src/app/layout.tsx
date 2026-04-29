@@ -1,5 +1,20 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+
+const geistSans = localFont({
+  src: "../../node_modules/next/dist/next-devtools/server/font/geist-latin.woff2",
+  variable: "--font-geist-sans",
+  display: "swap",
+});
+
+const geistMono = localFont({
+  src: "../../node_modules/next/dist/next-devtools/server/font/geist-mono-latin.woff2",
+  variable: "--font-geist-mono",
+  display: "swap",
+});
 
 const metadataBase = (() => {
   try {
@@ -12,24 +27,12 @@ const metadataBase = (() => {
 export const metadata: Metadata = {
   metadataBase,
   title: {
-    default: "Portfolio Frontend",
-    template: "%s | Portfolio Frontend",
+    default: "Portfolio",
+    template: "%s | Portfolio",
   },
   description:
-    "Modern Next.js frontend for portfolio-app-be, rendering published projects from the NestJS API.",
-  applicationName: "Portfolio Frontend",
-  openGraph: {
-    title: "Portfolio Frontend",
-    description:
-      "A modern portfolio UI backed by the portfolio-app-be NestJS API.",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Portfolio Frontend",
-    description:
-      "A modern portfolio UI backed by the portfolio-app-be NestJS API.",
-  },
+    "A premium portfolio frontend powered by a live backend API and a production-grade design system.",
+  applicationName: "Portfolio",
 };
 
 export default function RootLayout({
@@ -38,9 +41,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full overflow-x-clip bg-background text-foreground">
-        {children}
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <body className="min-h-full bg-background text-foreground">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </ThemeProvider>
       </body>
     </html>
   );

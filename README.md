@@ -25,14 +25,12 @@ PORTFOLIO_API_BASE_URL=http://localhost:3001/api
 3. Start the backend from the sibling repo:
 
 ```bash
-cd ../portfolio-app-be
 pnpm start:dev
 ```
 
 4. Start the frontend:
 
 ```bash
-cd ../portfolio-app-fe
 pnpm dev
 ```
 
