@@ -85,9 +85,10 @@ export function InquiryForm({ copy }: InquiryFormProps) {
       return;
     }
   });
+  const errors = form.formState.errors;
 
   return (
-    <form className="grid gap-5" onSubmit={onSubmit} noValidate>
+    <form className="grid gap-4" onSubmit={onSubmit} noValidate>
       {submittedAt ? (
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">
           <div className="flex gap-3">
@@ -100,103 +101,107 @@ export function InquiryForm({ copy }: InquiryFormProps) {
         </div>
       ) : null}
 
-      <div className="grid gap-5 md:grid-cols-2">
-        <Field
-          label={copy.nameLabel}
-          error={form.formState.errors.name?.message}
-          htmlFor="name"
-          description={copy.namePlaceholder}
-        >
-          <Input
-            id="name"
-            placeholder={copy.namePlaceholder}
-            autoComplete="name"
-            aria-invalid={Boolean(form.formState.errors.name)}
-            aria-describedby="name-description name-error"
-            {...form.register("name")}
-          />
-        </Field>
+      <div className="grid gap-3">
+        <div className="grid gap-3 md:grid-cols-2 md:gap-x-4 md:gap-y-0">
+          <Field
+            label={copy.nameLabel}
+            error={errors.name?.message}
+            htmlFor="name"
+            description={copy.namePlaceholder}
+          >
+            <Input
+              id="name"
+              placeholder={copy.namePlaceholder}
+              autoComplete="name"
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={getFieldDescribedBy("name", errors.name?.message)}
+              {...form.register("name")}
+            />
+          </Field>
 
-        <Field
-          label={copy.emailLabel}
-          error={form.formState.errors.email?.message}
-          htmlFor="email"
-          description={copy.emailPlaceholder}
-        >
-          <Input
-            id="email"
-            type="email"
-            placeholder={copy.emailPlaceholder}
-            autoComplete="email"
-            aria-invalid={Boolean(form.formState.errors.email)}
-            aria-describedby="email-description email-error"
-            {...form.register("email")}
-          />
-        </Field>
+          <Field
+            label={copy.emailLabel}
+            error={errors.email?.message}
+            htmlFor="email"
+            description={copy.emailPlaceholder}
+          >
+            <Input
+              id="email"
+              type="email"
+              placeholder={copy.emailPlaceholder}
+              autoComplete="email"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={getFieldDescribedBy("email", errors.email?.message)}
+              {...form.register("email")}
+            />
+          </Field>
+        </div>
 
-        <Field
-          label={copy.companyLabel}
-          error={form.formState.errors.company?.message}
-          htmlFor="company"
-          description={copy.companyPlaceholder}
-        >
-          <Input
-            id="company"
-            placeholder={copy.companyPlaceholder}
-            autoComplete="organization"
-            aria-invalid={Boolean(form.formState.errors.company)}
-            aria-describedby="company-description company-error"
-            {...form.register("company")}
-          />
-        </Field>
+        <div className="grid gap-3 md:grid-cols-2 md:gap-x-4 md:gap-y-0">
+          <Field
+            label={copy.companyLabel}
+            error={errors.company?.message}
+            htmlFor="company"
+            description={copy.companyPlaceholder}
+          >
+            <Input
+              id="company"
+              placeholder={copy.companyPlaceholder}
+              autoComplete="organization"
+              aria-invalid={Boolean(errors.company)}
+              aria-describedby={getFieldDescribedBy("company", errors.company?.message)}
+              {...form.register("company")}
+            />
+          </Field>
 
-        <Field
-          label={copy.budgetLabel}
-          error={form.formState.errors.budget?.message}
-          htmlFor="budget"
-          description={copy.budgetPlaceholder}
-        >
-          <Input
-            id="budget"
-            placeholder={copy.budgetPlaceholder}
-            aria-invalid={Boolean(form.formState.errors.budget)}
-            aria-describedby="budget-description budget-error"
-            {...form.register("budget")}
-          />
-        </Field>
+          <Field
+            label={copy.budgetLabel}
+            error={errors.budget?.message}
+            htmlFor="budget"
+            description={copy.budgetPlaceholder}
+          >
+            <Input
+              id="budget"
+              placeholder={copy.budgetPlaceholder}
+              aria-invalid={Boolean(errors.budget)}
+              aria-describedby={getFieldDescribedBy("budget", errors.budget?.message)}
+              {...form.register("budget")}
+            />
+          </Field>
+        </div>
       </div>
 
       <Field
         label={copy.scopeLabel}
-        error={form.formState.errors.scope?.message}
+        error={errors.scope?.message}
         htmlFor="scope"
         description={copy.scopePlaceholder}
       >
         <Input
           id="scope"
           placeholder={copy.scopePlaceholder}
-          aria-invalid={Boolean(form.formState.errors.scope)}
-          aria-describedby="scope-description scope-error"
+          aria-invalid={Boolean(errors.scope)}
+          aria-describedby={getFieldDescribedBy("scope", errors.scope?.message)}
           {...form.register("scope")}
         />
       </Field>
 
       <Field
         label={copy.messageLabel}
-        error={form.formState.errors.message?.message}
+        error={errors.message?.message}
         htmlFor="message"
         description={copy.messagePlaceholder}
       >
         <Textarea
           id="message"
           placeholder={copy.messagePlaceholder}
-          aria-invalid={Boolean(form.formState.errors.message)}
-          aria-describedby="message-description message-error"
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={getFieldDescribedBy("message", errors.message?.message)}
           {...form.register("message")}
         />
       </Field>
 
-      <div className="flex flex-col gap-4 border-t border-border pt-5 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 border-t border-border pt-4 md:flex-row md:items-center md:justify-between">
         <p className="max-w-xl text-sm leading-6 text-muted-foreground">
           {copy.privacyNote}
         </p>
@@ -220,6 +225,12 @@ export function InquiryForm({ copy }: InquiryFormProps) {
   );
 }
 
+function getFieldDescribedBy(htmlFor: string, error?: string) {
+  return error
+    ? `${htmlFor}-description ${htmlFor}-error`
+    : `${htmlFor}-description`;
+}
+
 interface FieldProps {
   label: string;
   description: string;
@@ -230,7 +241,7 @@ interface FieldProps {
 
 function Field({ label, description, error, htmlFor, children }: FieldProps) {
   return (
-    <div className="grid gap-2" data-invalid={Boolean(error)}>
+    <div className="flex flex-col gap-1.5" data-invalid={Boolean(error)}>
       <div className="flex items-center justify-between gap-3">
         <Label htmlFor={htmlFor}>{label}</Label>
       </div>
@@ -238,16 +249,15 @@ function Field({ label, description, error, htmlFor, children }: FieldProps) {
       <p id={`${htmlFor}-description`} className="sr-only">
         {description}
       </p>
-      <p
-        id={`${htmlFor}-error`}
-        aria-live="polite"
-        className={cn(
-          "min-h-5 text-sm text-muted-foreground transition-colors",
-          error && "text-destructive",
-        )}
-      >
-        {error ?? ""}
-      </p>
+      {error ? (
+        <p
+          id={`${htmlFor}-error`}
+          aria-live="polite"
+          className={cn("text-xs leading-4 text-destructive")}
+        >
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }
