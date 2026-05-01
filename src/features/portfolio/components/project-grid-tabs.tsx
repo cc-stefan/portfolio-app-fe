@@ -22,26 +22,34 @@ export function ProjectGridTabs({
   projects,
   apiOrigin,
 }: ProjectGridTabsProps) {
+  const hasFeaturedProjects = featuredProjects.length > 0;
+
   return (
-    <Tabs defaultValue="featured" className="mt-8">
+    <Tabs defaultValue={hasFeaturedProjects ? "featured" : "all"} className="mt-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
           {dictionary.home.showcaseLabel}: {projects.length}
         </p>
         <TabsList>
-          <TabsTrigger value="featured">{dictionary.home.featuredTab}</TabsTrigger>
+          {hasFeaturedProjects ? (
+            <TabsTrigger value="featured">
+              {dictionary.home.featuredTab}
+            </TabsTrigger>
+          ) : null}
           <TabsTrigger value="all">{dictionary.home.allTab}</TabsTrigger>
         </TabsList>
       </div>
 
-      <TabsContent value="featured" className="mt-6">
-        <ProjectGrid
-          projects={featuredProjects}
-          locale={locale}
-          dictionary={dictionary}
-          apiOrigin={apiOrigin}
-        />
-      </TabsContent>
+      {hasFeaturedProjects ? (
+        <TabsContent value="featured" className="mt-6">
+          <ProjectGrid
+            projects={featuredProjects}
+            locale={locale}
+            dictionary={dictionary}
+            apiOrigin={apiOrigin}
+          />
+        </TabsContent>
+      ) : null}
 
       <TabsContent value="all" className="mt-6">
         <ProjectGrid

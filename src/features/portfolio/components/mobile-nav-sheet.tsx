@@ -16,6 +16,7 @@ import type { AppLocale } from "../i18n/routing";
 import { localizeHref } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
 import { LocaleSwitcher } from "./locale-switcher";
+import { SectionScrollLink } from "./section-scroll-link";
 
 interface MobileNavSheetProps {
   locale: AppLocale;
@@ -72,12 +73,12 @@ export function MobileNavSheet({
         <nav className="grid gap-2" aria-label={menuLabel}>
           {navItems.map((item) => (
             <SheetClose key={item.href} asChild>
-              <Link
+              <SectionScrollLink
                 href={localizeHref(locale, item.href)}
                 className="rounded-xl border border-border bg-secondary px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
               >
                 {item.label}
-              </Link>
+              </SectionScrollLink>
             </SheetClose>
           ))}
         </nav>
@@ -107,14 +108,14 @@ function ActionLink({ action, locale, variant }: ActionLinkProps) {
   return (
     <SheetClose asChild>
       <Button asChild variant={variant} size="lg" className="w-full">
-        <Link
-          href={href}
-          target={action.external ? "_blank" : undefined}
-          rel={action.external ? "noreferrer" : undefined}
-        >
-          {action.label}
-          {action.external ? <ArrowUpRight className="size-4" /> : null}
-        </Link>
+        {action.external ? (
+          <Link href={href} target="_blank" rel="noreferrer">
+            {action.label}
+            <ArrowUpRight className="size-4" />
+          </Link>
+        ) : (
+          <SectionScrollLink href={href}>{action.label}</SectionScrollLink>
+        )}
       </Button>
     </SheetClose>
   );

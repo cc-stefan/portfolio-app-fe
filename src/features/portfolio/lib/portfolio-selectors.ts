@@ -25,8 +25,7 @@ export function collectTechnologies(projects: PortfolioProject[]) {
 }
 
 export function getFeaturedProjects(projects: PortfolioProject[]) {
-  const featured = projects.filter((project) => project.featured);
-  return featured.length > 0 ? featured : projects.slice(0, 3);
+  return projects.filter((project) => project.featured);
 }
 
 export function getProjectSummaryParagraphs(

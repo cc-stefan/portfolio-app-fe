@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getPortfolioApiDocsUrl, getPortfolioApiOrigin } from "../api/portfolio-api";
 import { getPortfolioProjectPageData } from "../api/portfolio-page-data";
@@ -25,6 +26,11 @@ export async function PortfolioProjectScreen({
 }: PortfolioProjectScreenProps) {
   const { projectResult, project, relatedProjects, paragraphs } =
     await getPortfolioProjectPageData(slug);
+
+  if (projectResult.status === 404) {
+    notFound();
+  }
+
   const apiDocsUrl = getPortfolioApiDocsUrl();
   const apiOrigin = getPortfolioApiOrigin();
 

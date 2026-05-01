@@ -49,7 +49,7 @@ export const dictionary: PortfolioDictionary = {
     statusOnline: "在线",
     statusOffline: "离线",
     statusUnavailable: "不可用",
-    showcaseLabel: "项目索引",
+    showcaseLabel: "项目",
     showcaseTitle: "由后端驱动的案例展示，拥有产品级呈现层。",
     showcaseDescription:
       "这个网格的阅读体验像精致的 SaaS 产品目录，但每一项内容仍然来自同一个实时后端契约。",
@@ -87,7 +87,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Server-first 渲染",
         description:
-          "关键页面在服务端获取实时数据，以保证速度、可索引性与稳定性。",
+          "关键页面在服务端获取实时数据，以保证速度、可发现性与稳定性。",
       },
       {
         title: "可复用 UI 契约",
@@ -145,27 +145,28 @@ export const dictionary: PortfolioDictionary = {
     namePlaceholder: "你的姓名",
     emailLabel: "邮箱",
     emailPlaceholder: "you@company.com",
-    companyLabel: "公司",
-    companyPlaceholder: "公司或团队",
-    budgetLabel: "预算",
-    budgetPlaceholder: "大致预算或项目规模",
-    scopeLabel: "项目范围",
-    scopePlaceholder: "你正在构建或优化什么？",
-    messageLabel: "背景说明",
+    companyLabel: "",
+    companyPlaceholder: "",
+    budgetLabel: "",
+    budgetPlaceholder: "",
+    scopeLabel: "",
+    scopePlaceholder: "",
+    messageLabel: "留言",
     messagePlaceholder:
-      "请描述产品阶段、时间计划，以及你希望获得支持的部分。",
+      "请说明你需要什么帮助，并提供足够的上下文让请求更明确。",
     submit: "发送咨询",
     submitting: "发送中...",
     successTitle: "咨询已提交",
     successDescription:
-      "请求已通过校验，并被前端接入路由成功接收。",
+      "请求已通过校验，并被后端咨询接入端点成功接收。",
     errorTitle: "提交失败",
     errorDescription: "请检查表单内容，或稍后再试。",
     privacyNote:
-      "该示例流程通过本地 Next.js 路由完成校验与提交，已为接入真实后端流程做好准备。",
+      "表单会先在客户端校验，再通过前端代理路由转发到后端咨询端点。",
   },
   actions: {
     apiDocs: "API 文档",
+    adminLogin: "管理员登录",
     viewProject: "查看项目",
     live: "线上访问",
     code: "源码",

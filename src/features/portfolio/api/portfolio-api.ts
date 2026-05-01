@@ -1,11 +1,15 @@
 import "server-only";
+import {
+  buildBackendApiUrl,
+  getBackendApiBaseUrl,
+  getBackendDocsUrl,
+  getBackendOrigin,
+} from "@/lib/backend";
 import type {
   ApiResult,
   PortfolioHealth,
   PortfolioProject,
 } from "../model/types";
-
-const DEFAULT_API_BASE_URL = "http://localhost:3001/api";
 
 class PortfolioApiRequestError extends Error {
   constructor(
@@ -17,31 +21,20 @@ class PortfolioApiRequestError extends Error {
   }
 }
 
-function normalizeBaseUrl(value: string) {
-  return value.trim().replace(/\/+$/, "");
-}
-
 export function getPortfolioApiBaseUrl() {
-  return normalizeBaseUrl(
-    process.env.PORTFOLIO_API_BASE_URL ?? DEFAULT_API_BASE_URL,
-  );
+  return getBackendApiBaseUrl();
 }
 
 export function getPortfolioApiOrigin() {
-  return getPortfolioApiBaseUrl().replace(/\/api$/, "");
+  return getBackendOrigin();
 }
 
 export function getPortfolioApiDocsUrl() {
-  return `${getPortfolioApiBaseUrl()}/docs`;
-}
-
-function buildRequestUrl(path: string) {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${getPortfolioApiBaseUrl()}${normalizedPath}`;
+  return getBackendDocsUrl();
 }
 
 async function requestJson<T>(path: string): Promise<T> {
-  const response = await fetch(buildRequestUrl(path), {
+  const response = await fetch(buildBackendApiUrl(path), {
     cache: "no-store",
   });
 

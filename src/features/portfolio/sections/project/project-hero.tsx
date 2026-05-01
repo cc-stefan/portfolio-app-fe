@@ -17,6 +17,10 @@ interface ProjectHeroProps {
   apiOrigin: string;
 }
 
+function formatCount(value?: number) {
+  return String(value ?? 0);
+}
+
 export function ProjectHero({
   locale,
   dictionary,
@@ -116,7 +120,7 @@ export function ProjectHero({
             />
             <Fact
               label={dictionary.common.technologies}
-              value={project.technologies.length.toString().padStart(2, "0")}
+              value={formatCount(project.technologies.length)}
             />
           </dl>
         </CardContent>

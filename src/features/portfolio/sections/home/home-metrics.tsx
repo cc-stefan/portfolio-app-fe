@@ -15,6 +15,10 @@ interface HomeMetricsProps {
   apiBaseUrl: string;
 }
 
+function formatCount(value?: number) {
+  return String(value ?? 0);
+}
+
 export function HomeMetrics({
   copy,
   healthResult,
@@ -38,18 +42,18 @@ export function HomeMetrics({
     >
       <MetricCard
         label={copy.metrics.projects}
-        value={projects.length.toString().padStart(2, "0")}
+        value={formatCount(projects.length)}
         detail={copy.showcaseLabel}
       />
       <MetricCard
         label={copy.metrics.featured}
-        value={featuredProjects.length.toString().padStart(2, "0")}
+        value={formatCount(featuredProjects.length)}
         detail={copy.featuredTab}
         tone="accent"
       />
       <MetricCard
         label={copy.metrics.technologies}
-        value={technologies.length.toString().padStart(2, "0")}
+        value={formatCount(technologies.length)}
         detail={technologies.slice(0, 4).join(", ") || copy.metrics.technologies}
       />
       <MetricCard

@@ -51,7 +51,7 @@ export const dictionary: PortfolioDictionary = {
     statusOnline: "Live",
     statusOffline: "Offline",
     statusUnavailable: "Unavailable",
-    showcaseLabel: "Project index",
+    showcaseLabel: "Projects",
     showcaseTitle: "Backend-powered case studies with a product-grade presentation layer.",
     showcaseDescription:
       "The grid reads like a polished SaaS catalog, but every entry is still sourced from the live backend contract.",
@@ -89,7 +89,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Server-first rendering",
         description:
-          "Critical pages fetch live data on the server so content stays fast, indexable, and stable.",
+          "Critical pages fetch live data on the server so content stays fast, discoverable, and stable.",
       },
       {
         title: "Reusable UI contract",
@@ -147,28 +147,29 @@ export const dictionary: PortfolioDictionary = {
     namePlaceholder: "Your name",
     emailLabel: "Email",
     emailPlaceholder: "you@company.com",
-    companyLabel: "Company",
-    companyPlaceholder: "Company or team",
-    budgetLabel: "Budget",
-    budgetPlaceholder: "Approximate scope or budget",
-    scopeLabel: "Project scope",
-    scopePlaceholder: "What are you building or improving?",
-    messageLabel: "Context",
+    companyLabel: "",
+    companyPlaceholder: "",
+    budgetLabel: "",
+    budgetPlaceholder: "",
+    scopeLabel: "",
+    scopePlaceholder: "",
+    messageLabel: "Message",
     messagePlaceholder:
-      "Share the current product stage, timeline, and where you need help.",
+      "Share what you need help with and enough context to make the request useful.",
     submit: "Send inquiry",
     submitting: "Sending...",
     successTitle: "Inquiry submitted",
     successDescription:
-      "The request was validated and accepted by the frontend intake route.",
+      "The request was validated and accepted by the backend inquiry intake.",
     errorTitle: "Unable to submit inquiry",
     errorDescription:
       "Please review the form fields or try again in a moment.",
     privacyNote:
-      "This example flow validates and submits through a local Next.js route, ready to connect to a real backend pipeline.",
+      "The form validates in the client and proxies through the frontend route into the backend inquiry endpoint.",
   },
   actions: {
     apiDocs: "API docs",
+    adminLogin: "Admin login",
     viewProject: "View project",
     live: "Live",
     code: "Code",

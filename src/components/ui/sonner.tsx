@@ -29,13 +29,11 @@ export function Toaster(props: ToasterProps) {
           toast:
             "rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--surface-shadow-lg)]",
           title: "text-sm font-semibold",
-          description: "text-sm text-muted-foreground",
+          description: "text-sm",
           actionButton:
             "rounded-lg bg-primary px-4 text-primary-foreground hover:brightness-105",
           cancelButton:
             "rounded-lg border border-border bg-secondary px-4 text-foreground",
-          closeButton:
-            "border-border bg-background text-muted-foreground hover:text-foreground",
         },
       }}
       style={
@@ -43,18 +41,6 @@ export function Toaster(props: ToasterProps) {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
-          "--success-bg": "var(--popover)",
-          "--success-text": "var(--popover-foreground)",
-          "--success-border": "var(--border)",
-          "--error-bg": "var(--popover)",
-          "--error-text": "var(--popover-foreground)",
-          "--error-border": "var(--border)",
-          "--warning-bg": "var(--popover)",
-          "--warning-text": "var(--popover-foreground)",
-          "--warning-border": "var(--border)",
-          "--info-bg": "var(--popover)",
-          "--info-text": "var(--popover-foreground)",
-          "--info-border": "var(--border)",
         } as React.CSSProperties
       }
       {...props}

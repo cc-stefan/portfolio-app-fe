@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, DatabaseZap, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import type { AppLocale } from "../../i18n/routing";
 import { localizeHref } from "../../i18n/routing";
 import type { PortfolioDictionary } from "../../i18n/types";
 import type { PortfolioProject } from "../../model/types";
+import { SectionScrollLink } from "../../components/section-scroll-link";
 
 interface HomeHeroProps {
   locale: AppLocale;
@@ -39,15 +39,15 @@ export function HomeHero({
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <Link href={localizeHref(locale, "/#work")}>
+            <SectionScrollLink href={localizeHref(locale, "/#work")}>
               {copy.primaryCta}
               <ArrowRight className="size-4" />
-            </Link>
+            </SectionScrollLink>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href={localizeHref(locale, "/#contact")}>
+            <SectionScrollLink href={localizeHref(locale, "/#contact")}>
               {copy.secondaryCta}
-            </Link>
+            </SectionScrollLink>
           </Button>
         </div>
 

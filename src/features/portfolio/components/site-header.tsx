@@ -12,6 +12,8 @@ import { localizeHref, type AppLocale } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNavSheet } from "./mobile-nav-sheet";
+import { ScrollTopLink } from "./scroll-top-link";
+import { SectionScrollLink } from "./section-scroll-link";
 import { ThemeToggle } from "./theme-toggle";
 
 interface HeaderAction {
@@ -49,7 +51,7 @@ export function SiteHeader({
       )}
     >
       <div className="flex items-center gap-3">
-        <Link
+        <ScrollTopLink
           href={localizeHref(locale, "/")}
           className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
         >
@@ -64,14 +66,16 @@ export function SiteHeader({
               {eyebrow ?? dictionary.header.tagline}
             </span>
           </span>
-        </Link>
+        </ScrollTopLink>
 
         <NavigationMenu className="ml-4 hidden lg:flex">
           <NavigationMenuList>
             {navItems.map((item) => (
               <NavigationMenuItem key={item.href}>
                 <NavigationMenuLink asChild>
-                  <Link href={localizeHref(locale, item.href)}>{item.label}</Link>
+                  <SectionScrollLink href={localizeHref(locale, item.href)}>
+                    {item.label}
+                  </SectionScrollLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -133,14 +137,16 @@ function HeaderButton({ action, locale, variant }: HeaderButtonProps) {
 
   return (
     <Button asChild variant={variant} size="sm">
-      <Link
-        href={href}
-        target={action.external ? "_blank" : undefined}
-        rel={action.external ? "noreferrer" : undefined}
-      >
-        {action.label}
-        {action.external ? <ArrowUpRight className="size-4" /> : null}
-      </Link>
+      {action.external ? (
+        <Link href={href} target="_blank" rel="noreferrer">
+          {action.label}
+          <ArrowUpRight className="size-4" />
+        </Link>
+      ) : (
+        <SectionScrollLink href={href}>
+          {action.label}
+        </SectionScrollLink>
+      )}
     </Button>
   );
 }

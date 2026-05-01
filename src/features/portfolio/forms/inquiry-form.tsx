@@ -20,70 +20,73 @@ interface InquiryFormProps {
   copy: PortfolioDictionary["inquiryForm"];
 }
 
+interface InquiryErrorResponse {
+  errors?: Array<{ path?: string[]; message?: string }>;
+  message?: string;
+}
+
+interface InquirySuccessResponse {
+  receivedAt?: string;
+}
+
 const resolver = zodResolver(
   inquiryFormSchema as never,
 ) as Resolver<InquiryFormValues>;
 
 export function InquiryForm({ copy }: InquiryFormProps) {
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const form = useForm<InquiryFormValues>({
     resolver,
     defaultValues: {
       name: "",
       email: "",
-      company: "",
-      budget: "",
-      scope: "",
       message: "",
     },
   });
 
   const onSubmit = form.handleSubmit(async (values) => {
     setSubmittedAt(null);
+    setSubmissionError(null);
 
-    try {
-      const request = fetch("/api/inquiry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      }).then(async (response) => {
-        if (!response.ok) {
-          const payload = (await response.json().catch(() => null)) as
-            | { errors?: Array<{ path?: string[]; message?: string }> }
-            | null;
+    const response = await fetch("/api/inquiry", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
 
-          if (payload?.errors?.length) {
-            for (const error of payload.errors) {
-              const field = error.path?.[0];
+    const payload = (await response.json().catch(() => null)) as
+      | InquiryErrorResponse
+      | InquirySuccessResponse
+      | null;
 
-              if (field && field in values) {
-                form.setError(field as keyof InquiryFormValues, {
-                  message: error.message ?? copy.errorDescription,
-                });
-              }
-            }
+    if (!response.ok) {
+      const errorPayload = payload as InquiryErrorResponse | null;
+
+      if (errorPayload?.errors?.length) {
+        for (const error of errorPayload.errors) {
+          const field = error.path?.[0];
+
+          if (field && field in values) {
+            form.setError(field as keyof InquiryFormValues, {
+              message: error.message ?? copy.errorDescription,
+            });
           }
-
-          throw new Error(copy.errorDescription);
         }
+      }
 
-        return response.json() as Promise<{ receivedAt?: string }>;
-      });
-
-      toast.promise(request, {
-        loading: copy.submitting,
-        success: copy.successTitle,
-        error: copy.errorTitle,
-      });
-
-      const payload = await request;
-      setSubmittedAt(payload.receivedAt ?? new Date().toISOString());
-      form.reset();
-    } catch {
+      const message = errorPayload?.message ?? copy.errorDescription;
+      setSubmissionError(message);
+      toast.error(message);
       return;
     }
+
+    toast.success(copy.successTitle);
+    const successPayload = payload as InquirySuccessResponse | null;
+    setSubmittedAt(successPayload?.receivedAt ?? new Date().toISOString());
+    form.reset();
   });
   const errors = form.formState.errors;
 
@@ -98,6 +101,13 @@ export function InquiryForm({ copy }: InquiryFormProps) {
               <p className="mt-1 leading-6">{copy.successDescription}</p>
             </div>
           </div>
+        </div>
+      ) : null}
+
+      {submissionError ? (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
+          <p className="font-semibold">{copy.errorTitle}</p>
+          <p className="mt-1 leading-6">{submissionError}</p>
         </div>
       ) : null}
 
@@ -136,55 +146,7 @@ export function InquiryForm({ copy }: InquiryFormProps) {
             />
           </Field>
         </div>
-
-        <div className="grid gap-3 md:grid-cols-2 md:gap-x-4 md:gap-y-0">
-          <Field
-            label={copy.companyLabel}
-            error={errors.company?.message}
-            htmlFor="company"
-            description={copy.companyPlaceholder}
-          >
-            <Input
-              id="company"
-              placeholder={copy.companyPlaceholder}
-              autoComplete="organization"
-              aria-invalid={Boolean(errors.company)}
-              aria-describedby={getFieldDescribedBy("company", errors.company?.message)}
-              {...form.register("company")}
-            />
-          </Field>
-
-          <Field
-            label={copy.budgetLabel}
-            error={errors.budget?.message}
-            htmlFor="budget"
-            description={copy.budgetPlaceholder}
-          >
-            <Input
-              id="budget"
-              placeholder={copy.budgetPlaceholder}
-              aria-invalid={Boolean(errors.budget)}
-              aria-describedby={getFieldDescribedBy("budget", errors.budget?.message)}
-              {...form.register("budget")}
-            />
-          </Field>
-        </div>
       </div>
-
-      <Field
-        label={copy.scopeLabel}
-        error={errors.scope?.message}
-        htmlFor="scope"
-        description={copy.scopePlaceholder}
-      >
-        <Input
-          id="scope"
-          placeholder={copy.scopePlaceholder}
-          aria-invalid={Boolean(errors.scope)}
-          aria-describedby={getFieldDescribedBy("scope", errors.scope?.message)}
-          {...form.register("scope")}
-        />
-      </Field>
 
       <Field
         label={copy.messageLabel}

@@ -51,7 +51,7 @@ export const dictionary: PortfolioDictionary = {
     statusOnline: "Activ",
     statusOffline: "Offline",
     statusUnavailable: "Indisponibil",
-    showcaseLabel: "Index proiecte",
+    showcaseLabel: "Proiecte",
     showcaseTitle: "Studii de caz alimentate din backend, prezentate ca un produs matur.",
     showcaseDescription:
       "Grid-ul se citeste ca un catalog SaaS bine finisat, dar fiecare intrare vine din acelasi contract live al backend-ului.",
@@ -89,7 +89,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Randare server-first",
         description:
-          "Paginile critice preiau date live pe server pentru continut rapid, indexabil si stabil.",
+          "Paginile critice preiau date live pe server pentru continut rapid, usor de gasit si stabil.",
       },
       {
         title: "Contract UI reutilizabil",
@@ -147,28 +147,29 @@ export const dictionary: PortfolioDictionary = {
     namePlaceholder: "Numele tau",
     emailLabel: "Email",
     emailPlaceholder: "tu@companie.com",
-    companyLabel: "Companie",
-    companyPlaceholder: "Companie sau echipa",
-    budgetLabel: "Buget",
-    budgetPlaceholder: "Buget sau amplitudine estimata",
-    scopeLabel: "Scop proiect",
-    scopePlaceholder: "Ce construiti sau imbunatatiti?",
-    messageLabel: "Context",
+    companyLabel: "",
+    companyPlaceholder: "",
+    budgetLabel: "",
+    budgetPlaceholder: "",
+    scopeLabel: "",
+    scopePlaceholder: "",
+    messageLabel: "Mesaj",
     messagePlaceholder:
-      "Descrie stadiul produsului, timeline-ul si zona unde ai nevoie de ajutor.",
+      "Descrie de ce ai nevoie si ofera suficient context ca mesajul sa fie util.",
     submit: "Trimite cererea",
     submitting: "Se trimite...",
     successTitle: "Cerere trimisa",
     successDescription:
-      "Solicitarea a fost validata si acceptata de ruta locala de intake din frontend.",
+      "Solicitarea a fost validata si acceptata de endpoint-ul de intake din backend.",
     errorTitle: "Cererea nu a putut fi trimisa",
     errorDescription:
       "Verifica campurile formularului sau incearca din nou in cateva momente.",
     privacyNote:
-      "Acest flux exemplu valideaza si trimite printr-o ruta locala Next.js, pregatita pentru conectare la un backend real.",
+      "Formularul valideaza in client si trimite prin ruta frontend catre endpoint-ul backend pentru cereri.",
   },
   actions: {
     apiDocs: "Documentatie API",
+    adminLogin: "Autentificare admin",
     viewProject: "Vezi proiectul",
     live: "Live",
     code: "Cod",

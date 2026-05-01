@@ -113,6 +113,7 @@ export interface PortfolioDictionary {
   };
   actions: {
     apiDocs: string;
+    adminLogin: string;
     viewProject: string;
     live: string;
     code: string;

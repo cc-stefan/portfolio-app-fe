@@ -39,7 +39,6 @@ export async function PortfolioHomeScreen({
         dictionary={dictionary}
         eyebrow={dictionary.header.tagline}
         navItems={[
-          { href: "/#overview", label: dictionary.header.navOverview },
           { href: "/#work", label: dictionary.header.navWork },
           { href: "/#process", label: dictionary.header.navProcess },
           { href: "/#contact", label: dictionary.header.navContact },

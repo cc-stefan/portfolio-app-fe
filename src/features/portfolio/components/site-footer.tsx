@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { localizeHref, type AppLocale } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
+import { SectionScrollLink } from "./section-scroll-link";
 
 interface SiteFooterProps {
   locale: AppLocale;
@@ -46,11 +46,11 @@ function FooterLink({
   children: React.ReactNode;
 }) {
   return (
-    <Link
+    <SectionScrollLink
       href={href}
       className="rounded-lg px-3 py-2 transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
     >
       {children}
-    </Link>
+    </SectionScrollLink>
   );
 }
