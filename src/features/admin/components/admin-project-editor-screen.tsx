@@ -518,7 +518,7 @@ export function AdminProjectEditorScreen({
                     onChange={(event) =>
                       updateField("description", event.target.value)
                     }
-                    placeholder="Long-form case study content"
+                    placeholder="Long-form project content"
                     className="min-h-44"
                     aria-invalid={Boolean(fieldErrors.description)}
                   />

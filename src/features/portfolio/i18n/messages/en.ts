@@ -2,16 +2,16 @@ import type { PortfolioDictionary } from "../types";
 
 export const dictionary: PortfolioDictionary = {
   meta: {
-    siteName: "Claudiu",
-    defaultTitle: "Claudiu",
+    siteName: "Claudiu Stefan",
+    defaultTitle: "Claudiu Stefan",
     description:
       "Frontend engineer building fast, scalable, and product-focused interfaces with React, Next.js, Angular, and TypeScript.",
     homeTitle: "Frontend Engineer",
     homeDescription:
-      "Portfolio for Claudiu, a frontend engineer focused on production-ready interfaces, scalable architecture, and product clarity.",
+      "Portfolio for Claudiu Stefan, a frontend engineer focused on production-ready interfaces, scalable architecture, and product clarity.",
     projectUnavailableTitle: "Project unavailable",
     projectUnavailableDescription:
-      "The backend could not return the content for this case study.",
+      "The backend could not return the content for this project.",
     notFoundTitle: "Page not found",
     notFoundDescription:
       "The requested route does not exist in this portfolio application.",
@@ -21,7 +21,7 @@ export const dictionary: PortfolioDictionary = {
     ro: "Română",
   },
   header: {
-    brand: "Claudiu",
+    brand: "Claudiu Stefan",
     avatarInitials: "CCS",
     tagline: "Frontend Engineer",
     navHome: "Home",
@@ -104,14 +104,14 @@ export const dictionary: PortfolioDictionary = {
       "Storybook",
       "Sentry",
     ],
-    showcaseLabel: "Case studies",
-    showcaseCountLabel: "published examples",
+    showcaseLabel: "Projects",
+    showcaseCountLabel: "published projects",
     showcaseTitle:
-      "Selected frontend work across product sites and application interfaces.",
+      "Selected frontend projects across product sites and application interfaces.",
     showcaseDescription:
       "Each project shows how I approach product problems, frontend architecture, UX quality, and integration with real backend systems.",
-    featuredTab: "Flagship",
-    allTab: "All work",
+    featuredTab: "Featured",
+    allTab: "All projects",
     emptyTitle: "No published projects yet.",
     emptyDescription:
       "Publish a project in the admin area and it will appear here automatically.",
@@ -215,7 +215,7 @@ export const dictionary: PortfolioDictionary = {
     summaryTitle: "What I built",
     overviewTitle: "Overview",
     overviewDescription:
-      "This case study focuses on the product problem, the frontend solution, and the decisions that made the interface effective.",
+      "This project focuses on the product problem, the frontend solution, and the decisions that made the interface effective.",
     factsTitle: "Project facts",
     stackTitle: "Stack",
     linksTitle: "Links",
@@ -232,11 +232,11 @@ export const dictionary: PortfolioDictionary = {
           "Components, state, and integrations were organized so the product could grow without turning fragile.",
       },
     ],
-    relatedLabel: "Related work",
-    relatedTitle: "Other case studies",
+    relatedLabel: "Related projects",
+    relatedTitle: "Other projects",
     relatedDescription:
-      "More frontend work across marketing surfaces, product interfaces, and API-driven delivery.",
-    unavailableTitle: "This case study is unavailable right now.",
+      "More frontend projects across marketing surfaces, product interfaces, and API-driven delivery.",
+    unavailableTitle: "This project is unavailable right now.",
     unavailableDescription:
       "The backend did not return the content needed to render this project.",
     unavailableHint:
@@ -272,14 +272,14 @@ export const dictionary: PortfolioDictionary = {
   },
   actions: {
     adminLogin: "Admin",
-    viewProject: "View case study",
+    viewProject: "View project",
     live: "Live",
     code: "Code",
     startProject: "Contact",
     browseProjects: "Browse projects",
   },
   common: {
-    featured: "Flagship",
+    featured: "Featured",
     lastUpdated: "Last updated",
     technologies: "Technologies",
     noTechnologies: "No technologies listed yet",

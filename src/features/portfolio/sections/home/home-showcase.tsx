@@ -21,18 +21,21 @@ export function HomeShowcase({
 }: HomeShowcaseProps) {
   return (
     <section id="projects" className="anchor-target">
-      <SectionIntro
-        label={dictionary.home.showcaseLabel}
-        title={dictionary.home.showcaseTitle}
-        description={dictionary.home.showcaseDescription}
-      />
-      <ProjectGridTabs
-        locale={locale}
-        dictionary={dictionary}
-        featuredProjects={featuredProjects}
-        projects={projects}
-        apiOrigin={apiOrigin}
-      />
+      <div className="section-divider" />
+      <div className="pt-18 sm:pt-24">
+        <SectionIntro
+          label={dictionary.home.showcaseLabel}
+          title={dictionary.home.showcaseTitle}
+          description={dictionary.home.showcaseDescription}
+        />
+        <ProjectGridTabs
+          locale={locale}
+          dictionary={dictionary}
+          featuredProjects={featuredProjects}
+          projects={projects}
+          apiOrigin={apiOrigin}
+        />
+      </div>
     </section>
   );
 }

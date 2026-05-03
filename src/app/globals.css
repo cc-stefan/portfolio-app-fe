@@ -267,22 +267,6 @@
     animation: fade-in 0.72s ease forwards;
   }
 
-  .delay-1 {
-    animation-delay: 80ms;
-  }
-
-  .delay-2 {
-    animation-delay: 160ms;
-  }
-
-  .delay-3 {
-    animation-delay: 240ms;
-  }
-
-  .delay-4 {
-    animation-delay: 320ms;
-  }
-
   .stagger-list > * {
     opacity: 0;
     transform: translate3d(0, 14px, 0);

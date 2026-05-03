@@ -2,16 +2,16 @@ import type { PortfolioDictionary } from "../types";
 
 export const dictionary: PortfolioDictionary = {
   meta: {
-    siteName: "Claudiu",
-    defaultTitle: "Claudiu",
+    siteName: "Claudiu Ștefan",
+    defaultTitle: "Claudiu Ștefan",
     description:
       "Inginer frontend care construiește interfețe rapide, scalabile și orientate spre produs cu React, Next.js, Angular și TypeScript.",
     homeTitle: "Inginer frontend",
     homeDescription:
-      "Portofoliu pentru Claudiu, inginer frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
+      "Portofoliu pentru Claudiu Ștefan, inginer frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
     projectUnavailableTitle: "Proiect indisponibil",
     projectUnavailableDescription:
-      "Backend-ul nu a putut returna conținutul pentru acest studiu de caz.",
+      "Backend-ul nu a putut returna conținutul pentru acest proiect.",
     notFoundTitle: "Pagină negăsită",
     notFoundDescription:
       "Ruta cerută nu există în această aplicație de portofoliu.",
@@ -21,7 +21,7 @@ export const dictionary: PortfolioDictionary = {
     ro: "Română",
   },
   header: {
-    brand: "Claudiu",
+    brand: "Claudiu Ștefan",
     avatarInitials: "CCS",
     tagline: "Inginer frontend",
     navHome: "Acasă",
@@ -29,7 +29,7 @@ export const dictionary: PortfolioDictionary = {
     navOverview: "Prezentare",
     navWork: "Proiecte",
     navProcess: "Cum lucrez",
-    navSkills: "Skill-uri",
+    navSkills: "Competențe",
     languageLabel: "Limbă",
     themeLabel: "Temă",
     openMenu: "Deschide meniul",
@@ -52,16 +52,16 @@ export const dictionary: PortfolioDictionary = {
     },
     metricCards: [
       {
-        label: "Lucrări publicate",
+        label: "Proiecte publicate",
         value: "4 live",
         detail:
-          "Site-uri de marketing, aplicații de produs și fluxuri complexe.",
+          "Site-uri de marketing, aplicații de produs și interfețe cu fluxuri complexe.",
       },
       {
         label: "Stack frontend",
         value: "React + Angular",
         detail:
-          "Arhitectură UI TypeScript-first, cu componente reutilizabile.",
+          "Arhitectură UI bazată pe TypeScript, construită din componente reutilizabile.",
       },
       {
         label: "Focus de livrare",
@@ -71,14 +71,14 @@ export const dictionary: PortfolioDictionary = {
       },
       {
         label: "Stil de lucru",
-        value: "Focus pe produs",
+        value: "Orientare spre produs",
         detail:
-          "Livrare fiabilă, cod mentenabil și decizii aliniate cu business-ul.",
+          "Livrare fiabilă, cod ușor de întreținut și decizii aliniate cu obiectivele de business.",
       },
     ],
     profileSnapshotLabel: "Profil rapid",
     profileSnapshotTitle: "Construit pentru a livra produse reale",
-    profileSnapshotBadge: "Deschis la colaborări",
+    profileSnapshotBadge: "Disponibil pentru colaborări",
     profileSummaryLabel: "De ce mă aleg echipele",
     profileSummary:
       "Aduc mai mult decât viteză de implementare. Transform cerințele de produs în interfețe clare, mentenabile și gata de producție.",
@@ -106,14 +106,14 @@ export const dictionary: PortfolioDictionary = {
       "Storybook",
       "Sentry",
     ],
-    showcaseLabel: "Studii de caz",
-    showcaseCountLabel: "exemple publicate",
+    showcaseLabel: "Proiecte",
+    showcaseCountLabel: "proiecte publicate",
     showcaseTitle:
-      "Proiecte frontend pentru site-uri de produs și interfețe de aplicație.",
+      "Selecție de proiecte frontend pentru site-uri de produs și interfețe de aplicație.",
     showcaseDescription:
       "Fiecare proiect arată cum abordez probleme de produs, arhitectură frontend, calitate UX și integrare cu backend-uri reale.",
-    featuredTab: "Proiecte cheie",
-    allTab: "Toate lucrările",
+    featuredTab: "Recomandate",
+    allTab: "Toate proiectele",
     emptyTitle: "Nu există încă proiecte publicate.",
     emptyDescription:
       "Publică un proiect în zona de administrare și va apărea automat aici.",
@@ -121,7 +121,7 @@ export const dictionary: PortfolioDictionary = {
     capabilitiesTitle:
       "Lucrez la intersecția dintre inginerie frontend și claritate de produs.",
     capabilitiesDescription:
-      "Valoarea pe care o aduc stă în profunzime tehnică, execuție curată și decizii care fac interfețele mai ușor de folosit și mai ușor de evoluat.",
+      "Valoarea pe care o aduc stă în profunzimea tehnică, execuția curată și discernământul de a face interfețele mai ușor de folosit și de extins.",
     capabilities: [
       {
         title: "Frontend pregătit pentru producție",
@@ -141,7 +141,7 @@ export const dictionary: PortfolioDictionary = {
     ],
     processLabel: "Cum lucrez",
     processTitle:
-      "Livrarea fiabilă vine din structură clară, trade-off-uri bune și atenție la detaliu.",
+      "Livrarea fiabilă vine din structură clară, compromisuri bine judecate și atenție la detalii.",
     processDescription:
       "Păstrez frontend-ul practic: ușor de înțeles pentru echipe, scalabil pentru lucru viitor și suficient de bine finisat încât să inspire încredere.",
     processStepLabel: "Pas",
@@ -149,7 +149,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Structură înainte de toate",
         description:
-          "Setez granițe curate între componente, state previzibil și pattern-uri reutilizabile înainte ca complexitatea să înceapă să se răspândească.",
+          "Stabilesc granițe clare între componente, o gestionare predictibilă a stării și pattern-uri reutilizabile înainte ca complexitatea să înceapă să se răspândească.",
       },
       {
         title: "Claritate pentru utilizator",
@@ -166,8 +166,8 @@ export const dictionary: PortfolioDictionary = {
     experienceTitle: "",
     experienceDescription: "",
     experienceCards: [],
-    credentialsLabel: "Skill-uri",
-    credentialsTitle: "Stack-ul pe care îl folosesc cel mai mult și felul în care îl aplic.",
+    credentialsLabel: "Competențe",
+    credentialsTitle: "Stack-ul pe care îl folosesc cel mai des și felul în care îl aplic.",
     credentialsDescription:
       "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un inginer frontend puternic.",
     credentialGroups: [
@@ -188,16 +188,16 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Calitate și colaborare",
         items: [
-          "Handoff din Figma, implementare atentă la performanță, validare, analytics, Storybook și Sentry.",
+          "Handoff din Figma, implementare orientată spre performanță, validare, analytics, Storybook și Sentry.",
           "Un mod de lucru construit pe comunicare clară, calitate UI consecventă și livrare de încredere.",
         ],
       },
     ],
     inquiryLabel: "Contact",
     inquiryTitle:
-      "Ai nevoie de un frontend engineer care transformă cerințele în UI de produs bine livrat?",
+      "Ai nevoie de un frontend engineer care poate transforma cerințele într-un UI de produs bine finisat?",
     inquiryDescription:
-      "Sunt deschis pentru roluri frontend, proiecte de product engineering și colaborări unde contează performanța, claritatea și livrarea fiabilă.",
+      "Sunt deschis pentru roluri de frontend, proiecte de product engineering și colaborări contractuale în care contează performanța, claritatea și livrarea fiabilă.",
     inquiryHighlights: [
       {
         title: "Contact",
@@ -213,11 +213,11 @@ export const dictionary: PortfolioDictionary = {
   },
   project: {
     backToHome: "Înapoi la portofoliu",
-    label: "Pagină proiect",
+    label: "Pagina proiectului",
     summaryTitle: "Ce am construit",
     overviewTitle: "Prezentare",
     overviewDescription:
-      "Acest studiu de caz se concentrează pe problema de produs, soluția frontend și deciziile care au făcut interfața eficientă.",
+      "Acest proiect pune în prim-plan problema de produs, soluția frontend și deciziile care au făcut interfața eficientă.",
     factsTitle: "Detalii proiect",
     stackTitle: "Stack",
     linksTitle: "Link-uri",
@@ -234,18 +234,18 @@ export const dictionary: PortfolioDictionary = {
           "Componentele, state-ul și integrările au fost organizate astfel încât produsul să poată evolua fără să devină fragil.",
       },
     ],
-    relatedLabel: "Lucrări similare",
-    relatedTitle: "Alte studii de caz",
+    relatedLabel: "Proiecte similare",
+    relatedTitle: "Alte proiecte",
     relatedDescription:
-      "Mai multă muncă frontend, de la suprafețe de marketing la interfețe de produs și livrare bazată pe API.",
-    unavailableTitle: "Acest studiu de caz nu este disponibil acum.",
+      "Mai multe proiecte frontend, de la suprafețe de marketing la interfețe de produs și livrare bazată pe API.",
+    unavailableTitle: "Acest proiect nu este disponibil momentan.",
     unavailableDescription:
       "Backend-ul nu a returnat conținutul necesar pentru a afișa acest proiect.",
     unavailableHint:
       "Pornește portfolio-app-be pe portul 3001 sau actualizează PORTFOLIO_API_BASE_URL în mediul frontend.",
     notFoundTitle: "Această rută nu corespunde unui proiect publicat.",
     notFoundDescription:
-      "Slug-ul poate fi greșit, proiectul poate fi încă draft sau backend-ul nu are o intrare potrivită.",
+      "Slug-ul poate fi greșit, proiectul poate fi încă în draft sau backend-ul nu are o intrare corespunzătoare.",
   },
   inquiryForm: {
     nameLabel: "Nume",
@@ -265,23 +265,23 @@ export const dictionary: PortfolioDictionary = {
     submitting: "Se trimite...",
     successTitle: "Mesaj trimis",
     successDescription:
-      "Cererea ta a fost validată și acceptată de backend.",
+      "Mesajul tău a fost validat și acceptat de backend.",
     errorTitle: "Mesajul nu a putut fi trimis",
     errorDescription:
       "Verifică câmpurile formularului sau încearcă din nou în câteva momente.",
     privacyNote:
-      "Validat în client, trimis prin frontend și procesat de endpoint-ul de inquiry din backend.",
+      "Validat în client, transmis prin frontend și procesat de endpoint-ul de contact din backend.",
   },
   actions: {
     adminLogin: "Admin",
-    viewProject: "Vezi studiul de caz",
+    viewProject: "Vezi proiectul",
     live: "Live",
     code: "Cod",
     startProject: "Contact",
     browseProjects: "Vezi proiectele",
   },
   common: {
-    featured: "Proiect cheie",
+    featured: "Recomandat",
     lastUpdated: "Ultima actualizare",
     technologies: "Tehnologii",
     noTechnologies: "Nicio tehnologie listată încă",

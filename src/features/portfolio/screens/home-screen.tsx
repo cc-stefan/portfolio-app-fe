@@ -47,23 +47,19 @@ export async function PortfolioHomeScreen({
       />
 
       <main className="flex flex-1 flex-col gap-18 pb-4 pt-10 sm:gap-24 sm:pt-14">
-        <div className="page-enter delay-1">
+        <div className="page-enter">
           <HomeHero locale={locale} copy={dictionary.home} />
         </div>
 
-        <div className="page-enter delay-2">
+        <div className="page-enter">
           <HomeMetrics copy={dictionary.home} />
         </div>
 
-        <div className="section-divider" />
-
-        <div className="page-enter delay-3">
+        <div className="page-enter">
           <HomeCapabilities copy={dictionary.home} />
         </div>
 
-        <div className="section-divider" />
-
-        <div className="page-enter delay-2">
+        <div className="page-enter">
           <HomeShowcase
             locale={locale}
             dictionary={dictionary}
@@ -73,21 +69,15 @@ export async function PortfolioHomeScreen({
           />
         </div>
 
-        <div className="section-divider" />
-
-        <div className="page-enter delay-4">
+        <div className="page-enter">
           <HomeProcess copy={dictionary.home} />
         </div>
 
-        <div className="section-divider" />
-
-        <div className="page-enter delay-4">
+        <div className="page-enter">
           <HomeCredentials copy={dictionary.home} />
         </div>
 
-        <div className="section-divider" />
-
-        <div className="page-enter delay-4">
+        <div className="page-enter">
           <HomeInquiry dictionary={dictionary} />
         </div>
       </main>

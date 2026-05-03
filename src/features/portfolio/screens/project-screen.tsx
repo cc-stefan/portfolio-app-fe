@@ -58,7 +58,7 @@ export async function PortfolioProjectScreen({
 
       <main className="flex flex-1 flex-col gap-16 pb-4 pt-10 sm:pt-14">
         {!project ? (
-          <div className="page-enter delay-1">
+          <div className="page-enter">
             <StateCard
               eyebrow={dictionary.project.label}
               title={dictionary.project.unavailableTitle}
@@ -82,7 +82,7 @@ export async function PortfolioProjectScreen({
           </div>
         ) : (
           <>
-            <div className="page-enter delay-1">
+            <div className="page-enter">
               <ProjectHero
                 locale={locale}
                 dictionary={dictionary}
@@ -91,9 +91,7 @@ export async function PortfolioProjectScreen({
               />
             </div>
 
-            <div id="details" className="anchor-target section-divider" />
-
-            <div className="page-enter delay-2">
+            <div className="page-enter">
               <ProjectContent
                 dictionary={dictionary}
                 project={project}
@@ -101,7 +99,7 @@ export async function PortfolioProjectScreen({
               />
             </div>
 
-            <div className="page-enter delay-3">
+            <div className="page-enter">
               <ProjectRelated
                 locale={locale}
                 dictionary={dictionary}
