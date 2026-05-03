@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Resolver } from "react-hook-form";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { PortfolioDictionary } from "../i18n/types";
 import {
-  inquiryFormSchema,
+  createInquiryFormSchema,
   type InquiryFormValues,
 } from "./inquiry-form-schema";
 
@@ -29,13 +29,14 @@ interface InquirySuccessResponse {
   receivedAt?: string;
 }
 
-const resolver = zodResolver(
-  inquiryFormSchema as never,
-) as Resolver<InquiryFormValues>;
-
 export function InquiryForm({ copy }: InquiryFormProps) {
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const resolver = useMemo(
+    () =>
+      zodResolver(createInquiryFormSchema(copy) as never) as Resolver<InquiryFormValues>,
+    [copy],
+  );
   const form = useForm<InquiryFormValues>({
     resolver,
     defaultValues: {

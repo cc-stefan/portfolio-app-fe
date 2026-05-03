@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminProtectedLayout } from "@/features/admin/components/admin-protected-layout";
+import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
 import { isAppLocale } from "@/features/portfolio/i18n/routing";
 
 interface AdminProtectedAreaLayoutProps {
@@ -17,5 +18,11 @@ export default async function AdminProtectedAreaLayout({
     notFound();
   }
 
-  return <AdminProtectedLayout lang={lang}>{children}</AdminProtectedLayout>;
+  const dictionary = await getDictionary(lang);
+
+  return (
+    <AdminProtectedLayout lang={lang} dictionary={dictionary}>
+      {children}
+    </AdminProtectedLayout>
+  );
 }

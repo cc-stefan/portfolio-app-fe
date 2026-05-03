@@ -462,6 +462,10 @@ function getInquiryBadgeVariant(status: InquiryStatus) {
     return "accent";
   }
 
+  if (status === "IN_REVIEW") {
+    return "warning";
+  }
+
   if (status === "ARCHIVED") {
     return "outline";
   }

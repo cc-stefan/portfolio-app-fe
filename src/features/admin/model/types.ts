@@ -67,7 +67,6 @@ export interface AdminDashboardResponse {
       | "updatedAt"
     >
   >;
-  recentUsers: AdminUser[];
 }
 
 export interface ProjectFormValues {

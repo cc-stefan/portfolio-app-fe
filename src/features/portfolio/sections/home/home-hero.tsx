@@ -56,7 +56,9 @@ export function HomeHero({
                   {copy.profileSnapshotTitle}
                 </p>
               </div>
-              <Badge variant="success">{copy.profileSnapshotBadge}</Badge>
+              <Badge variant="success" className="justify-center text-center">
+                {copy.profileSnapshotBadge}
+              </Badge>
             </div>
           </div>
 

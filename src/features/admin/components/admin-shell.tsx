@@ -4,12 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import {
-  ArrowUpRight,
-  Bell,
   FolderKanban,
   Inbox,
   LayoutDashboard,
   LogOut,
+  type LucideIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,9 +18,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import { LocaleSwitcher } from "@/features/portfolio/components/locale-switcher";
+import { SiteFooter } from "@/features/portfolio/components/site-footer";
 import { ThemeToggle } from "@/features/portfolio/components/theme-toggle";
 import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
-import { getBackendDocsUrl, shouldExposeBackendDocs } from "@/lib/backend";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
+import { getPortfolioHomeSectionLinks } from "@/features/portfolio/lib/portfolio-navigation";
 import { cn } from "@/lib/utils";
 import { AdminMobileNavSheet } from "./admin-mobile-nav-sheet";
 import { useAdminAuth } from "../auth/use-admin-auth";
@@ -30,26 +32,15 @@ import type { AdminInquiry } from "../model/types";
 
 interface AdminShellProps {
   lang: AppLocale;
+  dictionary: PortfolioDictionary;
   children: React.ReactNode;
 }
 
-const navItems = [
-  {
-    href: "/admin",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    href: "/admin/projects",
-    label: "Projects",
-    icon: FolderKanban,
-  },
-  {
-    href: "/admin/inquiries",
-    label: "Inquiries",
-    icon: Inbox,
-  },
-] as const;
+export interface AdminNavItem {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+}
 
 function isNavItemActive(pathname: string, href: string, lang: AppLocale) {
   const localizedHref = localizeHref(lang, href);
@@ -58,19 +49,41 @@ function isNavItemActive(pathname: string, href: string, lang: AppLocale) {
     return pathname === localizedHref;
   }
 
-  return (
-    pathname === localizedHref || pathname.startsWith(`${localizedHref}/`)
-  );
+  return pathname === localizedHref || pathname.startsWith(`${localizedHref}/`);
 }
 
-export function AdminShell({ lang, children }: AdminShellProps) {
+export function AdminShell({
+  lang,
+  dictionary,
+  children,
+}: AdminShellProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { authFetch, logout, user } = useAdminAuth();
-  const [unreadInquiryCount, setUnreadInquiryCount] = useState<number | null>(null);
+  const [unreadInquiryCount, setUnreadInquiryCount] = useState<number | null>(
+    null,
+  );
+  const navItems: AdminNavItem[] = [
+    {
+      href: "/admin",
+      label: dictionary.admin.navDashboard,
+      icon: LayoutDashboard,
+    },
+    {
+      href: "/admin/projects",
+      label: dictionary.admin.navProjects,
+      icon: FolderKanban,
+    },
+    {
+      href: "/admin/inquiries",
+      label: dictionary.admin.navInquiries,
+      icon: Inbox,
+    },
+  ];
   const activeNavItem =
     navItems.find((item) => isNavItemActive(pathname, item.href, lang)) ??
     navItems[0];
+  const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   const loadUnreadInquiryCount = useCallback(async () => {
     const response = await authFetch("/admin/inquiries");
@@ -113,9 +126,9 @@ export function AdminShell({ lang, children }: AdminShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-3 z-40 sm:top-5">
-        <div className="container-page">
+    <div className="page-shell">
+      <div className="container-page flex min-h-screen flex-col py-4 sm:py-6">
+        <header className="sticky top-3 z-40 sm:top-5">
           <div className="surface-card rounded-2xl px-3 py-3 sm:px-4">
             <div className="flex items-center gap-3">
               <div className="flex min-w-0 items-center gap-3">
@@ -124,12 +137,10 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                   className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                 >
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-xs font-semibold text-background transition-transform duration-200 group-hover:scale-95">
-                    P
+                    CCS
                   </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-semibold text-foreground">
-                      Portfolio Admin
-                    </span>
+                  <span className="block truncate text-sm font-semibold text-foreground">
+                    {dictionary.admin.brand}
                   </span>
                 </Link>
               </div>
@@ -139,6 +150,10 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                   {navItems.map((item) => {
                     const isActive = isNavItemActive(pathname, item.href, lang);
                     const Icon = item.icon;
+                    const showInquiryBadge =
+                      item.href === "/admin/inquiries" &&
+                      unreadInquiryCount !== null &&
+                      unreadInquiryCount > 0;
 
                     return (
                       <NavigationMenuItem key={item.href}>
@@ -154,6 +169,11 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                           <Link href={localizeHref(lang, item.href)}>
                             <Icon className="size-4" />
                             {item.label}
+                            {showInquiryBadge ? (
+                              <Badge variant="accent" className="ml-1">
+                                {unreadInquiryCount}
+                              </Badge>
+                            ) : null}
                           </Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
@@ -163,42 +183,17 @@ export function AdminShell({ lang, children }: AdminShellProps) {
               </NavigationMenu>
 
               <div className="ml-auto hidden items-center gap-2 lg:flex">
-                {user ? (
-                  <div className="hidden min-w-0 items-center gap-3 rounded-xl border border-border bg-background/70 px-3 py-2 xl:flex">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                    <Badge variant="accent">{user.role}</Badge>
-                  </div>
-                ) : null}
-
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={localizeHref(lang, "/")}>Public site</Link>
-                </Button>
-                {shouldExposeBackendDocs() ? (
-                  <Button asChild variant="ghost" size="sm">
-                    <Link href={getBackendDocsUrl()} target="_blank" rel="noreferrer">
-                      API docs
-                      <ArrowUpRight className="size-4" />
-                    </Link>
-                  </Button>
-                ) : null}
-                <Button asChild variant="outline" size="icon" className="relative">
-                  <Link
-                    href={localizeHref(lang, "/admin/inquiries")}
-                    aria-label="Unread inquiries"
-                  >
-                    <Bell className="size-4" />
-                    {unreadInquiryCount && unreadInquiryCount > 0 ? (
-                      <span className="absolute -right-1.5 -top-1.5 flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
-                        {unreadInquiryCount}
-                      </span>
-                    ) : null}
+                  <Link href={localizeHref(lang, "/")}>
+                    {dictionary.admin.viewSite}
                   </Link>
                 </Button>
-                <ThemeToggle label="Theme" />
+                <LocaleSwitcher
+                  locale={lang}
+                  localeNames={dictionary.localeNames}
+                  label={dictionary.header.languageLabel}
+                />
+                <ThemeToggle label={dictionary.header.themeLabel} />
                 <Button
                   type="button"
                   variant="outline"
@@ -206,7 +201,7 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                   onClick={() => void handleLogout()}
                 >
                   <LogOut className="size-4" />
-                  Sign out
+                  {dictionary.admin.signOut}
                 </Button>
               </div>
 
@@ -216,20 +211,27 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                 </Badge>
                 <AdminMobileNavSheet
                   lang={lang}
+                  dictionary={dictionary}
                   user={user}
+                  navItems={navItems}
                   activeHref={activeNavItem.href}
-                  activeLabel={activeNavItem.label}
                   unreadInquiryCount={unreadInquiryCount ?? 0}
                   onLogout={handleLogout}
                 />
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="container-page py-6 sm:py-8">
-        <main className="min-w-0">{children}</main>
+        <main className="min-w-0 flex-1 pt-10 pb-6 sm:pt-12 sm:pb-8">
+          {children}
+        </main>
+
+        <SiteFooter
+          locale={lang}
+          dictionary={dictionary}
+          navItems={footerNavItems}
+        />
       </div>
     </div>
   );

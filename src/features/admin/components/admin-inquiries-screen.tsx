@@ -190,9 +190,9 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Total inquiries" value={stats.total} />
+        <StatCard label="Total inquiries" value={stats.total} tone="neutral" />
         <StatCard label="Unread" value={stats.unreadCount} tone="accent" />
-        <StatCard label="In review" value={stats.inReviewCount} />
+        <StatCard label="In review" value={stats.inReviewCount} tone="warning" />
         <StatCard label="Resolved" value={stats.resolvedCount} tone="success" />
       </section>
 
@@ -295,22 +295,25 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
 function StatCard({
   label,
   value,
-  tone = "default",
+  tone = "neutral",
 }: {
   label: string;
   value: number;
-  tone?: "default" | "accent" | "success";
+  tone?: "neutral" | "accent" | "warning" | "success";
 }) {
   const badgeVariant =
-    tone === "accent" ? "accent" : tone === "success" ? "success" : "outline";
+    tone === "accent"
+      ? "accent"
+      : tone === "success"
+        ? "success"
+        : tone === "warning"
+          ? "warning"
+          : "neutral";
 
   return (
     <Card variant="solid">
       <CardContent className="p-5 sm:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <Badge variant={badgeVariant}>{tone === "default" ? "Signal" : tone}</Badge>
-        </div>
+        <Badge variant={badgeVariant}>{label}</Badge>
         <p className="mt-6 text-3xl font-semibold text-foreground">{value}</p>
       </CardContent>
     </Card>
