@@ -20,7 +20,7 @@ export function HomeShowcase({
   apiOrigin,
 }: HomeShowcaseProps) {
   return (
-    <section>
+    <section id="projects" className="anchor-target">
       <SectionIntro
         label={dictionary.home.showcaseLabel}
         title={dictionary.home.showcaseTitle}

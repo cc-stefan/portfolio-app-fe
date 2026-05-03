@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import {
@@ -11,7 +10,9 @@ import {
   setPendingSectionScrollTarget,
 } from "../lib/section-scroll";
 
-type SectionScrollLinkProps = React.ComponentProps<typeof Link>;
+interface SectionScrollLinkProps extends React.ComponentProps<"a"> {
+  href: string;
+}
 
 export const SectionScrollLink = React.forwardRef<
   HTMLAnchorElement,
@@ -35,8 +36,7 @@ export const SectionScrollLink = React.forwardRef<
       return;
     }
 
-    const hrefValue = typeof href === "string" ? href : href.toString();
-    const sectionTarget = parseSectionHref(hrefValue, pathname);
+    const sectionTarget = parseSectionHref(href, pathname);
 
     if (!sectionTarget) {
       return;
@@ -54,5 +54,5 @@ export const SectionScrollLink = React.forwardRef<
     router.push(sectionTarget.pathname);
   }
 
-  return <Link ref={ref} href={href} onClick={handleClick} {...props} />;
+  return <a ref={ref} href={href} onClick={handleClick} {...props} />;
 });

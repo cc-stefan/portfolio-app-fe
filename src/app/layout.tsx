@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import localFont from "next/font/local";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import {ThemeProvider} from "@/components/providers/theme-provider";
+import {Toaster} from "@/components/ui/sonner";
+import {defaultLocale, isAppLocale} from "@/features/portfolio/i18n/routing";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -35,27 +36,30 @@ export const metadata: Metadata = {
   applicationName: "Portfolio",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params,
+}: Readonly<{ children: React.ReactNode; params: Promise<{ lang?: string }> }>) {
+  const {lang} = await params;
+  const htmlLang = isAppLocale(lang ?? "") ? lang : defaultLocale;
+
   return (
     <html
-      lang="en"
+      lang={htmlLang}
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
       data-scroll-behavior="smooth"
-      suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
+          enableColorScheme={false}
           disableTransitionOnChange
         >
           {children}
-          <Toaster position="top-right" richColors closeButton />
+          <Toaster position="top-right" richColors closeButton/>
         </ThemeProvider>
       </body>
     </html>

@@ -1,36 +1,28 @@
-import { ArrowRight, DatabaseZap, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { AppLocale } from "../../i18n/routing";
 import { localizeHref } from "../../i18n/routing";
 import type { PortfolioDictionary } from "../../i18n/types";
-import type { PortfolioProject } from "../../model/types";
 import { SectionScrollLink } from "../../components/section-scroll-link";
 
 interface HomeHeroProps {
   locale: AppLocale;
   copy: PortfolioDictionary["home"];
-  latestProject: PortfolioProject | null;
-  technologies: string[];
-  apiBaseUrl: string;
 }
 
 export function HomeHero({
   locale,
   copy,
-  latestProject,
-  technologies,
-  apiBaseUrl,
 }: HomeHeroProps) {
   return (
     <section
-      id="overview"
+      id="home"
       className="anchor-target grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(22rem,0.95fr)] lg:items-center"
     >
       <div>
-        <Badge variant="accent">{copy.eyebrow}</Badge>
-        <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+        <h1 className="max-w-5xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
           {copy.title}
         </h1>
         <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
@@ -39,7 +31,7 @@ export function HomeHero({
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <SectionScrollLink href={localizeHref(locale, "/#work")}>
+            <SectionScrollLink href={localizeHref(locale, "/#projects")}>
               {copy.primaryCta}
               <ArrowRight className="size-4" />
             </SectionScrollLink>
@@ -50,15 +42,6 @@ export function HomeHero({
             </SectionScrollLink>
           </Button>
         </div>
-
-        <div className="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
-          <SignalItem icon={<ShieldCheck className="size-4" />}>
-            {copy.availability}
-          </SignalItem>
-          <SignalItem icon={<DatabaseZap className="size-4" />}>
-            {apiBaseUrl}
-          </SignalItem>
-        </div>
       </div>
 
       <Card variant="solid" className="overflow-hidden">
@@ -67,66 +50,52 @@ export function HomeHero({
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Product snapshot
+                  {copy.profileSnapshotLabel}
                 </p>
                 <p className="mt-1 text-lg font-semibold text-foreground">
-                  {latestProject?.title ?? "Live portfolio system"}
+                  {copy.profileSnapshotTitle}
                 </p>
               </div>
-              <Badge variant="success">Ready</Badge>
+              <Badge variant="success">{copy.profileSnapshotBadge}</Badge>
             </div>
           </div>
 
           <div className="grid gap-4 p-5">
             <div className="rounded-xl border border-border bg-background p-4">
               <p className="text-sm font-medium text-muted-foreground">
-                Current narrative
+                {copy.profileSummaryLabel}
               </p>
               <p className="mt-3 text-sm leading-7 text-foreground">
-                {latestProject?.summary ?? copy.showcaseDescription}
+                {copy.profileSummary}
               </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <MiniPanel label={copy.metrics.projects} value="API-driven" />
-              <MiniPanel label={copy.metrics.status} value="State-aware" />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {copy.profilePanels.map((panel) => (
+                <MiniPanel
+                  key={panel.label}
+                  label={panel.label}
+                  value={panel.value}
+                />
+              ))}
             </div>
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Stack signals
+                {copy.metrics.technologies}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {technologies.length > 0 ? (
-                  technologies.slice(0, 6).map((technology) => (
-                    <Badge key={technology} variant="outline">
-                      {technology}
-                    </Badge>
-                  ))
-                ) : (
-                  <Badge variant="outline">Next.js</Badge>
-                )}
+                {copy.skillHighlights.slice(0, 8).map((technology) => (
+                  <Badge key={technology} variant="outline">
+                    {technology}
+                  </Badge>
+                ))}
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
     </section>
-  );
-}
-
-function SignalItem({
-  icon,
-  children,
-}: {
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary p-3">
-      <span className="mt-0.5 text-primary">{icon}</span>
-      <span className="line-clamp-3 leading-6">{children}</span>
-    </div>
   );
 }
 

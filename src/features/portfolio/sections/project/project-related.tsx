@@ -24,7 +24,7 @@ export function ProjectRelated({
   return (
     <section>
       <SectionIntro
-        label={dictionary.project.relatedTitle}
+        label={dictionary.project.relatedLabel}
         title={dictionary.project.relatedTitle}
         description={dictionary.project.relatedDescription}
       />

@@ -40,13 +40,11 @@ export function ProjectHero({
           </Link>
         </Button>
 
-        <div className="mt-6 flex flex-wrap items-center gap-2">
-          <Badge variant="accent">{dictionary.project.label}</Badge>
-          {project.featured ? (
-            <Badge variant="neutral">{dictionary.common.featured}</Badge>
-          ) : null}
-          <Badge variant="success">{dictionary.common.published}</Badge>
-        </div>
+        {project.featured ? (
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <Badge variant="accent">{dictionary.common.featured}</Badge>
+          </div>
+        ) : null}
 
         <h1 className="mt-6 max-w-4xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
           {project.title}
@@ -110,14 +108,6 @@ export function ProjectHero({
           </p>
           <dl className="mt-6 grid gap-4">
             <Fact label={dictionary.common.lastUpdated} value={localizedDate} />
-            <Fact
-              label={dictionary.common.status}
-              value={dictionary.common.published}
-            />
-            <Fact
-              label={dictionary.common.displayOrder}
-              value={project.displayOrder.toString()}
-            />
             <Fact
               label={dictionary.common.technologies}
               value={formatCount(project.technologies.length)}

@@ -2,143 +2,256 @@ import type { PortfolioDictionary } from "../types";
 
 export const dictionary: PortfolioDictionary = {
   meta: {
-    siteName: "Portfolio",
-    defaultTitle: "Portfolio",
+    siteName: "Claudiu",
+    defaultTitle: "Claudiu",
     description:
-      "A premium portfolio frontend built on live backend content, responsive layouts, and a polished product-grade interface.",
-    homeTitle: "Selected work",
+      "Frontend engineer building fast, scalable, and product-focused interfaces with React, Next.js, Angular, and TypeScript.",
+    homeTitle: "Frontend Engineer",
     homeDescription:
-      "A clean portfolio experience powered by a live project API, built with a modern, SaaS-grade design system.",
+      "Portfolio for Claudiu, a frontend engineer focused on production-ready interfaces, scalable architecture, and product clarity.",
     projectUnavailableTitle: "Project unavailable",
     projectUnavailableDescription:
-      "The portfolio backend could not return this project.",
+      "The backend could not return the content for this case study.",
     notFoundTitle: "Page not found",
     notFoundDescription:
       "The requested route does not exist in this portfolio application.",
   },
   localeNames: {
     en: "English",
-    ro: "Romana",
-    zh: "中文",
+    ro: "Română",
   },
   header: {
-    brand: "Portfolio",
-    tagline: "Product engineer",
+    brand: "Claudiu",
+    avatarInitials: "CCS",
+    tagline: "Frontend Engineer",
+    navHome: "Home",
+    navAbout: "About",
     navOverview: "Overview",
-    navWork: "Work",
-    navProcess: "Process",
+    navWork: "Projects",
+    navProcess: "How I work",
+    navSkills: "Skills",
     navContact: "Contact",
     languageLabel: "Language",
     themeLabel: "Theme",
     openMenu: "Open menu",
     closeMenu: "Close menu",
   },
-  home: {
-    eyebrow: "Modern frontend system",
-    title: "A premium portfolio rebuilt like a high-end product experience.",
+  footer: {
     description:
-      "Published projects are fetched from portfolio-app-be and presented through a cleaner narrative system: sharper hierarchy, stronger states, faster scanning, and more deliberate motion.",
-    availability:
-      "Available for product engineering, design systems, frontend architecture, and platform-facing UX work.",
-    primaryCta: "Browse projects",
-    secondaryCta: "Start a conversation",
+      "Frontend engineer building performant product UI, scalable React architecture, and polished delivery across marketing sites and application surfaces.",
+    quickLinksLabel: "Quick links",
+    contactLabel: "Contact",
+    socialLabel: "Profiles",
+    emailLabel: "Email",
+    contactCtaLabel: "Contact form",
+    githubLabel: "GitHub",
+    sourceLabel: "This site",
+    email: "cc.stefan@icloud.com",
+    githubHref: "https://github.com/cc-stefan",
+    sourceHref: "https://github.com/cc-stefan/portfolio-app-fe",
+    stackNote: "Built with Next.js, TypeScript, and a live backend API.",
+    copyrightLabel: "All rights reserved.",
+  },
+  home: {
+    title: "Fast, scalable product interfaces that are clear to use and built to last.",
+    description:
+      "I build production-ready interfaces with React, Next.js, Angular, and TypeScript, combining strong frontend architecture with clear UX and product judgment.",
+    primaryCta: "View projects",
+    secondaryCta: "Get in touch",
     metrics: {
-      projects: "Published projects",
-      featured: "Featured work",
-      technologies: "Core technologies",
-      status: "Backend status",
+      technologies: "Core stack",
     },
-    statusOnline: "Live",
-    statusOffline: "Offline",
-    statusUnavailable: "Unavailable",
-    showcaseLabel: "Projects",
-    showcaseTitle: "Backend-powered case studies with a product-grade presentation layer.",
+    metricCards: [
+      {
+        label: "Published work",
+        value: "4 live",
+        detail: "Marketing sites, product apps, and workflow-heavy interfaces.",
+      },
+      {
+        label: "Frontend stack",
+        value: "React + Angular",
+        detail:
+          "TypeScript-first UI architecture with reusable components.",
+      },
+      {
+        label: "Delivery focus",
+        value: "Fast UX",
+        detail: "Performance, responsive states, and clear user flows.",
+      },
+      {
+        label: "Working style",
+        value: "Product focus",
+        detail:
+          "Reliable delivery, maintainable code, and business-aware decisions.",
+      },
+    ],
+    profileSnapshotLabel: "Quick profile",
+    profileSnapshotTitle: "Built to ship real products",
+    profileSnapshotBadge: "Open to collaborations",
+    profileSummaryLabel: "Why teams hire me",
+    profileSummary:
+      "I bring more than implementation speed. I turn product requirements into interfaces that are clear, maintainable, and ready for production.",
+    profilePanels: [
+      {
+        label: "Experience",
+        value: "5+ years",
+      },
+      {
+        label: "Primary focus",
+        value: "React · Next.js · Angular",
+      },
+    ],
+    skillHighlights: [
+      "React",
+      "Next.js",
+      "Angular",
+      "TypeScript",
+      "React Query",
+      "Redux Toolkit",
+      "Styled Components",
+      "Material UI",
+      "REST",
+      "GraphQL",
+      "Storybook",
+      "Sentry",
+    ],
+    showcaseLabel: "Case studies",
+    showcaseCountLabel: "published examples",
+    showcaseTitle:
+      "Selected frontend work across product sites and application interfaces.",
     showcaseDescription:
-      "The grid reads like a polished SaaS catalog, but every entry is still sourced from the live backend contract.",
-    featuredTab: "Featured",
-    allTab: "All projects",
-    emptyTitle: "No published projects are available yet.",
+      "Each project shows how I approach product problems, frontend architecture, UX quality, and integration with real backend systems.",
+    featuredTab: "Flagship",
+    allTab: "All work",
+    emptyTitle: "No published projects yet.",
     emptyDescription:
-      "Create or publish a project in the backend admin area and it will appear here automatically.",
-    capabilitiesLabel: "Capabilities",
-    capabilitiesTitle: "The interface explains delivery range before it asks for attention.",
+      "Publish a project in the admin area and it will appear here automatically.",
+    capabilitiesLabel: "About",
+    capabilitiesTitle:
+      "I work at the point where frontend engineering meets product clarity.",
     capabilitiesDescription:
-      "The stack is translated into product-facing capabilities so technical depth reads clearly for both engineering and leadership audiences.",
+      "The value I bring is technical depth, clean execution, and the judgment to make interfaces easier to use and easier to evolve.",
     capabilities: [
       {
-        title: "Frontend architecture",
+        title: "Production-ready frontend",
         description:
-          "Scalable App Router structures, clear server and client boundaries, and reliable rendering strategies.",
+          "I build scalable component systems, responsive layouts, and maintainable application code that can support real product growth.",
       },
       {
-        title: "Design systems",
+        title: "Product thinking",
         description:
-          "Token-based UI, reusable component contracts, responsive behaviors, and consistent accessibility patterns.",
+          "I shape flows, hierarchy, and interaction details around what users need to do, not just around what the screen needs to show.",
       },
       {
-        title: "Backend integration",
+        title: "Systems and integration",
         description:
-          "API-driven interfaces that stay aligned with real contracts, validation rules, and operational states.",
+          "I work comfortably across state, async data, forms, analytics, localization, and backend contracts without losing UI quality.",
       },
     ],
-    processLabel: "Process",
-    processTitle: "Built with the same standards expected from a SaaS product team.",
+    processLabel: "How I work",
+    processTitle:
+      "Reliable delivery comes from clear structure, strong tradeoffs, and attention to detail.",
     processDescription:
-      "The redesign prioritizes maintainability, state coverage, and quality of interaction instead of treating the portfolio as static marketing chrome.",
+      "I keep the frontend practical: understandable for teams, scalable for future work, and polished enough to earn user trust.",
+    processStepLabel: "Step",
     processCards: [
       {
-        title: "Server-first rendering",
+        title: "Structure first",
         description:
-          "Critical pages fetch live data on the server so content stays fast, discoverable, and stable.",
+          "I set clean component boundaries, predictable state, and reusable patterns before complexity starts to spread.",
       },
       {
-        title: "Reusable UI contract",
+        title: "User clarity",
         description:
-          "Buttons, surfaces, states, and forms share a single design language instead of page-specific styling.",
+          "I prioritize loading states, hierarchy, and friction-free interactions so the interface stays easy to use under real conditions.",
       },
       {
-        title: "State-aware UX",
+        title: "Ship with intent",
         description:
-          "Loading, empty, offline, and success feedback are designed intentionally instead of handled as edge cases.",
+          "I balance speed with maintainability, working closely with design and product while keeping implementation grounded in reality.",
       },
     ],
-    inquiryLabel: "Inquiry",
-    inquiryTitle: "A direct, structured way to start the next project conversation.",
+    experienceLabel: "",
+    experienceTitle: "",
+    experienceDescription: "",
+    experienceCards: [],
+    credentialsLabel: "Skills",
+    credentialsTitle: "The stack I use most, and the way I apply it.",
+    credentialsDescription:
+      "Focused on the tools and working habits most relevant to teams hiring a strong frontend engineer.",
+    credentialGroups: [
+      {
+        title: "Frontend stack",
+        items: [
+          "React, Next.js, Angular, TypeScript, Styled Components, and Material UI.",
+          "Component-driven UI built for clarity, reuse, and long-term maintainability.",
+        ],
+      },
+      {
+        title: "Application layer",
+        items: [
+          "React Query, Redux Toolkit, routing, forms, REST, GraphQL, and localization.",
+          "Interfaces connected to real backend contracts, async flows, and state-heavy user journeys.",
+        ],
+      },
+      {
+        title: "Quality and collaboration",
+        items: [
+          "Figma handoff, performance-minded implementation, validation, analytics, Storybook, and Sentry.",
+          "A working style built around clean communication, consistent UI quality, and dependable delivery.",
+        ],
+      },
+    ],
+    inquiryLabel: "Contact",
+    inquiryTitle:
+      "Need a frontend engineer who can turn requirements into polished product UI?",
     inquiryDescription:
-      "The form uses typed validation, accessible field states, and immediate feedback, making it production-ready to connect to a real lead pipeline.",
+      "I’m open to frontend roles, product engineering work, and contract projects where performance, clarity, and reliable delivery matter.",
+    inquiryHighlights: [
+      {
+        title: "Contact",
+        description: "cc.stefan@icloud.com",
+      },
+      {
+        title: "Best fit",
+        description:
+          "Teams that value strong UI execution, product thinking, and clear collaboration with design and backend.",
+      },
+    ],
   },
   project: {
-    backToHome: "Back to home",
-    label: "Case study",
-    summaryTitle: "Project summary",
+    backToHome: "Back to portfolio",
+    label: "Project page",
+    summaryTitle: "What I built",
     overviewTitle: "Overview",
     overviewDescription:
-      "The detail view stays clean and scannable while exposing the actual backend-managed project content.",
+      "This case study focuses on the product problem, the frontend solution, and the decisions that made the interface effective.",
     factsTitle: "Project facts",
-    stackTitle: "Technology stack",
-    linksTitle: "Project links",
-    deliveryTitle: "Delivery notes",
+    stackTitle: "Stack",
+    linksTitle: "Links",
+    deliveryTitle: "Why it works",
     deliveryCards: [
       {
-        title: "API-driven route",
+        title: "Built around real user flows",
         description:
-          "This page is rendered from the project slug endpoint instead of duplicated frontend-only content.",
+          "The interface was shaped around what users needed to do, not just what the screen needed to display.",
       },
       {
-        title: "Resilient states",
+        title: "Structured for change",
         description:
-          "Unavailable projects, missing data, and partial content are surfaced with explicit fallback handling.",
+          "Components, state, and integrations were organized so the product could grow without turning fragile.",
       },
     ],
-    relatedTitle: "More work",
+    relatedLabel: "Related work",
+    relatedTitle: "Other case studies",
     relatedDescription:
-      "Additional published projects from the same backend feed, kept consistent by the same UI system.",
-    unavailableTitle: "This project could not be loaded from the backend.",
+      "More frontend work across marketing surfaces, product interfaces, and API-driven delivery.",
+    unavailableTitle: "This case study is unavailable right now.",
     unavailableDescription:
-      "The project endpoint did not return the data needed to render this case study.",
+      "The backend did not return the content needed to render this project.",
     unavailableHint:
       "Start portfolio-app-be on port 3001 or update PORTFOLIO_API_BASE_URL in the frontend environment.",
-    notFoundTitle: "That route does not map to a published project.",
+    notFoundTitle: "This route does not match a published project.",
     notFoundDescription:
       "The slug may be wrong, the project may still be a draft, or the backend has no matching entry.",
   },
@@ -155,35 +268,31 @@ export const dictionary: PortfolioDictionary = {
     scopePlaceholder: "",
     messageLabel: "Message",
     messagePlaceholder:
-      "Share what you need help with and enough context to make the request useful.",
-    submit: "Send inquiry",
+      "Tell me what you’re building, what you need help with, and any constraints that matter.",
+    submit: "Send message",
     submitting: "Sending...",
-    successTitle: "Inquiry submitted",
+    successTitle: "Message sent",
     successDescription:
-      "The request was validated and accepted by the backend inquiry intake.",
-    errorTitle: "Unable to submit inquiry",
+      "Your inquiry was validated and accepted by the backend.",
+    errorTitle: "Unable to send message",
     errorDescription:
-      "Please review the form fields or try again in a moment.",
+      "Check the form fields or try again in a moment.",
     privacyNote:
-      "The form validates in the client and proxies through the frontend route into the backend inquiry endpoint.",
+      "Validated in the client, proxied through the frontend, and handled by the backend inquiry endpoint.",
   },
   actions: {
-    apiDocs: "API docs",
-    adminLogin: "Admin login",
-    viewProject: "View project",
+    apiDocs: "API Docs",
+    adminLogin: "Admin",
+    viewProject: "View case study",
     live: "Live",
     code: "Code",
-    startProject: "Start a project",
+    startProject: "Start a conversation",
     browseProjects: "Browse projects",
   },
   common: {
-    featured: "Featured",
-    published: "Published",
-    draft: "Draft",
+    featured: "Flagship",
     lastUpdated: "Last updated",
-    status: "Status",
-    displayOrder: "Display order",
     technologies: "Technologies",
-    noTechnologies: "No technologies listed",
+    noTechnologies: "No technologies listed yet",
   },
 };

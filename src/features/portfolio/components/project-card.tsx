@@ -15,6 +15,7 @@ interface ProjectCardProps {
   locale: AppLocale;
   dictionary: PortfolioDictionary;
   apiOrigin: string;
+  showPriorityBadge?: boolean;
 }
 
 export function ProjectCard({
@@ -22,6 +23,7 @@ export function ProjectCard({
   locale,
   dictionary,
   apiOrigin,
+  showPriorityBadge = true,
 }: ProjectCardProps) {
   const projectHref = localizeHref(locale, `/projects/${project.slug}`);
   const coverImageUrl = resolvePortfolioAssetUrl(project.coverImageUrl, apiOrigin);
@@ -51,7 +53,7 @@ export function ProjectCard({
           )}
           <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              {project.featured ? (
+              {showPriorityBadge && project.featured ? (
                 <Badge variant="accent">{dictionary.common.featured}</Badge>
               ) : null}
               <Badge variant="neutral">

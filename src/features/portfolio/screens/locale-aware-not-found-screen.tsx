@@ -4,7 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { StateCard } from "../components/state-card";
-import { defaultLocale, isAppLocale, type AppLocale } from "../i18n/routing";
+import {
+  defaultLocale,
+  isAppLocale,
+  localizeHref,
+  type AppLocale,
+} from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
 
 interface LocaleAwareNotFoundScreenProps {
@@ -27,7 +32,9 @@ export function LocaleAwareNotFoundScreen({
         description={dictionary.meta.notFoundDescription}
         action={
           <Button asChild size="lg">
-            <Link href={`/${locale}`}>{dictionary.actions.browseProjects}</Link>
+            <Link href={localizeHref(locale, "/")}>
+              {dictionary.actions.browseProjects}
+            </Link>
           </Button>
         }
       />

@@ -9,6 +9,7 @@ import { StateCard } from "../components/state-card";
 import type { AppLocale } from "../i18n/routing";
 import { localizeHref } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
+import { getPortfolioHomeSectionLinks } from "../lib/portfolio-navigation";
 import { ProjectContent } from "../sections/project/project-content";
 import { ProjectHero } from "../sections/project/project-hero";
 import { ProjectRelated } from "../sections/project/project-related";
@@ -33,14 +34,19 @@ export async function PortfolioProjectScreen({
 
   const apiDocsUrl = getPortfolioApiDocsUrl();
   const apiOrigin = getPortfolioApiOrigin();
+  const footerNavItems = getPortfolioHomeSectionLinks(locale, dictionary);
 
   return (
-    <SiteShell locale={locale} dictionary={dictionary}>
+    <SiteShell
+      locale={locale}
+      dictionary={dictionary}
+      footerNavItems={footerNavItems}
+    >
       <SiteHeader
         locale={locale}
         dictionary={dictionary}
         navItems={[
-          { href: "/#work", label: dictionary.header.navWork },
+          { href: "/#projects", label: dictionary.header.navWork },
           { href: "#details", label: dictionary.project.overviewTitle },
           { href: "#delivery", label: dictionary.project.deliveryTitle },
           { href: "/#contact", label: dictionary.header.navContact },

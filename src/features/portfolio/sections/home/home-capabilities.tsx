@@ -11,7 +11,7 @@ const icons = [PanelsTopLeft, Blocks, PlugZap];
 
 export function HomeCapabilities({ copy }: HomeCapabilitiesProps) {
   return (
-    <section>
+    <section id="about" className="anchor-target">
       <SectionIntro
         label={copy.capabilitiesLabel}
         title={copy.capabilitiesTitle}

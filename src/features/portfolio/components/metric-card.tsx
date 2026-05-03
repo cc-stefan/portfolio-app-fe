@@ -1,38 +1,27 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface MetricCardProps {
   label: string;
   value: string;
   detail?: string;
-  tone?: "default" | "accent" | "success" | "warning";
 }
 
 export function MetricCard({
   label,
   value,
   detail,
-  tone = "default",
 }: MetricCardProps) {
-  const badgeVariant =
-    tone === "success"
-      ? "success"
-      : tone === "warning"
-        ? "warning"
-        : tone === "accent"
-          ? "accent"
-          : "outline";
-
   return (
-    <Card variant="solid" className="overflow-hidden">
-      <CardContent className="p-5">
+    <Card variant="solid" className="h-full overflow-hidden">
+      <CardContent className="flex min-h-[13.5rem] flex-col p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <Badge variant={badgeVariant}>{tone === "default" ? "Signal" : tone}</Badge>
         </div>
-        <p className="mt-7 text-3xl font-semibold text-foreground">{value}</p>
+        <p className="mt-7 text-3xl font-semibold leading-tight text-foreground">
+          {value}
+        </p>
         {detail ? (
-          <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">
+          <p className="mt-auto pt-4 text-pretty text-sm leading-6 text-muted-foreground">
             {detail}
           </p>
         ) : null}

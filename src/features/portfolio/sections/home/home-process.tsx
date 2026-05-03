@@ -8,7 +8,7 @@ interface HomeProcessProps {
 
 export function HomeProcess({ copy }: HomeProcessProps) {
   return (
-    <section>
+    <section id="process" className="anchor-target">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
         <SectionIntro
           label={copy.processLabel}
@@ -23,7 +23,7 @@ export function HomeProcess({ copy }: HomeProcessProps) {
                 <div className="grid gap-0 sm:grid-cols-[8rem_minmax(0,1fr)]">
                   <div className="border-b border-border bg-secondary p-5 sm:border-b-0 sm:border-r">
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                      Step
+                      {copy.processStepLabel}
                     </p>
                     <p className="mt-3 text-3xl font-semibold text-foreground">
                       0{index + 1}

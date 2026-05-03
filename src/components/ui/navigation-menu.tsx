@@ -1,31 +1,30 @@
-"use client";
-
 import * as React from "react";
-import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
+import { Slot } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 function NavigationMenu({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Root>) {
+}: React.ComponentProps<"nav">) {
   return (
-    <NavigationMenuPrimitive.Root
+    <nav
+      aria-label={props["aria-label"] ?? "Main"}
       data-slot="navigation-menu"
       className={cn("relative flex max-w-max flex-1 items-center", className)}
       {...props}
     >
       {children}
-    </NavigationMenuPrimitive.Root>
+    </nav>
   );
 }
 
 function NavigationMenuList({
   className,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.List>) {
+}: React.ComponentProps<"ul">) {
   return (
-    <NavigationMenuPrimitive.List
+    <ul
       data-slot="navigation-menu-list"
       className={cn("flex list-none items-center gap-1", className)}
       {...props}
@@ -33,14 +32,23 @@ function NavigationMenuList({
   );
 }
 
-const NavigationMenuItem = NavigationMenuPrimitive.Item;
+function NavigationMenuItem(props: React.ComponentProps<"li">) {
+  return <li {...props} />;
+}
+
+interface NavigationMenuLinkProps extends React.ComponentProps<"a"> {
+  asChild?: boolean;
+}
 
 function NavigationMenuLink({
+  asChild = false,
   className,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Link>) {
+}: NavigationMenuLinkProps) {
+  const Comp = asChild ? Slot.Root : "a";
+
   return (
-    <NavigationMenuPrimitive.Link
+    <Comp
       data-slot="navigation-menu-link"
       className={cn(
         "rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45",

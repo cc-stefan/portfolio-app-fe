@@ -56,7 +56,7 @@ export function SiteHeader({
           className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
         >
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:scale-95">
-            {dictionary.header.brand.slice(0, 1)}
+            {dictionary.header.avatarInitials}
           </span>
           <span className="min-w-0">
             <span className="block truncate text-sm font-semibold text-foreground">

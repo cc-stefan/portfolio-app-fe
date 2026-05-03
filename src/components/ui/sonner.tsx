@@ -1,6 +1,7 @@
 "use client";
 
-import * as React from "react";
+import type { CSSProperties } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 import {
@@ -11,12 +12,17 @@ import {
   TriangleAlert,
 } from "lucide-react";
 
+function subscribe() {
+  return () => undefined;
+}
+
 export function Toaster(props: ToasterProps) {
   const { theme = "system" } = useTheme();
+  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={(mounted ? theme : "light") as ToasterProps["theme"]}
       icons={{
         success: <CircleCheckBig className="size-4" />,
         info: <Info className="size-4" />,
@@ -41,7 +47,7 @@ export function Toaster(props: ToasterProps) {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
-        } as React.CSSProperties
+        } as CSSProperties
       }
       {...props}
     />

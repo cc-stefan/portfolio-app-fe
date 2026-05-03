@@ -4,7 +4,6 @@ import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
 import {
   appLocales,
   isAppLocale,
-  localeTags,
 } from "@/features/portfolio/i18n/routing";
 
 interface LocaleLayoutProps {
@@ -57,7 +56,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <div lang={localeTags[lang]} className="min-h-full">
+    <div className="min-h-full">
       {children}
     </div>
   );

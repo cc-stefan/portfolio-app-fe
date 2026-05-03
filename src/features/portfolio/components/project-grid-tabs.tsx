@@ -28,7 +28,7 @@ export function ProjectGridTabs({
     <Tabs defaultValue={hasFeaturedProjects ? "featured" : "all"} className="mt-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
-          {dictionary.home.showcaseLabel}: {projects.length}
+          {projects.length} {dictionary.home.showcaseCountLabel}
         </p>
         <TabsList>
           {hasFeaturedProjects ? (
@@ -47,6 +47,7 @@ export function ProjectGridTabs({
             locale={locale}
             dictionary={dictionary}
             apiOrigin={apiOrigin}
+            showPriorityBadge={false}
           />
         </TabsContent>
       ) : null}
@@ -57,6 +58,7 @@ export function ProjectGridTabs({
           locale={locale}
           dictionary={dictionary}
           apiOrigin={apiOrigin}
+          showPriorityBadge
         />
       </TabsContent>
     </Tabs>
@@ -68,6 +70,7 @@ interface ProjectGridProps {
   locale: AppLocale;
   dictionary: PortfolioDictionary;
   apiOrigin: string;
+  showPriorityBadge: boolean;
 }
 
 function ProjectGrid({
@@ -75,6 +78,7 @@ function ProjectGrid({
   locale,
   dictionary,
   apiOrigin,
+  showPriorityBadge,
 }: ProjectGridProps) {
   if (projects.length === 0) {
     return (
@@ -95,6 +99,7 @@ function ProjectGrid({
           locale={locale}
           dictionary={dictionary}
           apiOrigin={apiOrigin}
+          showPriorityBadge={showPriorityBadge}
         />
       ))}
     </div>

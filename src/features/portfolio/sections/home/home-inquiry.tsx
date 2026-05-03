@@ -10,7 +10,7 @@ interface HomeInquiryProps {
 
 export function HomeInquiry({ dictionary }: HomeInquiryProps) {
   return (
-    <section>
+    <section id="contact" className="anchor-target">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start">
         <div className="lg:sticky lg:top-28">
           <SectionIntro
@@ -20,7 +20,7 @@ export function HomeInquiry({ dictionary }: HomeInquiryProps) {
           />
           <Card variant="muted" className="mt-8">
             <CardContent className="grid gap-4 p-5">
-              {dictionary.project.deliveryCards.map((item) => (
+              {dictionary.home.inquiryHighlights.map((item) => (
                 <div key={item.title} className="flex gap-3">
                   <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
                   <div>

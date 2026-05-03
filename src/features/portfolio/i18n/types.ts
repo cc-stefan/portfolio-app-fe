@@ -13,37 +13,63 @@ export interface PortfolioDictionary {
   localeNames: {
     en: string;
     ro: string;
-    zh: string;
   };
   header: {
     brand: string;
+    avatarInitials: string;
     tagline: string;
+    navHome: string;
+    navAbout: string;
     navOverview: string;
     navWork: string;
     navProcess: string;
+    navSkills: string;
     navContact: string;
     languageLabel: string;
     themeLabel: string;
     openMenu: string;
     closeMenu: string;
   };
+  footer: {
+    description: string;
+    quickLinksLabel: string;
+    contactLabel: string;
+    socialLabel: string;
+    emailLabel: string;
+    contactCtaLabel: string;
+    githubLabel: string;
+    sourceLabel: string;
+    email: string;
+    githubHref: string;
+    sourceHref: string;
+    stackNote: string;
+    copyrightLabel: string;
+  };
   home: {
-    eyebrow: string;
     title: string;
     description: string;
-    availability: string;
     primaryCta: string;
     secondaryCta: string;
     metrics: {
-      projects: string;
-      featured: string;
       technologies: string;
-      status: string;
     };
-    statusOnline: string;
-    statusOffline: string;
-    statusUnavailable: string;
+    metricCards: Array<{
+      label: string;
+      value: string;
+      detail: string;
+    }>;
+    profileSnapshotLabel: string;
+    profileSnapshotTitle: string;
+    profileSnapshotBadge: string;
+    profileSummaryLabel: string;
+    profileSummary: string;
+    profilePanels: Array<{
+      label: string;
+      value: string;
+    }>;
+    skillHighlights: string[];
     showcaseLabel: string;
+    showcaseCountLabel: string;
     showcaseTitle: string;
     showcaseDescription: string;
     featuredTab: string;
@@ -60,13 +86,35 @@ export interface PortfolioDictionary {
     processLabel: string;
     processTitle: string;
     processDescription: string;
+    processStepLabel: string;
     processCards: Array<{
       title: string;
       description: string;
     }>;
+    experienceLabel: string;
+    experienceTitle: string;
+    experienceDescription: string;
+    experienceCards: Array<{
+      period: string;
+      role: string;
+      company: string;
+      description: string;
+      highlights: string[];
+    }>;
+    credentialsLabel: string;
+    credentialsTitle: string;
+    credentialsDescription: string;
+    credentialGroups: Array<{
+      title: string;
+      items: string[];
+    }>;
     inquiryLabel: string;
     inquiryTitle: string;
     inquiryDescription: string;
+    inquiryHighlights: Array<{
+      title: string;
+      description: string;
+    }>;
   };
   project: {
     backToHome: string;
@@ -82,6 +130,7 @@ export interface PortfolioDictionary {
       title: string;
       description: string;
     }>;
+    relatedLabel: string;
     relatedTitle: string;
     relatedDescription: string;
     unavailableTitle: string;
@@ -122,11 +171,7 @@ export interface PortfolioDictionary {
   };
   common: {
     featured: string;
-    published: string;
-    draft: string;
     lastUpdated: string;
-    status: string;
-    displayOrder: string;
     technologies: string;
     noTechnologies: string;
   };

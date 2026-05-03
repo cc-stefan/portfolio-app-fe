@@ -2,149 +2,264 @@ import type { PortfolioDictionary } from "../types";
 
 export const dictionary: PortfolioDictionary = {
   meta: {
-    siteName: "Portofoliu",
-    defaultTitle: "Portofoliu",
+    siteName: "Claudiu",
+    defaultTitle: "Claudiu",
     description:
-      "Un frontend premium de portofoliu construit peste continut live din backend, layout-uri responsive si o interfata la nivel de produs.",
-    homeTitle: "Proiecte selectate",
+      "Inginer frontend care construiește interfețe rapide, scalabile și orientate spre produs cu React, Next.js, Angular și TypeScript.",
+    homeTitle: "Inginer frontend",
     homeDescription:
-      "O experienta de portofoliu curata, alimentata de un API live de proiecte si construita cu un design system modern.",
+      "Portofoliu pentru Claudiu, inginer frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
     projectUnavailableTitle: "Proiect indisponibil",
     projectUnavailableDescription:
-      "Backend-ul portofoliului nu a putut returna acest proiect.",
-    notFoundTitle: "Pagina nu a fost gasita",
+      "Backend-ul nu a putut returna conținutul pentru acest studiu de caz.",
+    notFoundTitle: "Pagină negăsită",
     notFoundDescription:
-      "Ruta ceruta nu exista in aceasta aplicatie de portofoliu.",
+      "Ruta cerută nu există în această aplicație de portofoliu.",
   },
   localeNames: {
     en: "English",
-    ro: "Romana",
-    zh: "中文",
+    ro: "Română",
   },
   header: {
-    brand: "Portofoliu",
-    tagline: "Inginer de produs",
+    brand: "Claudiu",
+    avatarInitials: "CCS",
+    tagline: "Inginer frontend",
+    navHome: "Acasă",
+    navAbout: "Despre",
     navOverview: "Prezentare",
     navWork: "Proiecte",
-    navProcess: "Proces",
+    navProcess: "Cum lucrez",
+    navSkills: "Skill-uri",
     navContact: "Contact",
-    languageLabel: "Limba",
-    themeLabel: "Tema",
+    languageLabel: "Limbă",
+    themeLabel: "Temă",
     openMenu: "Deschide meniul",
-    closeMenu: "Inchide meniul",
+    closeMenu: "Închide meniul",
+  },
+  footer: {
+    description:
+      "Inginer frontend care livrează UI de produs performant, arhitectură React scalabilă și execuție atentă pentru site-uri și interfețe de aplicație.",
+    quickLinksLabel: "Link-uri rapide",
+    contactLabel: "Contact",
+    socialLabel: "Profiluri",
+    emailLabel: "Email",
+    contactCtaLabel: "Formular de contact",
+    githubLabel: "GitHub",
+    sourceLabel: "Acest site",
+    email: "cc.stefan@icloud.com",
+    githubHref: "https://github.com/cc-stefan",
+    sourceHref: "https://github.com/cc-stefan/portfolio-app-fe",
+    stackNote: "Construit cu Next.js, TypeScript și un backend API live.",
+    copyrightLabel: "Toate drepturile rezervate.",
   },
   home: {
-    eyebrow: "Sistem frontend modern",
-    title: "Un portofoliu premium reconstruit ca o experienta de produs high-end.",
+    title: "Interfețe de produs rapide, scalabile, clare pentru utilizatori și construite să reziste.",
     description:
-      "Proiectele publicate sunt preluate din portfolio-app-be si prezentate printr-un sistem narativ mai clar: ierarhie mai buna, stari mai solide, scanare mai rapida si motion mai atent dozat.",
-    availability:
-      "Disponibil pentru product engineering, design systems, arhitectura frontend si UX orientat spre platforma.",
+      "Construiesc interfețe pregătite pentru producție cu React, Next.js, Angular și TypeScript, combinând arhitectură frontend solidă cu UX clar și gândire de produs.",
     primaryCta: "Vezi proiectele",
-    secondaryCta: "Porneste o discutie",
+    secondaryCta: "Ia legătura",
     metrics: {
-      projects: "Proiecte publicate",
-      featured: "Proiecte evidentiata",
-      technologies: "Tehnologii de baza",
-      status: "Status backend",
+      technologies: "Stack principal",
     },
-    statusOnline: "Activ",
-    statusOffline: "Offline",
-    statusUnavailable: "Indisponibil",
-    showcaseLabel: "Proiecte",
-    showcaseTitle: "Studii de caz alimentate din backend, prezentate ca un produs matur.",
+    metricCards: [
+      {
+        label: "Lucrări publicate",
+        value: "4 live",
+        detail:
+          "Site-uri de marketing, aplicații de produs și fluxuri complexe.",
+      },
+      {
+        label: "Stack frontend",
+        value: "React + Angular",
+        detail:
+          "Arhitectură UI TypeScript-first, cu componente reutilizabile.",
+      },
+      {
+        label: "Focus de livrare",
+        value: "UX rapid",
+        detail:
+          "Performanță, stări responsive și fluxuri clare pentru utilizatori.",
+      },
+      {
+        label: "Stil de lucru",
+        value: "Focus pe produs",
+        detail:
+          "Livrare fiabilă, cod mentenabil și decizii aliniate cu business-ul.",
+      },
+    ],
+    profileSnapshotLabel: "Profil rapid",
+    profileSnapshotTitle: "Construit pentru a livra produse reale",
+    profileSnapshotBadge: "Deschis la colaborări",
+    profileSummaryLabel: "De ce mă aleg echipele",
+    profileSummary:
+      "Aduc mai mult decât viteză de implementare. Transform cerințele de produs în interfețe clare, mentenabile și gata de producție.",
+    profilePanels: [
+      {
+        label: "Experiență",
+        value: "5+ ani",
+      },
+      {
+        label: "Focus principal",
+        value: "React · Next.js · Angular",
+      },
+    ],
+    skillHighlights: [
+      "React",
+      "Next.js",
+      "Angular",
+      "TypeScript",
+      "React Query",
+      "Redux Toolkit",
+      "Styled Components",
+      "Material UI",
+      "REST",
+      "GraphQL",
+      "Storybook",
+      "Sentry",
+    ],
+    showcaseLabel: "Studii de caz",
+    showcaseCountLabel: "exemple publicate",
+    showcaseTitle:
+      "Proiecte frontend pentru site-uri de produs și interfețe de aplicație.",
     showcaseDescription:
-      "Grid-ul se citeste ca un catalog SaaS bine finisat, dar fiecare intrare vine din acelasi contract live al backend-ului.",
-    featuredTab: "Evidentiate",
-    allTab: "Toate proiectele",
-    emptyTitle: "Momentan nu exista proiecte publicate.",
+      "Fiecare proiect arată cum abordez probleme de produs, arhitectură frontend, calitate UX și integrare cu backend-uri reale.",
+    featuredTab: "Proiecte cheie",
+    allTab: "Toate lucrările",
+    emptyTitle: "Nu există încă proiecte publicate.",
     emptyDescription:
-      "Creeaza sau publica un proiect in zona de administrare din backend si va aparea automat aici.",
-    capabilitiesLabel: "Capabilitati",
-    capabilitiesTitle: "Interfata explica aria de livrare inainte sa ceara atentie.",
+      "Publică un proiect în zona de administrare și va apărea automat aici.",
+    capabilitiesLabel: "Despre",
+    capabilitiesTitle:
+      "Lucrez la intersecția dintre inginerie frontend și claritate de produs.",
     capabilitiesDescription:
-      "Stack-ul este tradus in capabilitati orientate spre produs, astfel incat profunzimea tehnica sa fie clara pentru ingineri si leadership.",
+      "Valoarea pe care o aduc stă în profunzime tehnică, execuție curată și decizii care fac interfețele mai ușor de folosit și mai ușor de evoluat.",
     capabilities: [
       {
-        title: "Arhitectura frontend",
+        title: "Frontend pregătit pentru producție",
         description:
-          "Structuri App Router scalabile, granite clare intre server si client si strategii de randare stabile.",
+          "Construiesc sisteme de componente scalabile, layout-uri responsive și cod de aplicație mentenabil, capabil să susțină creșterea reală a produsului.",
       },
       {
-        title: "Design systems",
+        title: "Gândire de produs",
         description:
-          "UI bazat pe tokeni, contracte reutilizabile, comportamente responsive si pattern-uri accesibile consistente.",
+          "Modelez fluxuri, ierarhie și detalii de interacțiune în jurul a ceea ce utilizatorii trebuie să facă, nu doar în jurul a ceea ce ecranul trebuie să arate.",
       },
       {
-        title: "Integrare backend",
+        title: "Sisteme și integrare",
         description:
-          "Interfete conduse de API care raman aliniate la contracte reale, reguli de validare si stari operationale.",
+          "Lucrez confortabil cu state, date asincrone, formulare, analytics, localizare și contracte backend fără să pierd din calitatea UI.",
       },
     ],
-    processLabel: "Proces",
-    processTitle: "Construit cu aceleasi standarde asteptate intr-o echipa SaaS serioasa.",
+    processLabel: "Cum lucrez",
+    processTitle:
+      "Livrarea fiabilă vine din structură clară, trade-off-uri bune și atenție la detaliu.",
     processDescription:
-      "Redesign-ul prioritizeaza mentenabilitatea, acoperirea starilor si calitatea interactiunilor, nu doar o prezentare statica.",
+      "Păstrez frontend-ul practic: ușor de înțeles pentru echipe, scalabil pentru lucru viitor și suficient de bine finisat încât să inspire încredere.",
+    processStepLabel: "Pas",
     processCards: [
       {
-        title: "Randare server-first",
+        title: "Structură înainte de toate",
         description:
-          "Paginile critice preiau date live pe server pentru continut rapid, usor de gasit si stabil.",
+          "Setez granițe curate între componente, state previzibil și pattern-uri reutilizabile înainte ca complexitatea să înceapă să se răspândească.",
       },
       {
-        title: "Contract UI reutilizabil",
+        title: "Claritate pentru utilizator",
         description:
-          "Butoanele, suprafetele, starile si formularele impart acelasi limbaj vizual, fara styling separat pe fiecare pagina.",
+          "Prioritizez stările de încărcare, ierarhia vizuală și interacțiunile fără fricțiune, astfel încât interfața să rămână ușor de folosit în condiții reale.",
       },
       {
-        title: "UX constient de stari",
+        title: "Livrare cu intenție",
         description:
-          "Loading, empty, offline si success sunt tratate intentionat, nu ca exceptii tarzii.",
+          "Echilibrez viteza cu mentenabilitatea, colaborând strâns cu design și produs, dar păstrând implementarea ancorată în realitate.",
       },
     ],
-    inquiryLabel: "Cerere",
-    inquiryTitle: "O metoda directa si structurata de a incepe urmatorul proiect.",
+    experienceLabel: "",
+    experienceTitle: "",
+    experienceDescription: "",
+    experienceCards: [],
+    credentialsLabel: "Skill-uri",
+    credentialsTitle: "Stack-ul pe care îl folosesc cel mai mult și felul în care îl aplic.",
+    credentialsDescription:
+      "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un inginer frontend puternic.",
+    credentialGroups: [
+      {
+        title: "Stack frontend",
+        items: [
+          "React, Next.js, Angular, TypeScript, Styled Components și Material UI.",
+          "UI bazat pe componente, construit pentru claritate, reutilizare și mentenabilitate pe termen lung.",
+        ],
+      },
+      {
+        title: "Stratul de aplicație",
+        items: [
+          "React Query, Redux Toolkit, routing, formulare, REST, GraphQL și localizare.",
+          "Interfețe conectate la backend-uri reale, fluxuri asincrone și călătorii de utilizator cu state complexe.",
+        ],
+      },
+      {
+        title: "Calitate și colaborare",
+        items: [
+          "Handoff din Figma, implementare atentă la performanță, validare, analytics, Storybook și Sentry.",
+          "Un mod de lucru construit pe comunicare clară, calitate UI consecventă și livrare de încredere.",
+        ],
+      },
+    ],
+    inquiryLabel: "Contact",
+    inquiryTitle:
+      "Ai nevoie de un frontend engineer care transformă cerințele în UI de produs bine livrat?",
     inquiryDescription:
-      "Formularul foloseste validare tipata, stari accesibile ale campurilor si feedback imediat, fiind pregatit pentru integrare cu un pipeline real.",
+      "Sunt deschis pentru roluri frontend, proiecte de product engineering și colaborări unde contează performanța, claritatea și livrarea fiabilă.",
+    inquiryHighlights: [
+      {
+        title: "Contact",
+        description: "cc.stefan@icloud.com",
+      },
+      {
+        title: "Potrivire bună",
+        description:
+          "Echipe care apreciază execuția UI puternică, gândirea de produs și colaborarea clară cu design și backend.",
+      },
+    ],
   },
   project: {
-    backToHome: "Inapoi acasa",
-    label: "Studiu de caz",
-    summaryTitle: "Rezumat proiect",
+    backToHome: "Înapoi la portofoliu",
+    label: "Pagină proiect",
+    summaryTitle: "Ce am construit",
     overviewTitle: "Prezentare",
     overviewDescription:
-      "Pagina de detaliu ramane curata si usor de scanat, dar expune continutul real gestionat din backend.",
+      "Acest studiu de caz se concentrează pe problema de produs, soluția frontend și deciziile care au făcut interfața eficientă.",
     factsTitle: "Detalii proiect",
-    stackTitle: "Stack tehnologic",
-    linksTitle: "Link-uri proiect",
-    deliveryTitle: "Note de livrare",
+    stackTitle: "Stack",
+    linksTitle: "Link-uri",
+    deliveryTitle: "De ce funcționează",
     deliveryCards: [
       {
-        title: "Ruta alimentata de API",
+        title: "Construit în jurul fluxurilor reale",
         description:
-          "Aceasta pagina este randata din endpoint-ul bazat pe slug, nu din continut duplicat doar in frontend.",
+          "Interfața a fost modelată în jurul a ceea ce utilizatorii trebuie să facă, nu doar în jurul a ceea ce ecranul trebuie să afișeze.",
       },
       {
-        title: "Stari rezistente",
+        title: "Structurat pentru schimbare",
         description:
-          "Proiectele indisponibile, datele lipsa si continutul partial sunt tratate explicit prin fallback-uri clare.",
+          "Componentele, state-ul și integrările au fost organizate astfel încât produsul să poată evolua fără să devină fragil.",
       },
     ],
-    relatedTitle: "Mai multe proiecte",
+    relatedLabel: "Lucrări similare",
+    relatedTitle: "Alte studii de caz",
     relatedDescription:
-      "Alte proiecte publicate din acelasi feed backend, pastrate coerent prin acelasi sistem UI.",
-    unavailableTitle: "Acest proiect nu a putut fi incarcat din backend.",
+      "Mai multă muncă frontend, de la suprafețe de marketing la interfețe de produs și livrare bazată pe API.",
+    unavailableTitle: "Acest studiu de caz nu este disponibil acum.",
     unavailableDescription:
-      "Endpoint-ul proiectului nu a returnat datele necesare pentru acest studiu de caz.",
+      "Backend-ul nu a returnat conținutul necesar pentru a afișa acest proiect.",
     unavailableHint:
-      "Porneste portfolio-app-be pe portul 3001 sau actualizeaza PORTFOLIO_API_BASE_URL in mediul frontend.",
-    notFoundTitle: "Aceasta ruta nu corespunde unui proiect publicat.",
+      "Pornește portfolio-app-be pe portul 3001 sau actualizează PORTFOLIO_API_BASE_URL în mediul frontend.",
+    notFoundTitle: "Această rută nu corespunde unui proiect publicat.",
     notFoundDescription:
-      "Slug-ul poate fi gresit, proiectul poate fi inca draft sau backend-ul nu are o intrare potrivita.",
+      "Slug-ul poate fi greșit, proiectul poate fi încă draft sau backend-ul nu are o intrare potrivită.",
   },
   inquiryForm: {
     nameLabel: "Nume",
-    namePlaceholder: "Numele tau",
+    namePlaceholder: "Numele tău",
     emailLabel: "Email",
     emailPlaceholder: "tu@companie.com",
     companyLabel: "",
@@ -155,35 +270,31 @@ export const dictionary: PortfolioDictionary = {
     scopePlaceholder: "",
     messageLabel: "Mesaj",
     messagePlaceholder:
-      "Descrie de ce ai nevoie si ofera suficient context ca mesajul sa fie util.",
-    submit: "Trimite cererea",
+      "Spune-mi ce construiești, cu ce ai nevoie de ajutor și ce constrângeri contează.",
+    submit: "Trimite mesajul",
     submitting: "Se trimite...",
-    successTitle: "Cerere trimisa",
+    successTitle: "Mesaj trimis",
     successDescription:
-      "Solicitarea a fost validata si acceptata de endpoint-ul de intake din backend.",
-    errorTitle: "Cererea nu a putut fi trimisa",
+      "Cererea ta a fost validată și acceptată de backend.",
+    errorTitle: "Mesajul nu a putut fi trimis",
     errorDescription:
-      "Verifica campurile formularului sau incearca din nou in cateva momente.",
+      "Verifică câmpurile formularului sau încearcă din nou în câteva momente.",
     privacyNote:
-      "Formularul valideaza in client si trimite prin ruta frontend catre endpoint-ul backend pentru cereri.",
+      "Validat în client, trimis prin frontend și procesat de endpoint-ul de inquiry din backend.",
   },
   actions: {
-    apiDocs: "Documentatie API",
-    adminLogin: "Autentificare admin",
-    viewProject: "Vezi proiectul",
+    apiDocs: "Documentație API",
+    adminLogin: "Admin",
+    viewProject: "Vezi studiul de caz",
     live: "Live",
     code: "Cod",
-    startProject: "Porneste un proiect",
+    startProject: "Începe o conversație",
     browseProjects: "Vezi proiectele",
   },
   common: {
-    featured: "Evidentiat",
-    published: "Publicat",
-    draft: "Draft",
+    featured: "Proiect cheie",
     lastUpdated: "Ultima actualizare",
-    status: "Status",
-    displayOrder: "Ordine afisare",
     technologies: "Tehnologii",
-    noTechnologies: "Fara tehnologii listate",
+    noTechnologies: "Nicio tehnologie listată încă",
   },
 };

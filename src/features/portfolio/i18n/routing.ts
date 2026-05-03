@@ -1,4 +1,4 @@
-export const appLocales = ["en", "ro", "zh"] as const;
+export const appLocales = ["en", "ro"] as const;
 
 export type AppLocale = (typeof appLocales)[number];
 
@@ -7,7 +7,6 @@ export const defaultLocale: AppLocale = "en";
 export const localeTags: Record<AppLocale, string> = {
   en: "en-US",
   ro: "ro-RO",
-  zh: "zh-CN",
 };
 
 export function isAppLocale(value: string): value is AppLocale {
@@ -20,12 +19,13 @@ export function localizeHref(locale: AppLocale, href: string): string {
   }
 
   const normalizedHref = href.startsWith("/") ? href : `/${href}`;
+  const localePrefix = locale === defaultLocale ? "" : `/${locale}`;
 
   if (normalizedHref === "/") {
-    return `/${locale}`;
+    return localePrefix || "/";
   }
 
-  return `/${locale}${normalizedHref}`;
+  return `${localePrefix}${normalizedHref}`;
 }
 
 export function replaceLocaleInPathname(
@@ -33,19 +33,22 @@ export function replaceLocaleInPathname(
   locale: AppLocale,
 ): string {
   const segments = pathname.split("/");
+  const pathWithoutLocale =
+    segments.length > 1 && isAppLocale(segments[1] ?? "")
+      ? `/${segments.slice(2).join("/")}`
+      : pathname;
 
-  if (segments.length > 1 && isAppLocale(segments[1] ?? "")) {
-    segments[1] = locale;
-    return segments.join("/") || `/${locale}`;
+  const normalizedPathname = pathWithoutLocale.startsWith("/")
+    ? pathWithoutLocale
+    : `/${pathWithoutLocale}`;
+  const cleanPathname =
+    normalizedPathname === "/" ? "/" : normalizedPathname.replace(/\/$/, "");
+
+  if (locale === defaultLocale) {
+    return cleanPathname;
   }
 
-  const normalizedPathname = pathname.startsWith("/") ? pathname : `/${pathname}`;
-
-  if (normalizedPathname === "/") {
-    return `/${locale}`;
-  }
-
-  return `/${locale}${normalizedPathname}`;
+  return cleanPathname === "/" ? `/${locale}` : `/${locale}${cleanPathname}`;
 }
 
 export function getPreferredLocale(headerValue: string | null): AppLocale {
@@ -61,10 +64,6 @@ export function getPreferredLocale(headerValue: string | null): AppLocale {
   for (const language of requestedLanguages) {
     if (language?.startsWith("ro")) {
       return "ro";
-    }
-
-    if (language?.startsWith("zh")) {
-      return "zh";
     }
 
     if (language?.startsWith("en")) {
