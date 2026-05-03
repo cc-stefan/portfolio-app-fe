@@ -27,9 +27,18 @@ export function HomeInquiry({ dictionary }: HomeInquiryProps) {
                     <p className="text-sm font-semibold text-foreground">
                       {item.title}
                     </p>
-                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                      {item.description}
-                    </p>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        className="mt-1 inline-flex w-fit break-all text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {item.description}
+                      </a>
+                    ) : (
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                        {item.description}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

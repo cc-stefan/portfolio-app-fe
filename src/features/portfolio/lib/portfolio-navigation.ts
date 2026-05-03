@@ -1,5 +1,4 @@
-import { localizeHref, type AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
+import type {PortfolioDictionary} from "../i18n/types";
 
 export interface PortfolioSectionLink {
   href: string;
@@ -7,15 +6,12 @@ export interface PortfolioSectionLink {
 }
 
 export function getPortfolioHomeSectionLinks(
-  locale: AppLocale,
   dictionary: PortfolioDictionary,
 ): PortfolioSectionLink[] {
   return [
-    { href: localizeHref(locale, "/#home"), label: dictionary.header.navHome },
-    { href: localizeHref(locale, "/#about"), label: dictionary.header.navAbout },
-    { href: localizeHref(locale, "/#projects"), label: dictionary.header.navWork },
-    { href: localizeHref(locale, "/#process"), label: dictionary.header.navProcess },
-    { href: localizeHref(locale, "/#skills"), label: dictionary.header.navSkills },
-    { href: localizeHref(locale, "/#contact"), label: dictionary.header.navContact },
+    { href: "/#about", label: dictionary.header.navAbout },
+    { href: "/#projects", label: dictionary.header.navWork },
+    { href: "/#process", label: dictionary.header.navProcess },
+    { href: "/#skills", label: dictionary.header.navSkills },
   ];
 }

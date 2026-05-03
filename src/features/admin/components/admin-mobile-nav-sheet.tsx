@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/features/portfolio/components/theme-toggle";
 import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
-import { getBackendDocsUrl } from "@/lib/backend";
+import { getBackendDocsUrl, shouldExposeBackendDocs } from "@/lib/backend";
 import { cn } from "@/lib/utils";
 import type { AdminUser } from "../model/types";
 
@@ -155,13 +155,15 @@ export function AdminMobileNavSheet({
             label="Public site"
             variant="outline"
           />
-          <ActionLink
-            lang={lang}
-            href={getBackendDocsUrl()}
-            label="API docs"
-            external
-            variant="outline"
-          />
+          {shouldExposeBackendDocs() ? (
+            <ActionLink
+              lang={lang}
+              href={getBackendDocsUrl()}
+              label="API docs"
+              external
+              variant="outline"
+            />
+          ) : null}
         </div>
 
         <div className="mt-auto grid gap-3">

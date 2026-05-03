@@ -1,10 +1,10 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MoonStar, SunMedium } from "lucide-react";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {MoonStar, SunMedium} from "lucide-react";
+import {useTheme} from "next-themes";
+import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
 
 interface ThemeToggleProps {
   label: string;
@@ -27,6 +27,7 @@ export function ThemeToggle({ label, className }: ThemeToggleProps) {
       size="icon"
       className={cn(className)}
       aria-label={label}
+      aria-pressed={isDark}
       disabled={!mounted}
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >

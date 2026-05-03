@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChevronDown, Languages } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {ChevronDown, Languages} from "lucide-react";
+import {useSearchParams} from "next/navigation";
+import {usePathname, useRouter} from "@/i18n/navigation";
+import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,13 +11,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import {
-  appLocales,
-  replaceLocaleInPathname,
-  type AppLocale,
-} from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
+import {cn} from "@/lib/utils";
+import {appLocales, type AppLocale} from "../i18n/routing";
+import type {PortfolioDictionary} from "../i18n/types";
 
 interface LocaleSwitcherProps {
   locale: AppLocale;
@@ -33,6 +29,19 @@ export function LocaleSwitcher({
   className,
 }: LocaleSwitcherProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  function handleLocaleChange(nextLocale: AppLocale) {
+    if (nextLocale === locale) {
+      return;
+    }
+
+    const search = searchParams.toString();
+    const currentHref = `${pathname}${search ? `?${search}` : ""}${window.location.hash}`;
+
+    router.replace(currentHref, {locale: nextLocale});
+  }
 
   return (
     <DropdownMenu>
@@ -51,16 +60,15 @@ export function LocaleSwitcher({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         {appLocales.map((entry) => (
-          <DropdownMenuItem key={entry} asChild>
-            <Link
-              href={replaceLocaleInPathname(pathname, entry)}
-              className={cn(entry === locale && "bg-secondary text-foreground")}
-            >
-              <span className="min-w-8 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                {entry}
-              </span>
-              <span>{localeNames[entry]}</span>
-            </Link>
+          <DropdownMenuItem
+            key={entry}
+            className={cn(entry === locale && "bg-secondary text-foreground")}
+            onSelect={() => handleLocaleChange(entry)}
+          >
+            <span className="min-w-8 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {entry}
+            </span>
+            <span>{localeNames[entry]}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

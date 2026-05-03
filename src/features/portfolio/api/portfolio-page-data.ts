@@ -2,7 +2,6 @@ import "server-only";
 import {
   getBackendHealth,
   getPortfolioApiBaseUrl,
-  getPortfolioApiDocsUrl,
   getPortfolioApiOrigin,
   getProjectBySlug,
   getPublishedProjects,
@@ -24,7 +23,6 @@ export interface PortfolioHomePageData {
   latestProject: PortfolioProject | null;
   apiBaseUrl: string;
   apiOrigin: string;
-  apiDocsUrl: string;
 }
 
 export interface PortfolioProjectPageData {
@@ -51,7 +49,6 @@ export async function getPortfolioHomePageData(): Promise<PortfolioHomePageData>
     latestProject: projects[0] ?? null,
     apiBaseUrl: getPortfolioApiBaseUrl(),
     apiOrigin: getPortfolioApiOrigin(),
-    apiDocsUrl: getPortfolioApiDocsUrl(),
   };
 }
 

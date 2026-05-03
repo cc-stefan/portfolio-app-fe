@@ -1,18 +1,18 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { getPortfolioApiDocsUrl, getPortfolioApiOrigin } from "../api/portfolio-api";
-import { getPortfolioProjectPageData } from "../api/portfolio-page-data";
-import { SiteHeader } from "../components/site-header";
-import { SiteShell } from "../components/site-shell";
-import { StateCard } from "../components/state-card";
-import type { AppLocale } from "../i18n/routing";
-import { localizeHref } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import { getPortfolioHomeSectionLinks } from "../lib/portfolio-navigation";
-import { ProjectContent } from "../sections/project/project-content";
-import { ProjectHero } from "../sections/project/project-hero";
-import { ProjectRelated } from "../sections/project/project-related";
+import {notFound} from "next/navigation";
+import {Button} from "@/components/ui/button";
+import {getPortfolioApiOrigin} from "../api/portfolio-api";
+import {getPortfolioProjectPageData} from "../api/portfolio-page-data";
+import {SiteHeader} from "../components/site-header";
+import {SiteShell} from "../components/site-shell";
+import {StateCard} from "../components/state-card";
+import type {AppLocale} from "../i18n/routing";
+import {localizeHref} from "../i18n/routing";
+import type {PortfolioDictionary} from "../i18n/types";
+import {getPortfolioHomeSectionLinks} from "../lib/portfolio-navigation";
+import {ProjectContent} from "../sections/project/project-content";
+import {ProjectHero} from "../sections/project/project-hero";
+import {ProjectRelated} from "../sections/project/project-related";
 
 interface PortfolioProjectScreenProps {
   slug: string;
@@ -32,9 +32,8 @@ export async function PortfolioProjectScreen({
     notFound();
   }
 
-  const apiDocsUrl = getPortfolioApiDocsUrl();
   const apiOrigin = getPortfolioApiOrigin();
-  const footerNavItems = getPortfolioHomeSectionLinks(locale, dictionary);
+  const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   return (
     <SiteShell
@@ -49,13 +48,7 @@ export async function PortfolioProjectScreen({
           { href: "/#projects", label: dictionary.header.navWork },
           { href: "#details", label: dictionary.project.overviewTitle },
           { href: "#delivery", label: dictionary.project.deliveryTitle },
-          { href: "/#contact", label: dictionary.header.navContact },
         ]}
-        secondaryAction={{
-          href: apiDocsUrl,
-          label: dictionary.actions.apiDocs,
-          external: true,
-        }}
         primaryAction={{
           href: "/#contact",
           label: dictionary.actions.startProject,

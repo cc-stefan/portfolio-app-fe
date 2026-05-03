@@ -20,6 +20,10 @@ export function getBackendDocsUrl() {
   return `${getBackendApiBaseUrl()}/docs`;
 }
 
+export function shouldExposeBackendDocs() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export function buildBackendApiUrl(path: string) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${getBackendApiBaseUrl()}${normalizedPath}`;

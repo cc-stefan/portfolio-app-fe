@@ -30,7 +30,6 @@ export const dictionary: PortfolioDictionary = {
     navWork: "Proiecte",
     navProcess: "Cum lucrez",
     navSkills: "Skill-uri",
-    navContact: "Contact",
     languageLabel: "Limbă",
     themeLabel: "Temă",
     openMenu: "Deschide meniul",
@@ -38,18 +37,8 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      "Inginer frontend care livrează UI de produs performant, arhitectură React scalabilă și execuție atentă pentru site-uri și interfețe de aplicație.",
+      "Inginer frontend axat pe UI de produs clar, arhitectură React scalabilă și livrare pregătită pentru producție.",
     quickLinksLabel: "Link-uri rapide",
-    contactLabel: "Contact",
-    socialLabel: "Profiluri",
-    emailLabel: "Email",
-    contactCtaLabel: "Formular de contact",
-    githubLabel: "GitHub",
-    sourceLabel: "Acest site",
-    email: "cc.stefan@icloud.com",
-    githubHref: "https://github.com/cc-stefan",
-    sourceHref: "https://github.com/cc-stefan/portfolio-app-fe",
-    stackNote: "Construit cu Next.js, TypeScript și un backend API live.",
     copyrightLabel: "Toate drepturile rezervate.",
   },
   home: {
@@ -213,6 +202,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Contact",
         description: "cc.stefan@icloud.com",
+        href: "mailto:cc.stefan@icloud.com",
       },
       {
         title: "Potrivire bună",
@@ -283,12 +273,11 @@ export const dictionary: PortfolioDictionary = {
       "Validat în client, trimis prin frontend și procesat de endpoint-ul de inquiry din backend.",
   },
   actions: {
-    apiDocs: "Documentație API",
     adminLogin: "Admin",
     viewProject: "Vezi studiul de caz",
     live: "Live",
     code: "Cod",
-    startProject: "Începe o conversație",
+    startProject: "Contact",
     browseProjects: "Vezi proiectele",
   },
   common: {

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ThemeToggle } from "@/features/portfolio/components/theme-toggle";
 import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
-import { getBackendDocsUrl } from "@/lib/backend";
+import { getBackendDocsUrl, shouldExposeBackendDocs } from "@/lib/backend";
 import { cn } from "@/lib/utils";
 import { AdminMobileNavSheet } from "./admin-mobile-nav-sheet";
 import { useAdminAuth } from "../auth/use-admin-auth";
@@ -177,12 +177,14 @@ export function AdminShell({ lang, children }: AdminShellProps) {
                 <Button asChild variant="ghost" size="sm">
                   <Link href={localizeHref(lang, "/")}>Public site</Link>
                 </Button>
-                <Button asChild variant="ghost" size="sm">
-                  <Link href={getBackendDocsUrl()} target="_blank" rel="noreferrer">
-                    API docs
-                    <ArrowUpRight className="size-4" />
-                  </Link>
-                </Button>
+                {shouldExposeBackendDocs() ? (
+                  <Button asChild variant="ghost" size="sm">
+                    <Link href={getBackendDocsUrl()} target="_blank" rel="noreferrer">
+                      API docs
+                      <ArrowUpRight className="size-4" />
+                    </Link>
+                  </Button>
+                ) : null}
                 <Button asChild variant="outline" size="icon" className="relative">
                   <Link
                     href={localizeHref(lang, "/admin/inquiries")}

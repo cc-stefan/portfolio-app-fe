@@ -25,9 +25,8 @@ export async function PortfolioHomeScreen({
     projectsResult,
     featuredProjects,
     apiOrigin,
-    apiDocsUrl,
   } = await getPortfolioHomePageData();
-  const sectionLinks = getPortfolioHomeSectionLinks(locale, dictionary);
+  const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
 
   return (
     <SiteShell
@@ -40,11 +39,6 @@ export async function PortfolioHomeScreen({
         dictionary={dictionary}
         eyebrow={dictionary.header.tagline}
         navItems={sectionLinks}
-        secondaryAction={{
-          href: apiDocsUrl,
-          label: dictionary.actions.apiDocs,
-          external: true,
-        }}
         primaryAction={{
           href: "/#contact",
           label: dictionary.actions.startProject,
@@ -63,6 +57,12 @@ export async function PortfolioHomeScreen({
 
         <div className="section-divider" />
 
+        <div className="page-enter delay-3">
+          <HomeCapabilities copy={dictionary.home} />
+        </div>
+
+        <div className="section-divider" />
+
         <div className="page-enter delay-2">
           <HomeShowcase
             locale={locale}
@@ -71,12 +71,6 @@ export async function PortfolioHomeScreen({
             projects={projectsResult.data ?? []}
             apiOrigin={apiOrigin}
           />
-        </div>
-
-        <div className="section-divider" />
-
-        <div className="page-enter delay-3">
-          <HomeCapabilities copy={dictionary.home} />
         </div>
 
         <div className="section-divider" />

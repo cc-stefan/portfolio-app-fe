@@ -2,7 +2,6 @@ import "server-only";
 import {
   buildBackendApiUrl,
   getBackendApiBaseUrl,
-  getBackendDocsUrl,
   getBackendOrigin,
 } from "@/lib/backend";
 import type {
@@ -27,10 +26,6 @@ export function getPortfolioApiBaseUrl() {
 
 export function getPortfolioApiOrigin() {
   return getBackendOrigin();
-}
-
-export function getPortfolioApiDocsUrl() {
-  return getBackendDocsUrl();
 }
 
 async function requestJson<T>(path: string): Promise<T> {

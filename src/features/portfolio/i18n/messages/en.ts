@@ -30,7 +30,6 @@ export const dictionary: PortfolioDictionary = {
     navWork: "Projects",
     navProcess: "How I work",
     navSkills: "Skills",
-    navContact: "Contact",
     languageLabel: "Language",
     themeLabel: "Theme",
     openMenu: "Open menu",
@@ -38,18 +37,8 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      "Frontend engineer building performant product UI, scalable React architecture, and polished delivery across marketing sites and application surfaces.",
+      "Frontend engineer focused on clear product UI, scalable React architecture, and production-ready delivery.",
     quickLinksLabel: "Quick links",
-    contactLabel: "Contact",
-    socialLabel: "Profiles",
-    emailLabel: "Email",
-    contactCtaLabel: "Contact form",
-    githubLabel: "GitHub",
-    sourceLabel: "This site",
-    email: "cc.stefan@icloud.com",
-    githubHref: "https://github.com/cc-stefan",
-    sourceHref: "https://github.com/cc-stefan/portfolio-app-fe",
-    stackNote: "Built with Next.js, TypeScript, and a live backend API.",
     copyrightLabel: "All rights reserved.",
   },
   home: {
@@ -211,6 +200,7 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Contact",
         description: "cc.stefan@icloud.com",
+        href: "mailto:cc.stefan@icloud.com",
       },
       {
         title: "Best fit",
@@ -281,12 +271,11 @@ export const dictionary: PortfolioDictionary = {
       "Validated in the client, proxied through the frontend, and handled by the backend inquiry endpoint.",
   },
   actions: {
-    apiDocs: "API Docs",
     adminLogin: "Admin",
     viewProject: "View case study",
     live: "Live",
     code: "Code",
-    startProject: "Start a conversation",
+    startProject: "Contact",
     browseProjects: "Browse projects",
   },
   common: {

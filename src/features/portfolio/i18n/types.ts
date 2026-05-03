@@ -24,7 +24,6 @@ export interface PortfolioDictionary {
     navWork: string;
     navProcess: string;
     navSkills: string;
-    navContact: string;
     languageLabel: string;
     themeLabel: string;
     openMenu: string;
@@ -33,16 +32,6 @@ export interface PortfolioDictionary {
   footer: {
     description: string;
     quickLinksLabel: string;
-    contactLabel: string;
-    socialLabel: string;
-    emailLabel: string;
-    contactCtaLabel: string;
-    githubLabel: string;
-    sourceLabel: string;
-    email: string;
-    githubHref: string;
-    sourceHref: string;
-    stackNote: string;
     copyrightLabel: string;
   };
   home: {
@@ -114,6 +103,7 @@ export interface PortfolioDictionary {
     inquiryHighlights: Array<{
       title: string;
       description: string;
+      href?: string;
     }>;
   };
   project: {
@@ -161,7 +151,6 @@ export interface PortfolioDictionary {
     privacyNote: string;
   };
   actions: {
-    apiDocs: string;
     adminLogin: string;
     viewProject: string;
     live: string;
