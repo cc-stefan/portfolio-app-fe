@@ -24,7 +24,7 @@ import {
   getBackendErrorMessage,
   readBackendError,
 } from "../lib/backend-errors";
-import { resolveProjectCoverImageUrl } from "../lib/project-form";
+import { resolveProjectImageUrl } from "../lib/project-form";
 import type { AdminDashboardResponse, AdminUser } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
 
@@ -45,7 +45,9 @@ const statEntries = [
 
 export function AdminDashboardScreen({ lang }: AdminDashboardScreenProps) {
   const { authFetch, status, user } = useAdminAuth();
-  const [dashboard, setDashboard] = useState<AdminDashboardResponse | null>(null);
+  const [dashboard, setDashboard] = useState<AdminDashboardResponse | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -145,7 +147,8 @@ export function AdminDashboardScreen({ lang }: AdminDashboardScreenProps) {
             Portfolio operations
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Review project inventory, user counts, and recent activity from the live NestJS + Prisma backend.
+            Review project inventory, user counts, and recent activity from the
+            live NestJS + Prisma backend.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -192,9 +195,7 @@ export function AdminDashboardScreen({ lang }: AdminDashboardScreenProps) {
               />
             ) : (
               dashboard.recentProjects.map((project) => {
-                const coverImageUrl = resolveProjectCoverImageUrl(
-                  project.coverImageUrl,
-                );
+                const imageUrl = resolveProjectImageUrl(project.imageUrl);
 
                 return (
                   <Link
@@ -203,9 +204,9 @@ export function AdminDashboardScreen({ lang }: AdminDashboardScreenProps) {
                     className="grid gap-4 rounded-xl border border-border bg-background/70 p-4 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45 sm:grid-cols-[5rem_minmax(0,1fr)]"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
-                      {coverImageUrl ? (
+                      {imageUrl ? (
                         <Image
-                          src={coverImageUrl}
+                          src={imageUrl}
                           alt={project.title}
                           fill
                           unoptimized
@@ -226,7 +227,9 @@ export function AdminDashboardScreen({ lang }: AdminDashboardScreenProps) {
                         <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <Badge variant={project.published ? "success" : "warning"}>
+                        <Badge
+                          variant={project.published ? "success" : "warning"}
+                        >
                           {project.published ? "Published" : "Draft"}
                         </Badge>
                         {project.featured ? (
@@ -305,7 +308,8 @@ function RecentUserRow({
             {account.email}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {[account.firstName, account.lastName].filter(Boolean).join(" ") || "No profile name"}
+            {[account.firstName, account.lastName].filter(Boolean).join(" ") ||
+              "No profile name"}
           </p>
         </div>
         <Badge variant={account.role === "ADMIN" ? "accent" : "neutral"}>

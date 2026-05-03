@@ -28,13 +28,8 @@ export function getFeaturedProjects(projects: PortfolioProject[]) {
   return projects.filter((project) => project.featured);
 }
 
-export function getProjectSummaryParagraphs(
-  description: string | null,
-  summary: string,
-) {
-  const source = description?.trim() || summary.trim();
-
-  return source
+export function getProjectDescriptionParagraphs(description: string | null) {
+  return (description?.trim() ?? "")
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
@@ -45,5 +40,7 @@ export function getRelatedProjects(
   currentSlug: string,
   limit = 3,
 ) {
-  return projects.filter((project) => project.slug !== currentSlug).slice(0, limit);
+  return projects
+    .filter((project) => project.slug !== currentSlug)
+    .slice(0, limit);
 }

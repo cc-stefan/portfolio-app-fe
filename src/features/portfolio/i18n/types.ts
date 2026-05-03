@@ -111,10 +111,14 @@ export interface PortfolioDictionary {
     label: string;
     summaryTitle: string;
     overviewTitle: string;
-    overviewDescription: string;
+    descriptionTitle: string;
     factsTitle: string;
     stackTitle: string;
     linksTitle: string;
+    liveTitle: string;
+    repositoryTitle: string;
+    timelineTitle: string;
+    projectDateTitle: string;
     deliveryTitle: string;
     deliveryCards: Array<{
       title: string;
@@ -128,6 +132,9 @@ export interface PortfolioDictionary {
     unavailableHint: string;
     notFoundTitle: string;
     notFoundDescription: string;
+    noDescription: string;
+    noProjectDate: string;
+    noProjectImage: string;
   };
   inquiryForm: {
     nameLabel: string;

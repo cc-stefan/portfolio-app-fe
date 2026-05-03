@@ -9,9 +9,10 @@ export interface PortfolioProject {
   slug: string;
   summary: string;
   description: string | null;
-  coverImageUrl: string | null;
+  imageUrl: string | null;
   liveUrl: string | null;
   repositoryUrl: string | null;
+  projectDate: string | null;
   technologies: string[];
   featured: boolean;
   published: boolean;

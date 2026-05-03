@@ -62,7 +62,7 @@ export interface AdminDashboardResponse {
       | "slug"
       | "published"
       | "featured"
-      | "coverImageUrl"
+      | "imageUrl"
       | "createdAt"
       | "updatedAt"
     >
@@ -75,9 +75,9 @@ export interface ProjectFormValues {
   slug: string;
   summary: string;
   description: string;
-  coverImageUrl: string;
   liveUrl: string;
   repositoryUrl: string;
+  projectDate: string;
   technologies: string[];
   featured: boolean;
   published: boolean;
@@ -88,10 +88,10 @@ export interface ProjectMutationPayload {
   title: string;
   slug?: string;
   summary: string;
-  description?: string;
-  coverImageUrl?: string;
-  liveUrl?: string;
-  repositoryUrl?: string;
+  description?: string | null;
+  liveUrl?: string | null;
+  repositoryUrl?: string | null;
+  projectDate?: string | null;
   technologies?: string[];
   featured?: boolean;
   published?: boolean;
@@ -103,9 +103,9 @@ export type ProjectFieldName =
   | "slug"
   | "summary"
   | "description"
-  | "coverImageUrl"
   | "liveUrl"
   | "repositoryUrl"
+  | "projectDate"
   | "technologies"
   | "displayOrder";
 

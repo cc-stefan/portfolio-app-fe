@@ -42,7 +42,8 @@ export const dictionary: PortfolioDictionary = {
     copyrightLabel: "Toate drepturile rezervate.",
   },
   home: {
-    title: "Interfețe de produs rapide, scalabile, clare pentru utilizatori și construite să reziste.",
+    title:
+      "Interfețe de produs rapide, scalabile, clare pentru utilizatori și construite să reziste.",
     description:
       "Construiesc interfețe pregătite pentru producție cu React, Next.js, Angular și TypeScript, combinând arhitectură frontend solidă cu UX clar și gândire de produs.",
     primaryCta: "Vezi proiectele",
@@ -167,7 +168,8 @@ export const dictionary: PortfolioDictionary = {
     experienceDescription: "",
     experienceCards: [],
     credentialsLabel: "Competențe",
-    credentialsTitle: "Stack-ul pe care îl folosesc cel mai des și felul în care îl aplic.",
+    credentialsTitle:
+      "Stack-ul pe care îl folosesc cel mai des și felul în care îl aplic.",
     credentialsDescription:
       "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un inginer frontend puternic.",
     credentialGroups: [
@@ -216,11 +218,14 @@ export const dictionary: PortfolioDictionary = {
     label: "Pagina proiectului",
     summaryTitle: "Ce am construit",
     overviewTitle: "Prezentare",
-    overviewDescription:
-      "Acest proiect pune în prim-plan problema de produs, soluția frontend și deciziile care au făcut interfața eficientă.",
+    descriptionTitle: "Descriere",
     factsTitle: "Detalii proiect",
     stackTitle: "Stack",
     linksTitle: "Link-uri",
+    liveTitle: "Live",
+    repositoryTitle: "Repository",
+    timelineTitle: "Cronologie",
+    projectDateTitle: "Data proiectului",
     deliveryTitle: "De ce funcționează",
     deliveryCards: [
       {
@@ -246,6 +251,9 @@ export const dictionary: PortfolioDictionary = {
     notFoundTitle: "Această rută nu corespunde unui proiect publicat.",
     notFoundDescription:
       "Slug-ul poate fi greșit, proiectul poate fi încă în draft sau backend-ul nu are o intrare corespunzătoare.",
+    noDescription: "Nu există o descriere pentru acest proiect",
+    noProjectDate: "Data proiectului nu a fost adăugată încă",
+    noProjectImage: "Imaginea proiectului va fi adăugată în curând",
   },
   inquiryForm: {
     nameLabel: "Nume",
@@ -264,8 +272,7 @@ export const dictionary: PortfolioDictionary = {
     submit: "Trimite mesajul",
     submitting: "Se trimite...",
     successTitle: "Mesaj trimis",
-    successDescription:
-      "Mesajul tău a fost validat și acceptat de backend.",
+    successDescription: "Mesajul tău a fost validat și acceptat de backend.",
     errorTitle: "Mesajul nu a putut fi trimis",
     errorDescription:
       "Verifică câmpurile formularului sau încearcă din nou în câteva momente.",

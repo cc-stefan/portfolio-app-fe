@@ -20,7 +20,7 @@ import {
   getBackendErrorMessage,
   readBackendError,
 } from "../lib/backend-errors";
-import { resolveProjectCoverImageUrl } from "../lib/project-form";
+import { resolveProjectImageUrl } from "../lib/project-form";
 import type { AdminProject, ProjectMutationPayload } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
 
@@ -56,10 +56,7 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(
-            errorBody,
-            "Unable to load admin projects",
-          ),
+          getBackendErrorMessage(errorBody, "Unable to load admin projects"),
         );
       }
 
@@ -189,7 +186,8 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
             Manage portfolio entries
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Create, edit, publish, feature, sort, upload images, or remove projects using the exact admin endpoints exposed by the backend.
+            Create, edit, publish, feature, sort, upload images, or remove
+            projects using the exact admin endpoints exposed by the backend.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -220,18 +218,16 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
       ) : (
         <section className="grid gap-4">
           {projects.map((project) => {
-            const coverImageUrl = resolveProjectCoverImageUrl(
-              project.coverImageUrl,
-            );
+            const imageUrl = resolveProjectImageUrl(project.imageUrl);
             const isPending = pendingProjectId === project.id;
 
             return (
               <Card key={project.id} variant="solid">
                 <CardContent className="grid gap-5 p-5 sm:p-6 xl:grid-cols-[7rem_minmax(0,1fr)_18rem]">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
-                    {coverImageUrl ? (
+                    {imageUrl ? (
                       <Image
-                        src={coverImageUrl}
+                        src={imageUrl}
                         alt={project.title}
                         fill
                         unoptimized
@@ -244,7 +240,10 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
                         <Link
-                          href={localizeHref(lang, `/admin/projects/${project.id}`)}
+                          href={localizeHref(
+                            lang,
+                            `/admin/projects/${project.id}`,
+                          )}
                           className="inline-flex items-center gap-2 text-lg font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                         >
                           <span className="truncate">{project.title}</span>
@@ -255,7 +254,9 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        <Badge variant={project.published ? "success" : "warning"}>
+                        <Badge
+                          variant={project.published ? "success" : "warning"}
+                        >
                           {project.published ? "Published" : "Draft"}
                         </Badge>
                         {project.featured ? (
@@ -371,7 +372,12 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
 
                     <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
                       <Button asChild variant="outline" size="sm">
-                        <Link href={localizeHref(lang, `/admin/projects/${project.id}`)}>
+                        <Link
+                          href={localizeHref(
+                            lang,
+                            `/admin/projects/${project.id}`,
+                          )}
+                        >
                           Edit project
                         </Link>
                       </Button>

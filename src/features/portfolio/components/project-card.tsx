@@ -26,7 +26,8 @@ export function ProjectCard({
   showPriorityBadge = true,
 }: ProjectCardProps) {
   const projectHref = localizeHref(locale, `/projects/${project.slug}`);
-  const coverImageUrl = resolvePortfolioAssetUrl(project.coverImageUrl, apiOrigin);
+  const imageUrl = resolvePortfolioAssetUrl(project.imageUrl, apiOrigin);
+  const projectMonth = formatProjectMonth(project.projectDate, locale);
 
   return (
     <Card variant="interactive" className="group h-full overflow-hidden">
@@ -35,9 +36,9 @@ export function ProjectCard({
         className="block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
-          {coverImageUrl ? (
+          {imageUrl ? (
             <Image
-              src={coverImageUrl}
+              src={imageUrl}
               alt={project.title}
               fill
               unoptimized
@@ -56,9 +57,9 @@ export function ProjectCard({
               {showPriorityBadge && project.featured ? (
                 <Badge variant="accent">{dictionary.common.featured}</Badge>
               ) : null}
-              <Badge variant="neutral">
-                {formatProjectMonth(project.updatedAt, locale)}
-              </Badge>
+              {projectMonth ? (
+                <Badge variant="neutral">{projectMonth}</Badge>
+              ) : null}
             </div>
             <span className="inline-flex size-9 items-center justify-center rounded-lg border border-white/40 bg-white/82 text-slate-950 shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:border-white/10 dark:bg-slate-950/70 dark:text-white">
               <ArrowUpRight className="size-4" />

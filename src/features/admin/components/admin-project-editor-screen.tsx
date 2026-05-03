@@ -27,7 +27,10 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { StateCard } from "@/features/portfolio/components/state-card";
-import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
+import {
+  localizeHref,
+  type AppLocale,
+} from "@/features/portfolio/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useAdminAuth } from "../auth/use-admin-auth";
 import {
@@ -43,7 +46,7 @@ import {
   createProjectFormValues,
   getProjectFileValidationError,
   isUploadedProjectImage,
-  resolveProjectCoverImageUrl,
+  resolveProjectImageUrl,
   validateProjectForm,
 } from "../lib/project-form";
 import type {
@@ -65,9 +68,9 @@ const projectErrorFieldByFormField: Partial<
   slug: "slug",
   summary: "summary",
   description: "description",
-  coverImageUrl: "coverImageUrl",
   liveUrl: "liveUrl",
   repositoryUrl: "repositoryUrl",
+  projectDate: "projectDate",
   technologies: "technologies",
   displayOrder: "displayOrder",
 };
@@ -91,15 +94,27 @@ export function AdminProjectEditorScreen({
   const [uploading, setUploading] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedImagePreviewUrl, setSelectedImagePreviewUrl] = useState<
+    string | null
+  >(null);
   const [notFound, setNotFound] = useState(false);
 
   const isEditing = Boolean(projectId);
-  const currentCoverImageUrl = formValues.coverImageUrl;
-  const resolvedCoverImageUrl = useMemo(
-    () => resolveProjectCoverImageUrl(currentCoverImageUrl),
-    [currentCoverImageUrl],
+  const resolvedImageUrl = useMemo(
+    () => resolveProjectImageUrl(project?.imageUrl ?? null),
+    [project?.imageUrl],
   );
-  const usesUploadedImage = isUploadedProjectImage(project?.coverImageUrl ?? null);
+  const usesUploadedImage = isUploadedProjectImage(project?.imageUrl ?? null);
+
+  useEffect(() => {
+    return () => {
+      if (selectedImagePreviewUrl) {
+        URL.revokeObjectURL(selectedImagePreviewUrl);
+      }
+    };
+  }, [selectedImagePreviewUrl]);
+
+  const previewImageUrl = selectedImagePreviewUrl ?? resolvedImageUrl;
 
   const applyProject = useCallback((nextProject: AdminProject) => {
     setProject(nextProject);
@@ -190,16 +205,36 @@ export function AdminProjectEditorScreen({
     );
   }
 
-  function handleTechnologyKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleTechnologyKeyDown(
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) {
     if (event.key === "Enter" || event.key === ",") {
       event.preventDefault();
       addTechnology();
     }
   }
 
-  async function uploadCoverImage(nextProjectId: string) {
+  function replaceSelectedFile(file: File | null) {
+    setSelectedFile(file);
+    setSelectedImagePreviewUrl((currentPreviewUrl) => {
+      if (currentPreviewUrl) {
+        URL.revokeObjectURL(currentPreviewUrl);
+      }
+
+      return file ? URL.createObjectURL(file) : null;
+    });
+  }
+
+  async function handleUploadImage() {
+    if (!projectId) {
+      return;
+    }
+
     if (!selectedFile) {
-      return true;
+      const message = "Choose an image before uploading";
+      setFileError(message);
+      toast.error(message);
+      return;
     }
 
     const validationError = getProjectFileValidationError(selectedFile);
@@ -207,7 +242,7 @@ export function AdminProjectEditorScreen({
     if (validationError) {
       setFileError(validationError);
       toast.error(validationError);
-      return false;
+      return;
     }
 
     setUploading(true);
@@ -216,7 +251,7 @@ export function AdminProjectEditorScreen({
     const payload = new FormData();
     payload.set("file", selectedFile);
 
-    const response = await authFetch(`/admin/projects/${nextProjectId}/cover-image`, {
+    const response = await authFetch(`/admin/projects/${projectId}/image`, {
       method: "POST",
       body: payload,
     });
@@ -225,17 +260,19 @@ export function AdminProjectEditorScreen({
       const errorBody = await readBackendError(response);
       const message = getBackendErrorMessage(
         errorBody,
-        "Unable to upload cover image",
+        "Unable to upload the project image",
       );
       setFileError(message);
       toast.error(message);
       setUploading(false);
-      return false;
+      return;
     }
 
-    setSelectedFile(null);
+    const updatedProject = (await response.json()) as AdminProject;
+    applyProject(updatedProject);
+    replaceSelectedFile(null);
+    toast.success("Project image uploaded");
     setUploading(false);
-    return true;
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -288,23 +325,10 @@ export function AdminProjectEditorScreen({
     }
 
     const savedProject = (await response.json()) as AdminProject;
-    const uploadSucceeded = await uploadCoverImage(savedProject.id);
-
-    if (!uploadSucceeded) {
-      if (!isEditing) {
-        router.replace(localizeHref(lang, `/admin/projects/${savedProject.id}`));
-      } else {
-        await loadProject();
-      }
-
-      setSaving(false);
-      return;
-    }
-
     toast.success(isEditing ? "Project updated" : "Project created");
 
     if (isEditing) {
-      await loadProject();
+      applyProject(savedProject);
     } else {
       router.replace(localizeHref(lang, `/admin/projects/${savedProject.id}`));
     }
@@ -319,21 +343,24 @@ export function AdminProjectEditorScreen({
 
     setUploading(true);
 
-    const response = await authFetch(`/admin/projects/${projectId}/cover-image`, {
+    const response = await authFetch(`/admin/projects/${projectId}/image`, {
       method: "DELETE",
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to remove cover image"),
+        getBackendErrorMessage(errorBody, "Unable to remove the project image"),
       );
       setUploading(false);
       return;
     }
 
-    toast.success("Cover image removed");
-    await loadProject();
+    const updatedProject = (await response.json()) as AdminProject;
+    applyProject(updatedProject);
+    replaceSelectedFile(null);
+    setFileError(null);
+    toast.success("Project image removed");
     setUploading(false);
   }
 
@@ -422,10 +449,11 @@ export function AdminProjectEditorScreen({
             {isEditing ? "Edit project" : "Create project"}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
-            {isEditing ? project?.title ?? "Project editor" : "New project"}
+            {isEditing ? (project?.title ?? "Project editor") : "New project"}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Manage the exact project fields accepted by the backend DTO, then optionally upload a cover image through the dedicated multipart endpoint.
+            Update the DTO-backed project fields, choose a manual project date,
+            and upload the project image separately once the project exists.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -466,7 +494,8 @@ export function AdminProjectEditorScreen({
                     Core fields
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    `title` and `summary` are required. `slug` is optional and must stay lowercase kebab-case.
+                    `title` and `summary` are required. `slug` stays optional
+                    and must remain lowercase kebab-case.
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -477,7 +506,9 @@ export function AdminProjectEditorScreen({
                   >
                     <Input
                       value={formValues.title}
-                      onChange={(event) => updateField("title", event.target.value)}
+                      onChange={(event) =>
+                        updateField("title", event.target.value)
+                      }
                       placeholder="Project title"
                       aria-invalid={Boolean(fieldErrors.title)}
                     />
@@ -485,11 +516,13 @@ export function AdminProjectEditorScreen({
                   <Field
                     label="Slug"
                     error={fieldErrors.slug}
-                    description="Optional, lowercase kebab-case, 1 to 160 characters."
+                    description="Optional, lowercase kebab-case, up to 160 characters."
                   >
                     <Input
                       value={formValues.slug}
-                      onChange={(event) => updateField("slug", event.target.value)}
+                      onChange={(event) =>
+                        updateField("slug", event.target.value)
+                      }
                       placeholder="auto-generated-from-title"
                       aria-invalid={Boolean(fieldErrors.slug)}
                     />
@@ -502,7 +535,9 @@ export function AdminProjectEditorScreen({
                 >
                   <Textarea
                     value={formValues.summary}
-                    onChange={(event) => updateField("summary", event.target.value)}
+                    onChange={(event) =>
+                      updateField("summary", event.target.value)
+                    }
                     placeholder="Short portfolio summary"
                     className="min-h-28"
                     aria-invalid={Boolean(fieldErrors.summary)}
@@ -528,25 +563,26 @@ export function AdminProjectEditorScreen({
               <section className="grid gap-5 border-t border-border pt-8">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Links and image source
+                    Links and timeline
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Use the direct URL fields for externally hosted assets and links. Uploaded cover images are managed separately.
+                    The project date is a manual portfolio timeline field and is
+                    separate from database timestamps.
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field
-                    label="Cover image URL"
-                    error={fieldErrors.coverImageUrl}
-                    description="Optional, up to 500 characters."
+                    label="Project date"
+                    error={fieldErrors.projectDate}
+                    description="Optional. Used for public timeline display."
                   >
                     <Input
-                      value={formValues.coverImageUrl}
+                      type="date"
+                      value={formValues.projectDate}
                       onChange={(event) =>
-                        updateField("coverImageUrl", event.target.value)
+                        updateField("projectDate", event.target.value)
                       }
-                      placeholder="https://..."
-                      aria-invalid={Boolean(fieldErrors.coverImageUrl)}
+                      aria-invalid={Boolean(fieldErrors.projectDate)}
                     />
                   </Field>
                   <Field
@@ -556,7 +592,9 @@ export function AdminProjectEditorScreen({
                   >
                     <Input
                       value={formValues.liveUrl}
-                      onChange={(event) => updateField("liveUrl", event.target.value)}
+                      onChange={(event) =>
+                        updateField("liveUrl", event.target.value)
+                      }
                       placeholder="https://..."
                       aria-invalid={Boolean(fieldErrors.liveUrl)}
                     />
@@ -584,7 +622,8 @@ export function AdminProjectEditorScreen({
                     Technologies
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Up to 20 entries. Each value is trimmed and deduplicated before submit.
+                    Up to 20 entries. Values are trimmed and deduplicated before
+                    submit.
                   </p>
                 </div>
                 <Field
@@ -596,11 +635,17 @@ export function AdminProjectEditorScreen({
                     <div className="flex gap-2">
                       <Input
                         value={technologyInput}
-                        onChange={(event) => setTechnologyInput(event.target.value)}
+                        onChange={(event) =>
+                          setTechnologyInput(event.target.value)
+                        }
                         onKeyDown={handleTechnologyKeyDown}
                         placeholder="Add technology"
                       />
-                      <Button type="button" variant="outline" onClick={addTechnology}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={addTechnology}
+                      >
                         Add
                       </Button>
                     </div>
@@ -633,7 +678,8 @@ export function AdminProjectEditorScreen({
                     Publishing
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Publish and feature flags are sent directly to the backend, together with the integer display order.
+                    Publish and feature flags are sent directly to the backend,
+                    together with the integer display order.
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -641,13 +687,17 @@ export function AdminProjectEditorScreen({
                     label="Published"
                     description="Controls visibility on the public `/projects` feed."
                     checked={formValues.published}
-                    onCheckedChange={(checked) => updateField("published", checked)}
+                    onCheckedChange={(checked) =>
+                      updateField("published", checked)
+                    }
                   />
                   <ToggleField
                     label="Featured"
                     description="Featured projects are visually prioritized on the public site."
                     checked={formValues.featured}
-                    onCheckedChange={(checked) => updateField("featured", checked)}
+                    onCheckedChange={(checked) =>
+                      updateField("featured", checked)
+                    }
                   />
                 </div>
                 <Field
@@ -669,7 +719,8 @@ export function AdminProjectEditorScreen({
 
               <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-8">
                 <p className="text-sm leading-6 text-muted-foreground">
-                  The payload includes only backend-supported project fields. Unknown keys are never sent.
+                  The payload includes only backend-supported fields. Image URLs
+                  are never sent manually.
                 </p>
                 <Button type="submit" size="lg" disabled={saving || uploading}>
                   {saving
@@ -688,24 +739,25 @@ export function AdminProjectEditorScreen({
         <div className="grid gap-6">
           <Card variant="solid" className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Cover image</CardTitle>
+              <CardTitle>Project image</CardTitle>
               <CardDescription>
-                External image URLs are saved via PATCH. File uploads use the dedicated multipart endpoint.
+                Uploads use the dedicated multipart endpoint and update
+                `imageUrl` on the backend only.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
-                {resolvedCoverImageUrl ? (
+                {previewImageUrl ? (
                   <Image
-                    src={resolvedCoverImageUrl}
-                    alt={formValues.title || "Project cover image"}
+                    src={previewImageUrl}
+                    alt={formValues.title || "Project image preview"}
                     fill
                     unoptimized
                     className="object-cover"
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-                    No cover image configured yet.
+                    No project image uploaded yet.
                   </div>
                 )}
               </div>
@@ -719,10 +771,10 @@ export function AdminProjectEditorScreen({
                 {formValues.featured ? (
                   <Badge variant="accent">Featured</Badge>
                 ) : null}
-                {usesUploadedImage ? (
+                {selectedFile ? (
+                  <Badge variant="outline">Pending upload</Badge>
+                ) : usesUploadedImage ? (
                   <Badge variant="outline">Uploaded image</Badge>
-                ) : resolvedCoverImageUrl ? (
-                  <Badge variant="outline">External image</Badge>
                 ) : null}
               </div>
 
@@ -731,21 +783,59 @@ export function AdminProjectEditorScreen({
                 error={fileError ?? undefined}
                 description="JPEG, PNG, WEBP, GIF, or AVIF up to 5 MB."
               >
-                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-secondary px-4 py-4 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                <label
+                  className={cn(
+                    "flex items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-4 text-sm font-medium transition-colors",
+                    isEditing
+                      ? "cursor-pointer bg-secondary text-foreground hover:bg-muted"
+                      : "cursor-not-allowed bg-secondary/70 text-muted-foreground",
+                  )}
+                >
                   <ImagePlus className="size-4" />
                   {selectedFile ? selectedFile.name : "Choose image"}
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
                     className="sr-only"
+                    disabled={!isEditing || uploading}
                     onChange={(event) => {
                       const file = event.target.files?.[0] ?? null;
-                      setSelectedFile(file);
+                      replaceSelectedFile(file);
                       setFileError(getProjectFileValidationError(file));
                     }}
                   />
                 </label>
               </Field>
+
+              {isEditing ? (
+                <div className="grid gap-2">
+                  <Button
+                    type="button"
+                    disabled={!selectedFile || uploading}
+                    onClick={() => void handleUploadImage()}
+                  >
+                    {uploading ? "Uploading image..." : "Upload image"}
+                  </Button>
+                  {selectedFile ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      disabled={uploading}
+                      onClick={() => {
+                        replaceSelectedFile(null);
+                        setFileError(null);
+                      }}
+                    >
+                      Clear selection
+                    </Button>
+                  ) : null}
+                </div>
+              ) : (
+                <p className="text-sm leading-6 text-muted-foreground">
+                  Create the project first, then upload its image from the edit
+                  screen.
+                </p>
+              )}
 
               {usesUploadedImage && projectId ? (
                 <Button
@@ -758,15 +848,13 @@ export function AdminProjectEditorScreen({
                 </Button>
               ) : null}
 
-              {!isEditing ? (
-                <p className="text-sm leading-6 text-muted-foreground">
-                  If you select a file now, it will upload automatically right after the project is created.
-                </p>
-              ) : null}
-
               {formValues.liveUrl ? (
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={formValues.liveUrl} target="_blank" rel="noreferrer">
+                  <Link
+                    href={formValues.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Open live URL
                     <ArrowUpRight className="size-4" />
                   </Link>
@@ -827,7 +915,9 @@ function ToggleField({
         onChange={(event) => onCheckedChange(event.target.checked)}
       />
       <span>
-        <span className="block text-sm font-medium text-foreground">{label}</span>
+        <span className="block text-sm font-medium text-foreground">
+          {label}
+        </span>
         <span className="mt-1 block text-sm leading-6 text-muted-foreground">
           {description}
         </span>

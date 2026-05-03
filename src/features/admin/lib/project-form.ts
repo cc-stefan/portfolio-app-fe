@@ -1,7 +1,4 @@
-import {
-  isBackendUploadPath,
-  resolveBackendAssetUrl,
-} from "@/lib/backend";
+import { isBackendUploadPath, resolveBackendAssetUrl } from "@/lib/backend";
 import type {
   AdminProject,
   ProjectFieldErrors,
@@ -29,6 +26,11 @@ function normalizeOptionalField(value: string) {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
+function normalizeNullableField(value: string) {
+  const trimmed = trimOptional(value);
+  return trimmed.length > 0 ? trimmed : null;
+}
+
 function normalizeTechnologies(technologies: string[]) {
   const uniqueValues = new Set<string>();
 
@@ -43,15 +45,48 @@ function normalizeTechnologies(technologies: string[]) {
   return Array.from(uniqueValues);
 }
 
+function isValidProjectDateInput(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const parsedValue = new Date(`${value}T00:00:00.000Z`);
+
+  return (
+    !Number.isNaN(parsedValue.getTime()) &&
+    parsedValue.toISOString().slice(0, 10) === value
+  );
+}
+
+function toProjectDatePayload(value: string) {
+  const trimmed = trimOptional(value);
+
+  if (!trimmed) {
+    return undefined;
+  }
+
+  return new Date(`${trimmed}T00:00:00.000Z`).toISOString();
+}
+
+function toNullableProjectDatePayload(value: string) {
+  const trimmed = trimOptional(value);
+
+  if (!trimmed) {
+    return null;
+  }
+
+  return new Date(`${trimmed}T00:00:00.000Z`).toISOString();
+}
+
 export function createEmptyProjectFormValues(): ProjectFormValues {
   return {
     title: "",
     slug: "",
     summary: "",
     description: "",
-    coverImageUrl: "",
     liveUrl: "",
     repositoryUrl: "",
+    projectDate: "",
     technologies: [],
     featured: false,
     published: false,
@@ -59,15 +94,17 @@ export function createEmptyProjectFormValues(): ProjectFormValues {
   };
 }
 
-export function createProjectFormValues(project: AdminProject): ProjectFormValues {
+export function createProjectFormValues(
+  project: AdminProject,
+): ProjectFormValues {
   return {
     title: project.title,
     slug: project.slug,
     summary: project.summary,
     description: project.description ?? "",
-    coverImageUrl: project.coverImageUrl ?? "",
     liveUrl: project.liveUrl ?? "",
     repositoryUrl: project.repositoryUrl ?? "",
+    projectDate: project.projectDate?.slice(0, 10) ?? "",
     technologies: project.technologies,
     featured: project.featured,
     published: project.published,
@@ -75,15 +112,17 @@ export function createProjectFormValues(project: AdminProject): ProjectFormValue
   };
 }
 
-export function validateProjectForm(values: ProjectFormValues): ProjectFieldErrors {
+export function validateProjectForm(
+  values: ProjectFormValues,
+): ProjectFieldErrors {
   const errors: ProjectFieldErrors = {};
   const title = values.title.trim();
   const slug = values.slug.trim();
   const summary = values.summary.trim();
   const description = values.description.trim();
-  const coverImageUrl = values.coverImageUrl.trim();
   const liveUrl = values.liveUrl.trim();
   const repositoryUrl = values.repositoryUrl.trim();
+  const projectDate = values.projectDate.trim();
   const technologies = normalizeTechnologies(values.technologies);
   const displayOrder = values.displayOrder.trim();
 
@@ -111,8 +150,8 @@ export function validateProjectForm(values: ProjectFormValues): ProjectFieldErro
     errors.description = "Description must be 5000 characters or less";
   }
 
-  if (coverImageUrl.length > 500) {
-    errors.coverImageUrl = "Cover image URL must be 500 characters or less";
+  if (projectDate && !isValidProjectDateInput(projectDate)) {
+    errors.projectDate = "Project date must be a valid calendar date";
   }
 
   if (liveUrl.length > 500) {
@@ -133,7 +172,8 @@ export function validateProjectForm(values: ProjectFormValues): ProjectFieldErro
     const parsedValue = Number(displayOrder);
 
     if (!Number.isInteger(parsedValue) || parsedValue < 0) {
-      errors.displayOrder = "Display order must be a whole number greater than or equal to 0";
+      errors.displayOrder =
+        "Display order must be a whole number greater than or equal to 0";
     }
   }
 
@@ -165,9 +205,9 @@ export function buildCreateProjectPayload(
   const payload = buildSharedProjectPayload(values);
   const slug = normalizeOptionalField(values.slug);
   const description = normalizeOptionalField(values.description);
-  const coverImageUrl = normalizeOptionalField(values.coverImageUrl);
   const liveUrl = normalizeOptionalField(values.liveUrl);
   const repositoryUrl = normalizeOptionalField(values.repositoryUrl);
+  const projectDate = toProjectDatePayload(values.projectDate);
   const technologies = normalizeTechnologies(values.technologies);
 
   if (slug) {
@@ -178,16 +218,16 @@ export function buildCreateProjectPayload(
     payload.description = description;
   }
 
-  if (coverImageUrl) {
-    payload.coverImageUrl = coverImageUrl;
-  }
-
   if (liveUrl) {
     payload.liveUrl = liveUrl;
   }
 
   if (repositoryUrl) {
     payload.repositoryUrl = repositoryUrl;
+  }
+
+  if (projectDate) {
+    payload.projectDate = projectDate;
   }
 
   if (technologies.length > 0) {
@@ -207,10 +247,10 @@ export function buildUpdateProjectPayload(
     payload.slug = slug;
   }
 
-  payload.description = values.description.trim();
-  payload.coverImageUrl = values.coverImageUrl.trim();
-  payload.liveUrl = values.liveUrl.trim();
-  payload.repositoryUrl = values.repositoryUrl.trim();
+  payload.description = normalizeNullableField(values.description);
+  payload.liveUrl = normalizeNullableField(values.liveUrl);
+  payload.repositoryUrl = normalizeNullableField(values.repositoryUrl);
+  payload.projectDate = toNullableProjectDatePayload(values.projectDate);
   payload.technologies = normalizeTechnologies(values.technologies);
 
   return payload;
@@ -222,17 +262,17 @@ export function getProjectFileValidationError(file: File | null) {
   }
 
   if (!ALLOWED_PROJECT_IMAGE_MIME_TYPES.has(file.type)) {
-    return "Cover image must be JPEG, PNG, WEBP, GIF, or AVIF";
+    return "Project image must be JPEG, PNG, WEBP, GIF, or AVIF";
   }
 
   if (file.size > PROJECT_IMAGE_MAX_FILE_SIZE_BYTES) {
-    return "Cover image must be 5 MB or smaller";
+    return "Project image must be 5 MB or smaller";
   }
 
   return null;
 }
 
-export function resolveProjectCoverImageUrl(value: string | null) {
+export function resolveProjectImageUrl(value: string | null) {
   return resolveBackendAssetUrl(value);
 }
 

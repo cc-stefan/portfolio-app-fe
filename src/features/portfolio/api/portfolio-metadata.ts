@@ -17,8 +17,8 @@ export async function getPortfolioProjectMetadata(
     };
   }
 
-  const coverImageUrl = resolvePortfolioAssetUrl(
-    projectResult.data.coverImageUrl,
+  const imageUrl = resolvePortfolioAssetUrl(
+    projectResult.data.imageUrl,
     getPortfolioApiOrigin(),
   );
 
@@ -28,7 +28,7 @@ export async function getPortfolioProjectMetadata(
     openGraph: {
       title: projectResult.data.title,
       description: projectResult.data.summary,
-      images: coverImageUrl ? [coverImageUrl] : undefined,
+      images: imageUrl ? [imageUrl] : undefined,
     },
   };
 }

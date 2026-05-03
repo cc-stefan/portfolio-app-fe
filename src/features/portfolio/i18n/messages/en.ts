@@ -42,7 +42,8 @@ export const dictionary: PortfolioDictionary = {
     copyrightLabel: "All rights reserved.",
   },
   home: {
-    title: "Fast, scalable product interfaces that are clear to use and built to last.",
+    title:
+      "Fast, scalable product interfaces that are clear to use and built to last.",
     description:
       "I build production-ready interfaces with React, Next.js, Angular, and TypeScript, combining strong frontend architecture with clear UX and product judgment.",
     primaryCta: "View projects",
@@ -59,8 +60,7 @@ export const dictionary: PortfolioDictionary = {
       {
         label: "Frontend stack",
         value: "React + Angular",
-        detail:
-          "TypeScript-first UI architecture with reusable components.",
+        detail: "TypeScript-first UI architecture with reusable components.",
       },
       {
         label: "Delivery focus",
@@ -214,11 +214,14 @@ export const dictionary: PortfolioDictionary = {
     label: "Project page",
     summaryTitle: "What I built",
     overviewTitle: "Overview",
-    overviewDescription:
-      "This project focuses on the product problem, the frontend solution, and the decisions that made the interface effective.",
+    descriptionTitle: "Description",
     factsTitle: "Project facts",
     stackTitle: "Stack",
     linksTitle: "Links",
+    liveTitle: "Live",
+    repositoryTitle: "Repository",
+    timelineTitle: "Timeline",
+    projectDateTitle: "Project date",
     deliveryTitle: "Why it works",
     deliveryCards: [
       {
@@ -244,6 +247,9 @@ export const dictionary: PortfolioDictionary = {
     notFoundTitle: "This route does not match a published project.",
     notFoundDescription:
       "The slug may be wrong, the project may still be a draft, or the backend has no matching entry.",
+    noDescription: "No description provided",
+    noProjectDate: "Project date not added yet",
+    noProjectImage: "Project image coming soon",
   },
   inquiryForm: {
     nameLabel: "Name",
@@ -265,8 +271,7 @@ export const dictionary: PortfolioDictionary = {
     successDescription:
       "Your inquiry was validated and accepted by the backend.",
     errorTitle: "Unable to send message",
-    errorDescription:
-      "Check the form fields or try again in a moment.",
+    errorDescription: "Check the form fields or try again in a moment.",
     privacyNote:
       "Validated in the client, proxied through the frontend, and handled by the backend inquiry endpoint.",
   },

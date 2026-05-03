@@ -1,18 +1,18 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
-import {Button} from "@/components/ui/button";
-import {getPortfolioApiOrigin} from "../api/portfolio-api";
-import {getPortfolioProjectPageData} from "../api/portfolio-page-data";
-import {SiteHeader} from "../components/site-header";
-import {SiteShell} from "../components/site-shell";
-import {StateCard} from "../components/state-card";
-import type {AppLocale} from "../i18n/routing";
-import {localizeHref} from "../i18n/routing";
-import type {PortfolioDictionary} from "../i18n/types";
-import {getPortfolioHomeSectionLinks} from "../lib/portfolio-navigation";
-import {ProjectContent} from "../sections/project/project-content";
-import {ProjectHero} from "../sections/project/project-hero";
-import {ProjectRelated} from "../sections/project/project-related";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { getPortfolioApiOrigin } from "../api/portfolio-api";
+import { getPortfolioProjectPageData } from "../api/portfolio-page-data";
+import { SiteHeader } from "../components/site-header";
+import { SiteShell } from "../components/site-shell";
+import { StateCard } from "../components/state-card";
+import type { AppLocale } from "../i18n/routing";
+import { localizeHref } from "../i18n/routing";
+import type { PortfolioDictionary } from "../i18n/types";
+import { getPortfolioHomeSectionLinks } from "../lib/portfolio-navigation";
+import { ProjectContent } from "../sections/project/project-content";
+import { ProjectHero } from "../sections/project/project-hero";
+import { ProjectRelated } from "../sections/project/project-related";
 
 interface PortfolioProjectScreenProps {
   slug: string;
@@ -25,8 +25,9 @@ export async function PortfolioProjectScreen({
   locale,
   dictionary,
 }: PortfolioProjectScreenProps) {
-  const { projectResult, project, relatedProjects, paragraphs } =
+  const { projectResult, project, relatedProjects } =
     await getPortfolioProjectPageData(slug);
+  const hasProjectLinks = Boolean(project?.liveUrl || project?.repositoryUrl);
 
   if (projectResult.status === 404) {
     notFound();
@@ -46,8 +47,11 @@ export async function PortfolioProjectScreen({
         dictionary={dictionary}
         navItems={[
           { href: "/#projects", label: dictionary.header.navWork },
-          { href: "#details", label: dictionary.project.overviewTitle },
-          { href: "#delivery", label: dictionary.project.deliveryTitle },
+          { href: "#overview", label: dictionary.project.overviewTitle },
+          ...(hasProjectLinks
+            ? [{ href: "#links", label: dictionary.project.linksTitle }]
+            : []),
+          { href: "#timeline", label: dictionary.project.timelineTitle },
         ]}
         primaryAction={{
           href: "/#contact",
@@ -93,9 +97,9 @@ export async function PortfolioProjectScreen({
 
             <div className="page-enter">
               <ProjectContent
+                locale={locale}
                 dictionary={dictionary}
                 project={project}
-                paragraphs={paragraphs}
               />
             </div>
 

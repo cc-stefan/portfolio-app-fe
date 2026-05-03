@@ -1,14 +1,37 @@
-export function formatProjectDate(value: string, locale: string) {
-  return new Intl.DateTimeFormat(locale, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(value));
+function parseProjectDate(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  const parsedValue = new Date(value);
+
+  if (Number.isNaN(parsedValue.getTime())) {
+    return null;
+  }
+
+  return parsedValue;
 }
 
-export function formatProjectMonth(value: string, locale: string) {
+export function formatProjectDate(
+  value: string | null | undefined,
+  locale: string,
+) {
+  const parsedValue = parseProjectDate(value);
+
+  if (!parsedValue) {
+    return null;
+  }
+
   return new Intl.DateTimeFormat(locale, {
-    month: "short",
+    month: "long",
     year: "numeric",
-  }).format(new Date(value));
+    timeZone: "UTC",
+  }).format(parsedValue);
+}
+
+export function formatProjectMonth(
+  value: string | null | undefined,
+  locale: string,
+) {
+  return formatProjectDate(value, locale);
 }

@@ -9,7 +9,6 @@ import {
 import {
   collectTechnologies,
   getFeaturedProjects,
-  getProjectSummaryParagraphs,
   getRelatedProjects,
 } from "../lib/portfolio-selectors";
 import type { ApiResult, PortfolioProject } from "../model/types";
@@ -29,7 +28,6 @@ export interface PortfolioProjectPageData {
   projectResult: ApiResult<PortfolioProject>;
   project: PortfolioProject | null;
   relatedProjects: PortfolioProject[];
-  paragraphs: string[];
 }
 
 export async function getPortfolioHomePageData(): Promise<PortfolioHomePageData> {
@@ -67,9 +65,6 @@ export async function getPortfolioProjectPageData(
     project,
     relatedProjects: project
       ? getRelatedProjects(projectsResult.data ?? [], project.slug)
-      : [],
-    paragraphs: project
-      ? getProjectSummaryParagraphs(project.description, project.summary)
       : [],
   };
 }
