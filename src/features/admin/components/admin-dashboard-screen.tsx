@@ -259,7 +259,7 @@ export function AdminDashboardScreen({
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1.05fr)_minmax(0,0.9fr)]">
+      <section className="grid gap-4 xl:grid-cols-3">
         <SummaryPanel
           icon={FolderKanban}
           title={dictionary.admin.dashboardGroups.projectsTitle}
