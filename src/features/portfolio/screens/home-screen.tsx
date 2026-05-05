@@ -78,7 +78,7 @@ export async function PortfolioHomeScreen({
         </div>
 
         <div className="page-enter">
-          <HomeInquiry dictionary={dictionary} />
+          <HomeInquiry locale={locale} dictionary={dictionary} />
         </div>
       </main>
     </SiteShell>

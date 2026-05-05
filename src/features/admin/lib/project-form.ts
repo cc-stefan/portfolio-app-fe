@@ -1,10 +1,13 @@
 import { isBackendUploadPath, resolveBackendAssetUrl } from "@/lib/backend";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
 import type {
   AdminProject,
   ProjectFieldErrors,
   ProjectFormValues,
   ProjectMutationPayload,
 } from "../model/types";
+
+type ProjectEditorCopy = PortfolioDictionary["admin"]["projectEditor"];
 
 export const PROJECT_IMAGE_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_PROJECT_IMAGE_MIME_TYPES = new Set([
@@ -114,6 +117,7 @@ export function createProjectFormValues(
 
 export function validateProjectForm(
   values: ProjectFormValues,
+  copy: ProjectEditorCopy,
 ): ProjectFieldErrors {
   const errors: ProjectFieldErrors = {};
   const title = values.title.trim();
@@ -127,53 +131,52 @@ export function validateProjectForm(
   const displayOrder = values.displayOrder.trim();
 
   if (!title) {
-    errors.title = "Title is required";
+    errors.title = copy.validation.titleRequired;
   } else if (title.length > 120) {
-    errors.title = "Title must be 120 characters or less";
+    errors.title = copy.validation.titleMaxLength;
   }
 
   if (slug) {
     if (slug.length > 160) {
-      errors.slug = "Slug must be 160 characters or less";
+      errors.slug = copy.validation.slugMaxLength;
     } else if (!SLUG_PATTERN.test(slug)) {
-      errors.slug = "Slug must use lowercase kebab-case";
+      errors.slug = copy.validation.slugPattern;
     }
   }
 
   if (!summary) {
-    errors.summary = "Summary is required";
+    errors.summary = copy.validation.summaryRequired;
   } else if (summary.length > 300) {
-    errors.summary = "Summary must be 300 characters or less";
+    errors.summary = copy.validation.summaryMaxLength;
   }
 
   if (description.length > 5000) {
-    errors.description = "Description must be 5000 characters or less";
+    errors.description = copy.validation.descriptionMaxLength;
   }
 
   if (projectDate && !isValidProjectDateInput(projectDate)) {
-    errors.projectDate = "Project date must be a valid calendar date";
+    errors.projectDate = copy.validation.projectDateInvalid;
   }
 
   if (liveUrl.length > 500) {
-    errors.liveUrl = "Live URL must be 500 characters or less";
+    errors.liveUrl = copy.validation.liveUrlMaxLength;
   }
 
   if (repositoryUrl.length > 500) {
-    errors.repositoryUrl = "Repository URL must be 500 characters or less";
+    errors.repositoryUrl = copy.validation.repositoryUrlMaxLength;
   }
 
   if (technologies.length > 20) {
-    errors.technologies = "You can add up to 20 technologies";
+    errors.technologies = copy.validation.technologiesMaxItems;
   } else if (technologies.some((technology) => technology.length > 40)) {
-    errors.technologies = "Each technology must be 40 characters or less";
+    errors.technologies = copy.validation.technologyMaxLength;
   }
 
   if (displayOrder) {
     const parsedValue = Number(displayOrder);
 
     if (!Number.isInteger(parsedValue) || parsedValue < 0) {
-      errors.displayOrder =
-        "Display order must be a whole number greater than or equal to 0";
+      errors.displayOrder = copy.validation.displayOrderInvalid;
     }
   }
 
@@ -256,17 +259,20 @@ export function buildUpdateProjectPayload(
   return payload;
 }
 
-export function getProjectFileValidationError(file: File | null) {
+export function getProjectFileValidationError(
+  file: File | null,
+  copy: ProjectEditorCopy,
+) {
   if (!file) {
     return null;
   }
 
   if (!ALLOWED_PROJECT_IMAGE_MIME_TYPES.has(file.type)) {
-    return "Project image must be JPEG, PNG, WEBP, GIF, or AVIF";
+    return copy.validation.fileTypeInvalid;
   }
 
   if (file.size > PROJECT_IMAGE_MAX_FILE_SIZE_BYTES) {
-    return "Project image must be 5 MB or smaller";
+    return copy.validation.fileSizeInvalid;
   }
 
   return null;

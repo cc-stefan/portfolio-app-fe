@@ -8,10 +8,22 @@ interface AdminDashboardPageProps {
   params: Promise<{ lang: string }>;
 }
 
-export const metadata: Metadata = {
-  title: "Admin dashboard",
-  description: "Operational overview for portfolio projects and inquiries.",
-};
+export async function generateMetadata({
+  params,
+}: AdminDashboardPageProps): Promise<Metadata> {
+  const { lang } = await params;
+
+  if (!isAppLocale(lang)) {
+    return {};
+  }
+
+  const dictionary = await getDictionary(lang);
+
+  return {
+    title: dictionary.admin.dashboardTitle,
+    description: dictionary.admin.dashboardDescription,
+  };
+}
 
 export default async function AdminDashboardPage({
   params,

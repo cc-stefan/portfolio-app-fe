@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { buildBackendApiUrl } from "@/lib/backend";
-import { inquiryFormSchema } from "@/features/portfolio/forms/inquiry-form-schema";
+import { createInquiryFormSchema } from "@/features/portfolio/forms/inquiry-form-schema";
+import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
+import {
+  defaultLocale,
+  isAppLocale,
+  type AppLocale,
+} from "@/features/portfolio/i18n/routing";
 
 interface BackendErrorBody {
   errors?: Array<{ path?: string[]; message?: string }>;
@@ -31,7 +37,20 @@ function getBackendErrorMessage(
   return fallback;
 }
 
+function resolveRequestLocale(request: Request): AppLocale {
+  const localeHeader = request.headers.get("x-app-locale");
+
+  if (localeHeader && isAppLocale(localeHeader)) {
+    return localeHeader;
+  }
+
+  return defaultLocale;
+}
+
 export async function POST(request: Request) {
+  const locale = resolveRequestLocale(request);
+  const dictionary = await getDictionary(locale);
+  const inquiryFormSchema = createInquiryFormSchema(dictionary.inquiryForm);
   const payload = await request.json().catch(() => null);
   const result = inquiryFormSchema.safeParse(payload);
 
@@ -39,7 +58,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        message: "Please review the form fields and try again.",
+        message: dictionary.inquiryForm.reviewError,
         errors: result.error.issues.map((issue) => ({
           path: issue.path.map(String),
           message: issue.message,
@@ -73,10 +92,10 @@ export async function POST(request: Request) {
           errors: responseBody?.errors ?? [],
           message:
             status === 503
-              ? "Inquiry backend endpoint is not available yet. Implement POST /api/inquiries in the backend."
+              ? dictionary.inquiryForm.endpointUnavailableError
               : getBackendErrorMessage(
                   responseBody,
-                  "Unable to submit inquiry right now.",
+                  dictionary.inquiryForm.submitUnavailableError,
                 ),
         },
         { status },
@@ -98,8 +117,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        message:
-          "The inquiry backend is unavailable right now. Start the backend or implement POST /api/inquiries first.",
+        message: dictionary.inquiryForm.backendUnavailableError,
       },
       { status: 503 },
     );

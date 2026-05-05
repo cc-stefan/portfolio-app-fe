@@ -16,6 +16,7 @@ import {
   localizeHref,
   type AppLocale,
 } from "@/features/portfolio/i18n/routing";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
 import {
   getBackendErrorMessage,
   readBackendError,
@@ -26,9 +27,13 @@ import { useAdminAuth } from "../auth/use-admin-auth";
 
 interface AdminProjectsScreenProps {
   lang: AppLocale;
+  dictionary: PortfolioDictionary;
 }
 
-export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
+export function AdminProjectsScreen({
+  lang,
+  dictionary,
+}: AdminProjectsScreenProps) {
   const { authFetch, status } = useAdminAuth();
   const [projects, setProjects] = useState<AdminProject[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +61,10 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(errorBody, "Unable to load admin projects"),
+          getBackendErrorMessage(
+            errorBody,
+            dictionary.admin.projectsPage.loadErrorFallback,
+          ),
         );
       }
 
@@ -72,7 +80,7 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
       ),
     );
     setLoading(false);
-  }, [authFetch]);
+  }, [authFetch, dictionary.admin.projectsPage.loadErrorFallback]);
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -104,7 +112,10 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to update this project"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.projectsPage.updateErrorFallback,
+        ),
       );
       setPendingProjectId(null);
       return;
@@ -116,7 +127,14 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
   }
 
   async function handleDelete(project: AdminProject) {
-    if (!window.confirm(`Delete “${project.title}”? This cannot be undone.`)) {
+    if (
+      !window.confirm(
+        dictionary.admin.projectsPage.deleteConfirm.replace(
+          "{title}",
+          project.title,
+        ),
+      )
+    ) {
       return;
     }
 
@@ -129,13 +147,16 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to delete this project"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.projectsPage.deleteErrorFallback,
+        ),
       );
       setPendingProjectId(null);
       return;
     }
 
-    toast.success("Project deleted");
+    toast.success(dictionary.admin.projectsPage.deleteSuccess);
     setProjects((currentProjects) =>
       currentProjects.filter((entry) => entry.id !== project.id),
     );
@@ -161,14 +182,14 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
   if (error) {
     return (
       <StateCard
-        eyebrow="Projects"
-        title="Unable to load projects"
+        eyebrow={dictionary.admin.projectsPage.eyebrow}
+        title={dictionary.admin.projectsPage.loadErrorTitle}
         description={error}
         tone="warning"
         action={
           <Button type="button" size="lg" onClick={() => void loadProjects()}>
             <RefreshCcw className="size-4" />
-            Retry
+            {dictionary.admin.retry}
           </Button>
         }
       />
@@ -180,23 +201,24 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
       <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            Admin projects
+            {dictionary.admin.projectsPage.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
-            Manage portfolio entries
+            {dictionary.admin.projectsPage.title}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Create, edit, publish, feature, sort, upload images, or remove
-            projects using the exact admin endpoints exposed by the backend.
+            {dictionary.admin.projectsPage.description}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin")}>Back to dashboard</Link>
+            <Link href={localizeHref(lang, "/admin")}>
+              {dictionary.admin.projectsPage.backToDashboard}
+            </Link>
           </Button>
           <Button asChild size="sm">
             <Link href={localizeHref(lang, "/admin/projects/new")}>
-              New project
+              {dictionary.admin.projectsPage.newProject}
             </Link>
           </Button>
         </div>
@@ -204,13 +226,13 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
 
       {projects.length === 0 ? (
         <StateCard
-          eyebrow="Projects"
-          title="No projects found"
-          description="Create the first project to populate the published portfolio feed."
+          eyebrow={dictionary.admin.projectsPage.eyebrow}
+          title={dictionary.admin.projectsPage.emptyTitle}
+          description={dictionary.admin.projectsPage.emptyDescription}
           action={
             <Button asChild size="lg">
               <Link href={localizeHref(lang, "/admin/projects/new")}>
-                Create project
+                {dictionary.admin.projectsPage.createProject}
               </Link>
             </Button>
           }
@@ -257,10 +279,14 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                         <Badge
                           variant={project.published ? "success" : "warning"}
                         >
-                          {project.published ? "Published" : "Draft"}
+                          {project.published
+                            ? dictionary.admin.published
+                            : dictionary.admin.draft}
                         </Badge>
                         {project.featured ? (
-                          <Badge variant="accent">Featured</Badge>
+                          <Badge variant="accent">
+                            {dictionary.admin.featured}
+                          </Badge>
                         ) : null}
                       </div>
                     </div>
@@ -277,12 +303,15 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                           </Badge>
                         ))
                       ) : (
-                        <Badge variant="outline">No technologies</Badge>
+                        <Badge variant="outline">
+                          {dictionary.admin.projectsPage.noTechnologies}
+                        </Badge>
                       )}
                     </div>
 
                     <p className="mt-4 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                      Updated {formatDate(project.updatedAt)}
+                      {dictionary.admin.projectsPage.updatedLabel}{" "}
+                      {formatDate(project.updatedAt)}
                     </p>
                   </div>
 
@@ -298,12 +327,14 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                             project.id,
                             { published: !project.published },
                             project.published
-                              ? "Project moved to draft"
-                              : "Project published",
+                              ? dictionary.admin.projectsPage.movedToDraft
+                              : dictionary.admin.projectsPage.publishedSuccess,
                           )
                         }
                       >
-                        {project.published ? "Move to draft" : "Publish"}
+                        {project.published
+                          ? dictionary.admin.projectsPage.moveToDraftAction
+                          : dictionary.admin.projectsPage.publishAction}
                       </Button>
 
                       <Button
@@ -316,17 +347,21 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                             project.id,
                             { featured: !project.featured },
                             project.featured
-                              ? "Featured flag removed"
-                              : "Project marked as featured",
+                              ? dictionary.admin.projectsPage.featuredRemoved
+                              : dictionary.admin.projectsPage.featuredSuccess,
                           )
                         }
                       >
-                        {project.featured ? "Unfeature" : "Feature"}
+                        {project.featured
+                          ? dictionary.admin.projectsPage.unfeatureAction
+                          : dictionary.admin.projectsPage.featureAction}
                       </Button>
                     </div>
 
                     <div className="grid gap-2">
-                      <LabelRow>Display order</LabelRow>
+                      <LabelRow>
+                        {dictionary.admin.projectsPage.displayOrderLabel}
+                      </LabelRow>
                       <div className="flex items-center gap-2">
                         <Input
                           value={orderDrafts[project.id] ?? ""}
@@ -353,7 +388,7 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                               parsedValue < 0
                             ) {
                               toast.error(
-                                "Display order must be a whole number greater than or equal to 0",
+                                dictionary.admin.projectsPage.displayOrderInvalid,
                               );
                               return;
                             }
@@ -361,11 +396,11 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                             void patchProject(
                               project.id,
                               { displayOrder: parsedValue },
-                              "Display order updated",
+                              dictionary.admin.projectsPage.displayOrderSaved,
                             );
                           }}
                         >
-                          Save
+                          {dictionary.admin.projectsPage.saveAction}
                         </Button>
                       </div>
                     </div>
@@ -378,7 +413,7 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                             `/admin/projects/${project.id}`,
                           )}
                         >
-                          Edit project
+                          {dictionary.admin.projectsPage.editProjectAction}
                         </Link>
                       </Button>
                       <Button
@@ -389,7 +424,7 @@ export function AdminProjectsScreen({ lang }: AdminProjectsScreenProps) {
                         onClick={() => void handleDelete(project)}
                       >
                         <Trash2 className="size-4" />
-                        Delete
+                        {dictionary.admin.projectsPage.deleteAction}
                       </Button>
                     </div>
                   </div>

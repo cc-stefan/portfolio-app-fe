@@ -5,10 +5,10 @@ export const dictionary: PortfolioDictionary = {
     siteName: "Claudiu Stefan",
     defaultTitle: "Claudiu Stefan",
     description:
-      "Frontend engineer building fast, scalable, and product-focused interfaces with React, Next.js, Angular, and TypeScript.",
-    homeTitle: "Frontend Engineer",
+      "Frontend developer building fast, scalable, and product-focused interfaces with React, Next.js, Angular, and TypeScript.",
+    homeTitle: "Frontend Developer",
     homeDescription:
-      "Portfolio for Claudiu Stefan, a frontend engineer focused on production-ready interfaces, scalable architecture, and product clarity.",
+      "Portfolio for Claudiu Stefan, a frontend developer focused on production-ready interfaces, scalable architecture, and product clarity.",
     projectUnavailableTitle: "Project unavailable",
     projectUnavailableDescription:
       "The backend could not return the content for this project.",
@@ -23,7 +23,8 @@ export const dictionary: PortfolioDictionary = {
   header: {
     brand: "Claudiu Stefan",
     avatarInitials: "CCS",
-    tagline: "Frontend Engineer",
+    tagline: "Frontend Developer",
+    navigationLabel: "Primary navigation",
     navHome: "Home",
     navAbout: "About",
     navOverview: "Overview",
@@ -37,7 +38,7 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      "Frontend engineer focused on clear product UI, scalable React architecture, and production-ready delivery.",
+      "Frontend developer focused on clear product UI, scalable React architecture, and production-ready delivery.",
     quickLinksLabel: "Quick links",
     copyrightLabel: "All rights reserved.",
   },
@@ -49,6 +50,7 @@ export const dictionary: PortfolioDictionary = {
     primaryCta: "View projects",
     secondaryCta: "Get in touch",
     metrics: {
+      ariaLabel: "Portfolio metrics",
       technologies: "Core stack",
     },
     metricCards: [
@@ -83,7 +85,7 @@ export const dictionary: PortfolioDictionary = {
     profilePanels: [
       {
         label: "Experience",
-        value: "5+ years",
+        value: "4+ years",
       },
       {
         label: "Primary focus",
@@ -117,7 +119,7 @@ export const dictionary: PortfolioDictionary = {
       "Publish a project in the admin area and it will appear here automatically.",
     capabilitiesLabel: "About",
     capabilitiesTitle:
-      "I work at the point where frontend engineering meets product clarity.",
+      "I work at the point where frontend development meets product clarity.",
     capabilitiesDescription:
       "The value I bring is technical depth, clean execution, and the judgment to make interfaces easier to use and easier to evolve.",
     capabilities: [
@@ -167,7 +169,7 @@ export const dictionary: PortfolioDictionary = {
     credentialsLabel: "Skills",
     credentialsTitle: "The stack I use most, and the way I apply it.",
     credentialsDescription:
-      "Focused on the tools and working habits most relevant to teams hiring a strong frontend engineer.",
+      "Focused on the tools and working habits most relevant to teams hiring a strong frontend developer.",
     credentialGroups: [
       {
         title: "Frontend stack",
@@ -193,7 +195,7 @@ export const dictionary: PortfolioDictionary = {
     ],
     inquiryLabel: "Contact",
     inquiryTitle:
-      "Need a frontend engineer who can turn requirements into polished product UI?",
+      "Need a frontend developer who can turn requirements into polished product UI?",
     inquiryDescription:
       "I’m open to frontend roles, product engineering work, and contract projects where performance, clarity, and reliable delivery matter.",
     inquiryHighlights: [
@@ -254,6 +256,8 @@ export const dictionary: PortfolioDictionary = {
   admin: {
     brand: "Portfolio Admin",
     openMenu: "Open admin menu",
+    closeMenu: "Close admin menu",
+    navigationLabel: "Admin navigation",
     navDashboard: "Dashboard",
     navProjects: "Projects",
     navInquiries: "Inquiries",
@@ -286,6 +290,17 @@ export const dictionary: PortfolioDictionary = {
     dashboardLoadErrorTitle: "Dashboard unavailable",
     dashboardLoadErrorDescription:
       "The operational data could not be loaded at the moment.",
+    dashboardGroups: {
+      projectsTitle: "Projects",
+      projectsDescription:
+        "Content inventory, publish state, and image coverage across the portfolio.",
+      inquiriesTitle: "Inquiries",
+      inquiriesDescription:
+        "Current inbox volume and follow-up state for recent contact submissions.",
+      accessTitle: "Access",
+      accessDescription:
+        "Authenticated users currently available in the portfolio backend.",
+    },
     statTotalProjects: "Total projects",
     statPublishedProjects: "Published",
     statDraftProjects: "Drafts",
@@ -322,6 +337,224 @@ export const dictionary: PortfolioDictionary = {
     inquiryStatusInReview: "In review",
     inquiryStatusResolved: "Resolved",
     inquiryStatusArchived: "Archived",
+    projectsPage: {
+      eyebrow: "Admin projects",
+      title: "Manage portfolio entries",
+      description:
+        "Create, edit, publish, feature, sort, upload images, or remove projects using the exact admin endpoints exposed by the backend.",
+      backToDashboard: "Back to dashboard",
+      newProject: "New project",
+      loadErrorTitle: "Unable to load projects",
+      loadErrorFallback: "Unable to load admin projects",
+      emptyTitle: "No projects found",
+      emptyDescription:
+        "Create the first project to populate the published portfolio feed.",
+      createProject: "Create project",
+      noTechnologies: "No technologies",
+      updatedLabel: "Updated",
+      movedToDraft: "Project moved to draft",
+      publishedSuccess: "Project published",
+      moveToDraftAction: "Move to draft",
+      publishAction: "Publish",
+      featuredRemoved: "Featured flag removed",
+      featuredSuccess: "Project marked as featured",
+      unfeatureAction: "Unfeature",
+      featureAction: "Feature",
+      displayOrderLabel: "Display order",
+      displayOrderInvalid:
+        "Display order must be a whole number greater than or equal to 0",
+      displayOrderSaved: "Display order updated",
+      saveAction: "Save",
+      editProjectAction: "Edit project",
+      deleteAction: "Delete",
+      deleteSuccess: "Project deleted",
+      deleteErrorFallback: "Unable to delete this project",
+      updateErrorFallback: "Unable to update this project",
+      deleteConfirm: "Delete “{title}”? This cannot be undone.",
+    },
+    inquiriesPage: {
+      eyebrow: "Admin inquiries",
+      title: "Review contact submissions",
+      description:
+        "Track public contact form submissions, update their status, and keep internal follow-up notes in one place.",
+      backToDashboard: "Back to dashboard",
+      loadErrorTitle: "Unable to load inquiries",
+      loadErrorFallback: "Unable to load admin inquiries",
+      emptyTitle: "No inquiries yet",
+      emptyDescription:
+        "Public contact submissions will appear here after the backend inquiry endpoints are live.",
+      receivedLabel: "Received",
+      actionsLabel: "Actions",
+      openInquiryAction: "Open inquiry",
+      replyByEmailAction: "Reply by email",
+      markUnreadSuccess: "Inquiry marked as unread",
+      markReadSuccess: "Inquiry marked as read",
+      markUnreadAction: "Mark unread",
+      markReadAction: "Mark read",
+      updateErrorFallback: "Unable to update this inquiry",
+    },
+    inquiryDetailPage: {
+      eyebrow: "Inquiry detail",
+      description:
+        "Review the submission, keep internal notes, and move the inquiry through its admin workflow.",
+      backToInquiries: "Back to inquiries",
+      notFoundTitle: "Inquiry not found",
+      notFoundDescription:
+        "The backend did not return an inquiry for this identifier.",
+      loadErrorTitle: "Unable to load inquiry",
+      loadErrorFallback: "The backend did not return usable inquiry data.",
+      markUnreadAction: "Mark unread",
+      markReadAction: "Mark read",
+      deleteAction: "Delete",
+      deleteConfirm: "Delete inquiry from {name}? This cannot be undone.",
+      deleteSuccess: "Inquiry deleted",
+      deleteErrorFallback: "Unable to delete this inquiry",
+      updateErrorFallback: "Unable to update this inquiry",
+      updateSuccess: "Inquiry updated",
+      markReadSuccess: "Inquiry marked as read",
+      markUnreadSuccess: "Inquiry marked as unread",
+      messageTitle: "Message",
+      messageDescription:
+        "Contact submissions are stored exactly as entered by the public form.",
+      replyByEmailAction: "Reply by email",
+      internalNotesLabel: "Internal notes",
+      internalNotesPlaceholder:
+        "Capture follow-up details, decisions, or next steps.",
+      saveHint:
+        "Status and notes are saved through the optional admin inquiry update endpoint.",
+      savingAction: "Saving...",
+      saveAction: "Save changes",
+      statusTitle: "Status",
+      statusDescription:
+        "Choose the workflow state that best reflects the current follow-up stage.",
+      selectedStatus: "Selected",
+      setStatus: "Set",
+      metadataTitle: "Metadata",
+      metadataDescription:
+        "Timing and persistence details from the backend record.",
+      receivedLabel: "Received",
+      updatedLabel: "Updated",
+      readStateLabel: "Read state",
+      recordIdLabel: "Record ID",
+    },
+    projectEditor: {
+      editEyebrow: "Edit project",
+      createEyebrow: "Create project",
+      newTitle: "New project",
+      fallbackTitle: "Project editor",
+      description:
+        "Update the DTO-backed project fields, choose a manual project date, and upload the project image separately once the project exists.",
+      backToProjects: "Back to projects",
+      deleteAction: "Delete",
+      deleteConfirm: "Delete “{title}”? This cannot be undone.",
+      notFoundTitle: "Project not found",
+      notFoundDescription:
+        "The backend did not return a project for this identifier.",
+      loadErrorTitle: "Unable to load project",
+      loadErrorFallback: "Unable to load this project",
+      coreFieldsLabel: "Core fields",
+      coreFieldsDescription:
+        "`title` and `summary` are required. `slug` stays optional and must remain lowercase kebab-case.",
+      titleFieldLabel: "Title",
+      titleFieldDescription: "Required, 1 to 120 characters.",
+      titleFieldPlaceholder: "Project title",
+      slugFieldLabel: "Slug",
+      slugFieldDescription:
+        "Optional, lowercase kebab-case, up to 160 characters.",
+      slugFieldPlaceholder: "auto-generated-from-title",
+      summaryFieldLabel: "Summary",
+      summaryFieldDescription: "Required, 1 to 300 characters.",
+      summaryFieldPlaceholder: "Short portfolio summary",
+      descriptionFieldLabel: "Description",
+      descriptionFieldDescription: "Optional, up to 5000 characters.",
+      descriptionFieldPlaceholder: "Long-form project content",
+      linksSectionLabel: "Links and timeline",
+      linksSectionDescription:
+        "The project date is a manual portfolio timeline field and is separate from database timestamps.",
+      projectDateFieldLabel: "Project date",
+      projectDateFieldDescription:
+        "Optional. Used for public timeline display.",
+      liveUrlFieldLabel: "Live URL",
+      liveUrlFieldDescription: "Optional, up to 500 characters.",
+      liveUrlFieldPlaceholder: "https://...",
+      repositoryUrlFieldLabel: "Repository URL",
+      repositoryUrlFieldDescription: "Optional, up to 500 characters.",
+      repositoryUrlFieldPlaceholder: "https://github.com/...",
+      technologiesSectionLabel: "Technologies",
+      technologiesSectionDescription:
+        "Up to 20 entries. Values are trimmed and deduplicated before submit.",
+      technologyListLabel: "Technology list",
+      technologyListDescription: "Optional array with up to 20 items.",
+      technologyInputPlaceholder: "Add technology",
+      addTechnologyAction: "Add",
+      noTechnologiesAdded: "No technologies added yet.",
+      publishingSectionLabel: "Publishing",
+      publishingSectionDescription:
+        "Publish and feature flags are sent directly to the backend, together with the integer display order.",
+      publishedFieldLabel: "Published",
+      publishedFieldDescription:
+        "Controls visibility on the public `/projects` feed.",
+      featuredFieldLabel: "Featured",
+      featuredFieldDescription:
+        "Featured projects are visually prioritized on the public site.",
+      displayOrderFieldLabel: "Display order",
+      displayOrderFieldDescription:
+        "Optional integer greater than or equal to 0.",
+      displayOrderFieldPlaceholder: "0",
+      payloadHint:
+        "The payload includes only backend-supported fields. Image URLs are never sent manually.",
+      savingProjectAction: "Saving project...",
+      creatingProjectAction: "Creating project...",
+      saveChangesAction: "Save changes",
+      createProjectAction: "Create project",
+      imageTitle: "Project image",
+      imageDescription:
+        "Uploads use the dedicated multipart endpoint and update `imageUrl` on the backend only.",
+      imagePreviewAlt: "Project image preview",
+      noImageUploaded: "No project image uploaded yet.",
+      pendingUploadBadge: "Pending upload",
+      uploadedImageBadge: "Uploaded image",
+      uploadFieldLabel: "Upload file",
+      uploadFieldDescription: "JPEG, PNG, WEBP, GIF, or AVIF up to 5 MB.",
+      chooseImageAction: "Choose image",
+      uploadImageAction: "Upload image",
+      uploadingImageAction: "Uploading image...",
+      clearSelectionAction: "Clear selection",
+      createFirstHint:
+        "Create the project first, then upload its image from the edit screen.",
+      removeUploadedImageAction: "Remove uploaded image",
+      openLiveUrlAction: "Open live URL",
+      chooseImageBeforeUpload: "Choose an image before uploading",
+      uploadImageError: "Unable to upload the project image",
+      uploadImageSuccess: "Project image uploaded",
+      saveProjectError: "Unable to save this project",
+      projectUpdatedSuccess: "Project updated",
+      projectCreatedSuccess: "Project created",
+      removeImageError: "Unable to remove the project image",
+      removeImageSuccess: "Project image removed",
+      deleteProjectError: "Unable to delete this project",
+      deleteProjectSuccess: "Project deleted",
+      validation: {
+        titleRequired: "Title is required",
+        titleMaxLength: "Title must be 120 characters or less",
+        slugMaxLength: "Slug must be 160 characters or less",
+        slugPattern: "Slug must use lowercase kebab-case",
+        summaryRequired: "Summary is required",
+        summaryMaxLength: "Summary must be 300 characters or less",
+        descriptionMaxLength: "Description must be 5000 characters or less",
+        projectDateInvalid: "Project date must be a valid calendar date",
+        liveUrlMaxLength: "Live URL must be 500 characters or less",
+        repositoryUrlMaxLength:
+          "Repository URL must be 500 characters or less",
+        technologiesMaxItems: "You can add up to 20 technologies",
+        technologyMaxLength: "Each technology must be 40 characters or less",
+        displayOrderInvalid:
+          "Display order must be a whole number greater than or equal to 0",
+        fileTypeInvalid:
+          "Project image must be JPEG, PNG, WEBP, GIF, or AVIF",
+        fileSizeInvalid: "Project image must be 5 MB or smaller",
+      },
+    },
   },
   inquiryForm: {
     nameLabel: "Name",
@@ -347,6 +580,12 @@ export const dictionary: PortfolioDictionary = {
       "Your message was received. I’ll review it and get back to you soon.",
     errorTitle: "Unable to send message",
     errorDescription: "Check the form fields or try again in a moment.",
+    reviewError: "Please review the form fields and try again.",
+    endpointUnavailableError:
+      "Inquiry backend endpoint is not available yet. Implement POST /api/inquiries in the backend.",
+    submitUnavailableError: "Unable to submit inquiry right now.",
+    backendUnavailableError:
+      "The inquiry backend is unavailable right now. Start the backend or implement POST /api/inquiries first.",
     privacyNote:
       "Your message will only be used to review your inquiry and reply directly.",
   },

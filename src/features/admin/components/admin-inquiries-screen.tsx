@@ -14,26 +14,29 @@ import {
   localizeHref,
   type AppLocale,
 } from "@/features/portfolio/i18n/routing";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
 import {
   getBackendErrorMessage,
   readBackendError,
 } from "../lib/backend-errors";
 import { dispatchAdminInquiriesUpdated } from "../lib/inquiry-events";
+import {
+  formatInquiryStatus,
+  getInquiryBadgeVariant,
+  inquiryStatusOrder,
+} from "../lib/inquiry-status";
 import type { AdminInquiry, InquiryStatus } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
 
 interface AdminInquiriesScreenProps {
   lang: AppLocale;
+  dictionary: PortfolioDictionary;
 }
 
-const statusOrder: InquiryStatus[] = [
-  "NEW",
-  "IN_REVIEW",
-  "RESOLVED",
-  "ARCHIVED",
-];
-
-export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
+export function AdminInquiriesScreen({
+  lang,
+  dictionary,
+}: AdminInquiriesScreenProps) {
   const { authFetch, status } = useAdminAuth();
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,7 +77,7 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
         setError(
           getBackendErrorMessage(
             errorBody,
-            "Unable to load admin inquiries",
+            dictionary.admin.inquiriesPage.loadErrorFallback,
           ),
         );
       }
@@ -86,7 +89,7 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
     const payload = (await response.json()) as AdminInquiry[];
     setInquiries(payload);
     setLoading(false);
-  }, [authFetch]);
+  }, [authFetch, dictionary.admin.inquiriesPage.loadErrorFallback]);
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -118,7 +121,10 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to update this inquiry"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.inquiriesPage.updateErrorFallback,
+        ),
       );
       setPendingInquiryId(null);
       return;
@@ -154,14 +160,14 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
   if (error) {
     return (
       <StateCard
-        eyebrow="Inquiries"
-        title="Unable to load inquiries"
+        eyebrow={dictionary.admin.inquiriesPage.eyebrow}
+        title={dictionary.admin.inquiriesPage.loadErrorTitle}
         description={error}
         tone="warning"
         action={
           <Button type="button" size="lg" onClick={() => void loadInquiries()}>
             <RefreshCcw className="size-4" />
-            Retry
+            {dictionary.admin.retry}
           </Button>
         }
       />
@@ -173,34 +179,52 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
       <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            Admin inquiries
+            {dictionary.admin.inquiriesPage.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
-            Review contact submissions
+            {dictionary.admin.inquiriesPage.title}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Track public contact form submissions, update their status, and keep internal follow-up notes in one place.
+            {dictionary.admin.inquiriesPage.description}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin")}>Back to dashboard</Link>
+            <Link href={localizeHref(lang, "/admin")}>
+              {dictionary.admin.inquiriesPage.backToDashboard}
+            </Link>
           </Button>
         </div>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Total inquiries" value={stats.total} tone="neutral" />
-        <StatCard label="Unread" value={stats.unreadCount} tone="accent" />
-        <StatCard label="In review" value={stats.inReviewCount} tone="warning" />
-        <StatCard label="Resolved" value={stats.resolvedCount} tone="success" />
+        <StatCard
+          label={dictionary.admin.statTotalInquiries}
+          value={stats.total}
+          tone="neutral"
+        />
+        <StatCard
+          label={dictionary.admin.statUnreadInquiries}
+          value={stats.unreadCount}
+          tone="accent"
+        />
+        <StatCard
+          label={dictionary.admin.statInReviewInquiries}
+          value={stats.inReviewCount}
+          tone="warning"
+        />
+        <StatCard
+          label={dictionary.admin.statResolvedInquiries}
+          value={stats.resolvedCount}
+          tone="success"
+        />
       </section>
 
       {inquiries.length === 0 ? (
         <StateCard
-          eyebrow="Inquiries"
-          title="No inquiries yet"
-          description="Public contact submissions will appear here after the backend inquiry endpoints are live."
+          eyebrow={dictionary.admin.inquiriesPage.eyebrow}
+          title={dictionary.admin.inquiriesPage.emptyTitle}
+          description={dictionary.admin.inquiriesPage.emptyDescription}
         />
       ) : (
         <section className="grid gap-4">
@@ -209,8 +233,10 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
             .sort(
               (left, right) =>
                 Number(left.isRead) - Number(right.isRead) ||
-                statusOrder.indexOf(left.status) - statusOrder.indexOf(right.status) ||
-                new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
+                inquiryStatusOrder.indexOf(left.status) -
+                  inquiryStatusOrder.indexOf(right.status) ||
+                new Date(right.createdAt).getTime() -
+                  new Date(left.createdAt).getTime(),
             )
             .map((inquiry) => (
               <Card key={inquiry.id} variant="solid">
@@ -231,10 +257,15 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge variant={inquiry.isRead ? "outline" : "accent"}>
-                          {inquiry.isRead ? "Read" : "Unread"}
+                          {inquiry.isRead
+                            ? dictionary.admin.read
+                            : dictionary.admin.unread}
                         </Badge>
                         <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
-                          {formatInquiryStatus(inquiry.status)}
+                          {formatInquiryStatus(
+                            inquiry.status,
+                            dictionary.admin,
+                          )}
                         </Badge>
                       </div>
                     </div>
@@ -245,25 +276,30 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
 
                     <div className="mt-4 flex flex-wrap gap-2">
                       <Badge variant="outline">
-                        Received {formatDate(inquiry.createdAt)}
+                        {dictionary.admin.inquiriesPage.receivedLabel}{" "}
+                        {formatDate(inquiry.createdAt)}
                       </Badge>
                       {inquiry.adminNotes?.trim() ? (
-                        <Badge variant="neutral">Has notes</Badge>
+                        <Badge variant="neutral">
+                          {dictionary.admin.hasNotes}
+                        </Badge>
                       ) : null}
                     </div>
                   </div>
 
                   <div className="grid gap-2 rounded-xl border border-border bg-background/70 p-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                      Actions
+                      {dictionary.admin.inquiriesPage.actionsLabel}
                     </p>
                     <Button asChild variant="outline" size="sm">
                       <Link href={localizeHref(lang, `/admin/inquiries/${inquiry.id}`)}>
-                        Open inquiry
+                        {dictionary.admin.inquiriesPage.openInquiryAction}
                       </Link>
                     </Button>
                     <Button asChild size="sm">
-                      <Link href={`mailto:${inquiry.email}`}>Reply by email</Link>
+                      <Link href={`mailto:${inquiry.email}`}>
+                        {dictionary.admin.inquiriesPage.replyByEmailAction}
+                      </Link>
                     </Button>
                     <Button
                       type="button"
@@ -275,12 +311,14 @@ export function AdminInquiriesScreen({ lang }: AdminInquiriesScreenProps) {
                           inquiry.id,
                           { isRead: !inquiry.isRead },
                           inquiry.isRead
-                            ? "Inquiry marked as unread"
-                            : "Inquiry marked as read",
+                            ? dictionary.admin.inquiriesPage.markUnreadSuccess
+                            : dictionary.admin.inquiriesPage.markReadSuccess,
                         )
                       }
                     >
-                      {inquiry.isRead ? "Mark unread" : "Mark read"}
+                      {inquiry.isRead
+                        ? dictionary.admin.inquiriesPage.markUnreadAction
+                        : dictionary.admin.inquiriesPage.markReadAction}
                     </Button>
                   </div>
                 </CardContent>
@@ -318,28 +356,4 @@ function StatCard({
       </CardContent>
     </Card>
   );
-}
-
-function getInquiryBadgeVariant(status: InquiryStatus) {
-  if (status === "RESOLVED") {
-    return "success";
-  }
-
-  if (status === "NEW") {
-    return "accent";
-  }
-
-  if (status === "ARCHIVED") {
-    return "outline";
-  }
-
-  return "neutral";
-}
-
-function formatInquiryStatus(status: InquiryStatus) {
-  return status
-    .toLowerCase()
-    .split("_")
-    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-    .join(" ");
 }

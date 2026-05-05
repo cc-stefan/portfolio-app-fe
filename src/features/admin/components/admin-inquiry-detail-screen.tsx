@@ -22,11 +22,16 @@ import {
   localizeHref,
   type AppLocale,
 } from "@/features/portfolio/i18n/routing";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
 import {
   getBackendErrorMessage,
   readBackendError,
 } from "../lib/backend-errors";
 import { dispatchAdminInquiriesUpdated } from "../lib/inquiry-events";
+import {
+  formatInquiryStatus,
+  getInquiryBadgeVariant,
+} from "../lib/inquiry-status";
 import type {
   AdminInquiry,
   InquiryMutationPayload,
@@ -37,6 +42,7 @@ import { useAdminAuth } from "../auth/use-admin-auth";
 interface AdminInquiryDetailScreenProps {
   lang: AppLocale;
   inquiryId: string;
+  dictionary: PortfolioDictionary;
 }
 
 const statusOptions: InquiryStatus[] = [
@@ -49,6 +55,7 @@ const statusOptions: InquiryStatus[] = [
 export function AdminInquiryDetailScreen({
   lang,
   inquiryId,
+  dictionary,
 }: AdminInquiryDetailScreenProps) {
   const router = useRouter();
   const { authFetch, status } = useAdminAuth();
@@ -95,7 +102,10 @@ export function AdminInquiryDetailScreen({
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(errorBody, "Unable to load this inquiry"),
+          getBackendErrorMessage(
+            errorBody,
+            dictionary.admin.inquiryDetailPage.loadErrorFallback,
+          ),
         );
       }
 
@@ -106,7 +116,12 @@ export function AdminInquiryDetailScreen({
     const payload = (await response.json()) as AdminInquiry;
     applyInquiry(payload);
     setLoading(false);
-  }, [applyInquiry, authFetch, inquiryId]);
+  }, [
+    applyInquiry,
+    authFetch,
+    dictionary.admin.inquiryDetailPage.loadErrorFallback,
+    inquiryId,
+  ]);
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -139,7 +154,10 @@ export function AdminInquiryDetailScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to update this inquiry"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.inquiryDetailPage.updateErrorFallback,
+        ),
       );
       setSaving(false);
       return;
@@ -148,7 +166,7 @@ export function AdminInquiryDetailScreen({
     const updatedInquiry = (await response.json()) as AdminInquiry;
     applyInquiry(updatedInquiry);
     dispatchAdminInquiriesUpdated();
-    toast.success("Inquiry updated");
+    toast.success(dictionary.admin.inquiryDetailPage.updateSuccess);
     setSaving(false);
   }
 
@@ -172,7 +190,10 @@ export function AdminInquiryDetailScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to update this inquiry"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.inquiryDetailPage.updateErrorFallback,
+        ),
       );
       setReadToggling(false);
       return;
@@ -183,8 +204,8 @@ export function AdminInquiryDetailScreen({
     dispatchAdminInquiriesUpdated();
     toast.success(
       updatedInquiry.isRead
-        ? "Inquiry marked as read"
-        : "Inquiry marked as unread",
+        ? dictionary.admin.inquiryDetailPage.markReadSuccess
+        : dictionary.admin.inquiryDetailPage.markUnreadSuccess,
     );
     setReadToggling(false);
   }
@@ -194,7 +215,14 @@ export function AdminInquiryDetailScreen({
       return;
     }
 
-    if (!window.confirm(`Delete inquiry from ${inquiry.name}? This cannot be undone.`)) {
+    if (
+      !window.confirm(
+        dictionary.admin.inquiryDetailPage.deleteConfirm.replace(
+          "{name}",
+          inquiry.name,
+        ),
+      )
+    ) {
       return;
     }
 
@@ -207,13 +235,16 @@ export function AdminInquiryDetailScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to delete this inquiry"),
+        getBackendErrorMessage(
+          errorBody,
+          dictionary.admin.inquiryDetailPage.deleteErrorFallback,
+        ),
       );
       setDeleting(false);
       return;
     }
 
-    toast.success("Inquiry deleted");
+    toast.success(dictionary.admin.inquiryDetailPage.deleteSuccess);
     dispatchAdminInquiriesUpdated();
     router.replace(localizeHref(lang, "/admin/inquiries"));
   }
@@ -236,13 +267,13 @@ export function AdminInquiryDetailScreen({
   if (notFound) {
     return (
       <StateCard
-        eyebrow="Inquiries"
-        title="Inquiry not found"
-        description="The backend did not return an inquiry for this identifier."
+        eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
+        title={dictionary.admin.inquiryDetailPage.notFoundTitle}
+        description={dictionary.admin.inquiryDetailPage.notFoundDescription}
         action={
           <Button asChild size="lg">
             <Link href={localizeHref(lang, "/admin/inquiries")}>
-              Back to inquiries
+              {dictionary.admin.inquiryDetailPage.backToInquiries}
             </Link>
           </Button>
         }
@@ -253,14 +284,16 @@ export function AdminInquiryDetailScreen({
   if (error || !inquiry) {
     return (
       <StateCard
-        eyebrow="Inquiries"
-        title="Unable to load inquiry"
-        description={error ?? "The backend did not return usable inquiry data."}
+        eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
+        title={dictionary.admin.inquiryDetailPage.loadErrorTitle}
+        description={
+          error ?? dictionary.admin.inquiryDetailPage.loadErrorFallback
+        }
         tone="warning"
         action={
           <Button type="button" size="lg" onClick={() => void loadInquiry()}>
             <RefreshCcw className="size-4" />
-            Retry
+            {dictionary.admin.retry}
           </Button>
         }
       />
@@ -272,20 +305,20 @@ export function AdminInquiryDetailScreen({
       <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            Inquiry detail
+            {dictionary.admin.inquiryDetailPage.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
             {inquiry.name}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Review the submission, keep internal notes, and move the inquiry through its admin workflow.
+            {dictionary.admin.inquiryDetailPage.description}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
             <Link href={localizeHref(lang, "/admin/inquiries")}>
               <ArrowLeft className="size-4" />
-              Back to inquiries
+              {dictionary.admin.inquiryDetailPage.backToInquiries}
             </Link>
           </Button>
           <Button
@@ -295,7 +328,9 @@ export function AdminInquiryDetailScreen({
             disabled={readToggling}
             onClick={() => void handleToggleRead()}
           >
-            {inquiry.isRead ? "Mark unread" : "Mark read"}
+            {inquiry.isRead
+              ? dictionary.admin.inquiryDetailPage.markUnreadAction
+              : dictionary.admin.inquiryDetailPage.markReadAction}
           </Button>
           <Button
             type="button"
@@ -305,7 +340,7 @@ export function AdminInquiryDetailScreen({
             onClick={() => void handleDelete()}
           >
             <Trash2 className="size-4" />
-            Delete
+            {dictionary.admin.inquiryDetailPage.deleteAction}
           </Button>
         </div>
       </section>
@@ -313,9 +348,9 @@ export function AdminInquiryDetailScreen({
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
         <Card variant="solid">
           <CardHeader>
-            <CardTitle>Message</CardTitle>
+            <CardTitle>{dictionary.admin.inquiryDetailPage.messageTitle}</CardTitle>
             <CardDescription>
-              Contact submissions are stored exactly as entered by the public form.
+              {dictionary.admin.inquiryDetailPage.messageDescription}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6">
@@ -331,10 +366,12 @@ export function AdminInquiryDetailScreen({
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant={inquiry.isRead ? "outline" : "accent"}>
-                    {inquiry.isRead ? "Read" : "Unread"}
+                    {inquiry.isRead
+                      ? dictionary.admin.read
+                      : dictionary.admin.unread}
                   </Badge>
                   <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
-                    {formatInquiryStatus(inquiry.status)}
+                    {formatInquiryStatus(inquiry.status, dictionary.admin)}
                   </Badge>
                 </div>
               </div>
@@ -343,7 +380,7 @@ export function AdminInquiryDetailScreen({
               </p>
               <Button asChild variant="outline" size="sm" className="justify-between sm:w-fit">
                 <Link href={`mailto:${inquiry.email}`}>
-                  Reply by email
+                  {dictionary.admin.inquiryDetailPage.replyByEmailAction}
                   <Mail className="size-4" />
                 </Link>
               </Button>
@@ -351,19 +388,19 @@ export function AdminInquiryDetailScreen({
 
             <div className="grid gap-3">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                Internal notes
+                {dictionary.admin.inquiryDetailPage.internalNotesLabel}
               </p>
               <Textarea
                 value={notesValue}
                 onChange={(event) => setNotesValue(event.target.value)}
-                placeholder="Capture follow-up details, decisions, or next steps."
+                placeholder={dictionary.admin.inquiryDetailPage.internalNotesPlaceholder}
                 className="min-h-40"
               />
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
               <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-                Status and notes are saved through the optional admin inquiry update endpoint.
+                {dictionary.admin.inquiryDetailPage.saveHint}
               </p>
               <Button
                 type="button"
@@ -371,7 +408,9 @@ export function AdminInquiryDetailScreen({
                 disabled={saving || deleting}
                 onClick={() => void handleSave()}
               >
-                {saving ? "Saving..." : "Save changes"}
+                {saving
+                  ? dictionary.admin.inquiryDetailPage.savingAction
+                  : dictionary.admin.inquiryDetailPage.saveAction}
               </Button>
             </div>
           </CardContent>
@@ -380,9 +419,9 @@ export function AdminInquiryDetailScreen({
         <div className="grid gap-6">
           <Card variant="solid">
             <CardHeader>
-              <CardTitle>Status</CardTitle>
+              <CardTitle>{dictionary.admin.inquiryDetailPage.statusTitle}</CardTitle>
               <CardDescription>
-                Choose the workflow state that best reflects the current follow-up stage.
+                {dictionary.admin.inquiryDetailPage.statusDescription}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3">
@@ -400,9 +439,11 @@ export function AdminInquiryDetailScreen({
                     }`}
                     onClick={() => setStatusValue(option)}
                   >
-                    <span>{formatInquiryStatus(option)}</span>
+                    <span>{formatInquiryStatus(option, dictionary.admin)}</span>
                     <Badge variant={getInquiryBadgeVariant(option)}>
-                      {isActive ? "Selected" : "Set"}
+                      {isActive
+                        ? dictionary.admin.inquiryDetailPage.selectedStatus
+                        : dictionary.admin.inquiryDetailPage.setStatus}
                     </Badge>
                   </button>
                 );
@@ -412,16 +453,29 @@ export function AdminInquiryDetailScreen({
 
           <Card variant="solid">
             <CardHeader>
-              <CardTitle>Metadata</CardTitle>
+              <CardTitle>{dictionary.admin.inquiryDetailPage.metadataTitle}</CardTitle>
               <CardDescription>
-                Timing and persistence details from the backend record.
+                {dictionary.admin.inquiryDetailPage.metadataDescription}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <Fact label="Received" value={formatDate(inquiry.createdAt)} />
-              <Fact label="Updated" value={formatDate(inquiry.updatedAt)} />
-              <Fact label="Read state" value={inquiry.isRead ? "Read" : "Unread"} />
-              <Fact label="Record id" value={inquiry.id} mono />
+              <Fact
+                label={dictionary.admin.inquiryDetailPage.receivedLabel}
+                value={formatDate(inquiry.createdAt)}
+              />
+              <Fact
+                label={dictionary.admin.inquiryDetailPage.updatedLabel}
+                value={formatDate(inquiry.updatedAt)}
+              />
+              <Fact
+                label={dictionary.admin.inquiryDetailPage.readStateLabel}
+                value={inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
+              />
+              <Fact
+                label={dictionary.admin.inquiryDetailPage.recordIdLabel}
+                value={inquiry.id}
+                mono
+              />
             </CardContent>
           </Card>
         </div>
@@ -451,32 +505,4 @@ function Fact({
       </p>
     </div>
   );
-}
-
-function getInquiryBadgeVariant(status: InquiryStatus) {
-  if (status === "RESOLVED") {
-    return "success";
-  }
-
-  if (status === "NEW") {
-    return "accent";
-  }
-
-  if (status === "IN_REVIEW") {
-    return "warning";
-  }
-
-  if (status === "ARCHIVED") {
-    return "outline";
-  }
-
-  return "neutral";
-}
-
-function formatInquiryStatus(status: InquiryStatus) {
-  return status
-    .toLowerCase()
-    .split("_")
-    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-    .join(" ");
 }

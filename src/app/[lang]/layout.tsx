@@ -52,7 +52,7 @@ export async function generateMetadata({
 
   return {
     metadataBase,
-    applicationName: "Portfolio",
+    applicationName: dictionary.meta.siteName,
     title: {
       default: dictionary.meta.defaultTitle,
       template: `%s | ${dictionary.meta.siteName}`,

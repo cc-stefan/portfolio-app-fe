@@ -29,8 +29,9 @@ export function SheetOverlay({
 export function SheetContent({
   className,
   children,
+  closeLabel,
   ...props
-}: React.ComponentProps<typeof Dialog.Content>) {
+}: React.ComponentProps<typeof Dialog.Content> & { closeLabel: string }) {
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -49,7 +50,7 @@ export function SheetContent({
         {children}
         <Dialog.Close className="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45">
           <X className="size-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{closeLabel}</span>
         </Dialog.Close>
       </Dialog.Content>
     </SheetPortal>

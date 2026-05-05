@@ -66,7 +66,10 @@ export function AdminLoginScreen({
     setSubmissionError(null);
     clearAccessDenied();
 
-    const result = await login(values.email, values.password);
+    const result = await login(values.email, values.password, {
+      invalidCredentials: dictionary.admin.unableToSignIn,
+      accessDenied: dictionary.admin.accessDeniedDescription,
+    });
 
     if (!result.ok) {
       const message = result.error ?? dictionary.admin.unableToSignIn;

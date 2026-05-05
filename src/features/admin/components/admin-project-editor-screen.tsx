@@ -31,6 +31,7 @@ import {
   localizeHref,
   type AppLocale,
 } from "@/features/portfolio/i18n/routing";
+import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
 import { cn } from "@/lib/utils";
 import { useAdminAuth } from "../auth/use-admin-auth";
 import {
@@ -58,6 +59,7 @@ import type {
 
 interface AdminProjectEditorScreenProps {
   lang: AppLocale;
+  dictionary: PortfolioDictionary;
   projectId?: string;
 }
 
@@ -77,10 +79,12 @@ const projectErrorFieldByFormField: Partial<
 
 export function AdminProjectEditorScreen({
   lang,
+  dictionary,
   projectId,
 }: AdminProjectEditorScreenProps) {
   const router = useRouter();
   const { authFetch, status } = useAdminAuth();
+  const copy = dictionary.admin.projectEditor;
   const [project, setProject] = useState<AdminProject | null>(null);
   const [formValues, setFormValues] = useState<ProjectFormValues>(
     createEmptyProjectFormValues(),
@@ -143,7 +147,7 @@ export function AdminProjectEditorScreen({
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setPageError(
-          getBackendErrorMessage(errorBody, "Unable to load this project"),
+          getBackendErrorMessage(errorBody, copy.loadErrorFallback),
         );
       }
 
@@ -154,7 +158,7 @@ export function AdminProjectEditorScreen({
     const payload = (await response.json()) as AdminProject;
     applyProject(payload);
     setLoading(false);
-  }, [applyProject, authFetch, projectId]);
+  }, [applyProject, authFetch, copy.loadErrorFallback, projectId]);
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -231,13 +235,13 @@ export function AdminProjectEditorScreen({
     }
 
     if (!selectedFile) {
-      const message = "Choose an image before uploading";
+      const message = copy.chooseImageBeforeUpload;
       setFileError(message);
       toast.error(message);
       return;
     }
 
-    const validationError = getProjectFileValidationError(selectedFile);
+    const validationError = getProjectFileValidationError(selectedFile, copy);
 
     if (validationError) {
       setFileError(validationError);
@@ -260,7 +264,7 @@ export function AdminProjectEditorScreen({
       const errorBody = await readBackendError(response);
       const message = getBackendErrorMessage(
         errorBody,
-        "Unable to upload the project image",
+        copy.uploadImageError,
       );
       setFileError(message);
       toast.error(message);
@@ -271,13 +275,13 @@ export function AdminProjectEditorScreen({
     const updatedProject = (await response.json()) as AdminProject;
     applyProject(updatedProject);
     replaceSelectedFile(null);
-    toast.success("Project image uploaded");
+    toast.success(copy.uploadImageSuccess);
     setUploading(false);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const validationErrors = validateProjectForm(formValues);
+    const validationErrors = validateProjectForm(formValues, copy);
 
     if (Object.keys(validationErrors).length > 0) {
       setFieldErrors(validationErrors);
@@ -318,14 +322,16 @@ export function AdminProjectEditorScreen({
 
       setPageError(
         slugConflictMessage ??
-          getBackendErrorMessage(errorBody, "Unable to save this project"),
+          getBackendErrorMessage(errorBody, copy.saveProjectError),
       );
       setSaving(false);
       return;
     }
 
     const savedProject = (await response.json()) as AdminProject;
-    toast.success(isEditing ? "Project updated" : "Project created");
+    toast.success(
+      isEditing ? copy.projectUpdatedSuccess : copy.projectCreatedSuccess,
+    );
 
     if (isEditing) {
       applyProject(savedProject);
@@ -350,7 +356,7 @@ export function AdminProjectEditorScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to remove the project image"),
+        getBackendErrorMessage(errorBody, copy.removeImageError),
       );
       setUploading(false);
       return;
@@ -360,7 +366,7 @@ export function AdminProjectEditorScreen({
     applyProject(updatedProject);
     replaceSelectedFile(null);
     setFileError(null);
-    toast.success("Project image removed");
+    toast.success(copy.removeImageSuccess);
     setUploading(false);
   }
 
@@ -369,7 +375,7 @@ export function AdminProjectEditorScreen({
       return;
     }
 
-    if (!window.confirm(`Delete “${project.title}”? This cannot be undone.`)) {
+    if (!window.confirm(copy.deleteConfirm.replace("{title}", project.title))) {
       return;
     }
 
@@ -382,13 +388,13 @@ export function AdminProjectEditorScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(errorBody, "Unable to delete this project"),
+        getBackendErrorMessage(errorBody, copy.deleteProjectError),
       );
       setDeleting(false);
       return;
     }
 
-    toast.success("Project deleted");
+    toast.success(copy.deleteProjectSuccess);
     router.replace(localizeHref(lang, "/admin/projects"));
   }
 
@@ -410,13 +416,13 @@ export function AdminProjectEditorScreen({
   if (notFound) {
     return (
       <StateCard
-        eyebrow="Projects"
-        title="Project not found"
-        description="The backend did not return a project for this identifier."
+        eyebrow={dictionary.admin.navProjects}
+        title={copy.notFoundTitle}
+        description={copy.notFoundDescription}
         action={
           <Button asChild size="lg">
             <Link href={localizeHref(lang, "/admin/projects")}>
-              Back to projects
+              {copy.backToProjects}
             </Link>
           </Button>
         }
@@ -427,14 +433,14 @@ export function AdminProjectEditorScreen({
   if (pageError && isEditing && !project) {
     return (
       <StateCard
-        eyebrow="Projects"
-        title="Unable to load project"
+        eyebrow={dictionary.admin.navProjects}
+        title={copy.loadErrorTitle}
         description={pageError}
         tone="warning"
         action={
           <Button type="button" size="lg" onClick={() => void loadProject()}>
             <RefreshCcw className="size-4" />
-            Retry
+            {dictionary.admin.retry}
           </Button>
         }
       />
@@ -446,21 +452,20 @@ export function AdminProjectEditorScreen({
       <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            {isEditing ? "Edit project" : "Create project"}
+            {isEditing ? copy.editEyebrow : copy.createEyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
-            {isEditing ? (project?.title ?? "Project editor") : "New project"}
+            {isEditing ? project?.title ?? copy.fallbackTitle : copy.newTitle}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-            Update the DTO-backed project fields, choose a manual project date,
-            and upload the project image separately once the project exists.
+            {copy.description}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
             <Link href={localizeHref(lang, "/admin/projects")}>
               <ArrowLeft className="size-4" />
-              Back to projects
+              {copy.backToProjects}
             </Link>
           </Button>
           {isEditing ? (
@@ -472,7 +477,7 @@ export function AdminProjectEditorScreen({
               onClick={() => void handleDeleteProject()}
             >
               <Trash2 className="size-4" />
-              Delete
+              {copy.deleteAction}
             </Button>
           ) : null}
         </div>
@@ -491,69 +496,68 @@ export function AdminProjectEditorScreen({
               <section className="grid gap-5">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Core fields
+                    {copy.coreFieldsLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    `title` and `summary` are required. `slug` stays optional
-                    and must remain lowercase kebab-case.
+                    {copy.coreFieldsDescription}
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field
-                    label="Title"
+                    label={copy.titleFieldLabel}
                     error={fieldErrors.title}
-                    description="Required, 1 to 120 characters."
+                    description={copy.titleFieldDescription}
                   >
                     <Input
                       value={formValues.title}
                       onChange={(event) =>
                         updateField("title", event.target.value)
                       }
-                      placeholder="Project title"
+                      placeholder={copy.titleFieldPlaceholder}
                       aria-invalid={Boolean(fieldErrors.title)}
                     />
                   </Field>
                   <Field
-                    label="Slug"
+                    label={copy.slugFieldLabel}
                     error={fieldErrors.slug}
-                    description="Optional, lowercase kebab-case, up to 160 characters."
+                    description={copy.slugFieldDescription}
                   >
                     <Input
                       value={formValues.slug}
                       onChange={(event) =>
                         updateField("slug", event.target.value)
                       }
-                      placeholder="auto-generated-from-title"
+                      placeholder={copy.slugFieldPlaceholder}
                       aria-invalid={Boolean(fieldErrors.slug)}
                     />
                   </Field>
                 </div>
                 <Field
-                  label="Summary"
+                  label={copy.summaryFieldLabel}
                   error={fieldErrors.summary}
-                  description="Required, 1 to 300 characters."
+                  description={copy.summaryFieldDescription}
                 >
                   <Textarea
                     value={formValues.summary}
                     onChange={(event) =>
                       updateField("summary", event.target.value)
                     }
-                    placeholder="Short portfolio summary"
+                    placeholder={copy.summaryFieldPlaceholder}
                     className="min-h-28"
                     aria-invalid={Boolean(fieldErrors.summary)}
                   />
                 </Field>
                 <Field
-                  label="Description"
+                  label={copy.descriptionFieldLabel}
                   error={fieldErrors.description}
-                  description="Optional, up to 5000 characters."
+                  description={copy.descriptionFieldDescription}
                 >
                   <Textarea
                     value={formValues.description}
                     onChange={(event) =>
                       updateField("description", event.target.value)
                     }
-                    placeholder="Long-form project content"
+                    placeholder={copy.descriptionFieldPlaceholder}
                     className="min-h-44"
                     aria-invalid={Boolean(fieldErrors.description)}
                   />
@@ -563,18 +567,17 @@ export function AdminProjectEditorScreen({
               <section className="grid gap-5 border-t border-border pt-8">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Links and timeline
+                    {copy.linksSectionLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    The project date is a manual portfolio timeline field and is
-                    separate from database timestamps.
+                    {copy.linksSectionDescription}
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field
-                    label="Project date"
+                    label={copy.projectDateFieldLabel}
                     error={fieldErrors.projectDate}
-                    description="Optional. Used for public timeline display."
+                    description={copy.projectDateFieldDescription}
                   >
                     <Input
                       type="date"
@@ -586,31 +589,31 @@ export function AdminProjectEditorScreen({
                     />
                   </Field>
                   <Field
-                    label="Live URL"
+                    label={copy.liveUrlFieldLabel}
                     error={fieldErrors.liveUrl}
-                    description="Optional, up to 500 characters."
+                    description={copy.liveUrlFieldDescription}
                   >
                     <Input
                       value={formValues.liveUrl}
                       onChange={(event) =>
                         updateField("liveUrl", event.target.value)
                       }
-                      placeholder="https://..."
+                      placeholder={copy.liveUrlFieldPlaceholder}
                       aria-invalid={Boolean(fieldErrors.liveUrl)}
                     />
                   </Field>
                 </div>
                 <Field
-                  label="Repository URL"
+                  label={copy.repositoryUrlFieldLabel}
                   error={fieldErrors.repositoryUrl}
-                  description="Optional, up to 500 characters."
+                  description={copy.repositoryUrlFieldDescription}
                 >
                   <Input
                     value={formValues.repositoryUrl}
                     onChange={(event) =>
                       updateField("repositoryUrl", event.target.value)
                     }
-                    placeholder="https://github.com/..."
+                    placeholder={copy.repositoryUrlFieldPlaceholder}
                     aria-invalid={Boolean(fieldErrors.repositoryUrl)}
                   />
                 </Field>
@@ -619,17 +622,16 @@ export function AdminProjectEditorScreen({
               <section className="grid gap-5 border-t border-border pt-8">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Technologies
+                    {copy.technologiesSectionLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Up to 20 entries. Values are trimmed and deduplicated before
-                    submit.
+                    {copy.technologiesSectionDescription}
                   </p>
                 </div>
                 <Field
-                  label="Technology list"
+                  label={copy.technologyListLabel}
                   error={fieldErrors.technologies}
-                  description="Optional array with up to 20 items."
+                  description={copy.technologyListDescription}
                 >
                   <div className="flex flex-col gap-3">
                     <div className="flex gap-2">
@@ -639,14 +641,14 @@ export function AdminProjectEditorScreen({
                           setTechnologyInput(event.target.value)
                         }
                         onKeyDown={handleTechnologyKeyDown}
-                        placeholder="Add technology"
+                        placeholder={copy.technologyInputPlaceholder}
                       />
                       <Button
                         type="button"
                         variant="outline"
                         onClick={addTechnology}
                       >
-                        Add
+                        {copy.addTechnologyAction}
                       </Button>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -664,7 +666,7 @@ export function AdminProjectEditorScreen({
                         ))
                       ) : (
                         <p className="text-sm text-muted-foreground">
-                          No technologies added yet.
+                          {copy.noTechnologiesAdded}
                         </p>
                       )}
                     </div>
@@ -675,25 +677,24 @@ export function AdminProjectEditorScreen({
               <section className="grid gap-5 border-t border-border pt-8">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    Publishing
+                    {copy.publishingSectionLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Publish and feature flags are sent directly to the backend,
-                    together with the integer display order.
+                    {copy.publishingSectionDescription}
                   </p>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <ToggleField
-                    label="Published"
-                    description="Controls visibility on the public `/projects` feed."
+                    label={copy.publishedFieldLabel}
+                    description={copy.publishedFieldDescription}
                     checked={formValues.published}
                     onCheckedChange={(checked) =>
                       updateField("published", checked)
                     }
                   />
                   <ToggleField
-                    label="Featured"
-                    description="Featured projects are visually prioritized on the public site."
+                    label={copy.featuredFieldLabel}
+                    description={copy.featuredFieldDescription}
                     checked={formValues.featured}
                     onCheckedChange={(checked) =>
                       updateField("featured", checked)
@@ -701,9 +702,9 @@ export function AdminProjectEditorScreen({
                   />
                 </div>
                 <Field
-                  label="Display order"
+                  label={copy.displayOrderFieldLabel}
                   error={fieldErrors.displayOrder}
-                  description="Optional integer greater than or equal to 0."
+                  description={copy.displayOrderFieldDescription}
                 >
                   <Input
                     value={formValues.displayOrder}
@@ -711,7 +712,7 @@ export function AdminProjectEditorScreen({
                       updateField("displayOrder", event.target.value)
                     }
                     inputMode="numeric"
-                    placeholder="0"
+                    placeholder={copy.displayOrderFieldPlaceholder}
                     aria-invalid={Boolean(fieldErrors.displayOrder)}
                   />
                 </Field>
@@ -719,17 +720,16 @@ export function AdminProjectEditorScreen({
 
               <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-8">
                 <p className="text-sm leading-6 text-muted-foreground">
-                  The payload includes only backend-supported fields. Image URLs
-                  are never sent manually.
+                  {copy.payloadHint}
                 </p>
                 <Button type="submit" size="lg" disabled={saving || uploading}>
                   {saving
                     ? isEditing
-                      ? "Saving project..."
-                      : "Creating project..."
+                      ? copy.savingProjectAction
+                      : copy.creatingProjectAction
                     : isEditing
-                      ? "Save changes"
-                      : "Create project"}
+                      ? copy.saveChangesAction
+                      : copy.createProjectAction}
                 </Button>
               </div>
             </form>
@@ -739,10 +739,9 @@ export function AdminProjectEditorScreen({
         <div className="grid gap-6">
           <Card variant="solid" className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Project image</CardTitle>
+              <CardTitle>{copy.imageTitle}</CardTitle>
               <CardDescription>
-                Uploads use the dedicated multipart endpoint and update
-                `imageUrl` on the backend only.
+                {copy.imageDescription}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
@@ -750,38 +749,38 @@ export function AdminProjectEditorScreen({
                 {previewImageUrl ? (
                   <Image
                     src={previewImageUrl}
-                    alt={formValues.title || "Project image preview"}
+                    alt={formValues.title || copy.imagePreviewAlt}
                     fill
                     unoptimized
                     className="object-cover"
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-                    No project image uploaded yet.
+                    {copy.noImageUploaded}
                   </div>
                 )}
               </div>
 
               <div className="flex flex-wrap gap-2">
                 {formValues.published ? (
-                  <Badge variant="success">Published</Badge>
+                  <Badge variant="success">{dictionary.admin.published}</Badge>
                 ) : (
-                  <Badge variant="warning">Draft</Badge>
+                  <Badge variant="warning">{dictionary.admin.draft}</Badge>
                 )}
                 {formValues.featured ? (
-                  <Badge variant="accent">Featured</Badge>
+                  <Badge variant="accent">{dictionary.admin.featured}</Badge>
                 ) : null}
                 {selectedFile ? (
-                  <Badge variant="outline">Pending upload</Badge>
+                  <Badge variant="outline">{copy.pendingUploadBadge}</Badge>
                 ) : usesUploadedImage ? (
-                  <Badge variant="outline">Uploaded image</Badge>
+                  <Badge variant="outline">{copy.uploadedImageBadge}</Badge>
                 ) : null}
               </div>
 
               <Field
-                label="Upload file"
+                label={copy.uploadFieldLabel}
                 error={fileError ?? undefined}
-                description="JPEG, PNG, WEBP, GIF, or AVIF up to 5 MB."
+                description={copy.uploadFieldDescription}
               >
                 <label
                   className={cn(
@@ -792,7 +791,7 @@ export function AdminProjectEditorScreen({
                   )}
                 >
                   <ImagePlus className="size-4" />
-                  {selectedFile ? selectedFile.name : "Choose image"}
+                  {selectedFile ? selectedFile.name : copy.chooseImageAction}
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
@@ -801,7 +800,7 @@ export function AdminProjectEditorScreen({
                     onChange={(event) => {
                       const file = event.target.files?.[0] ?? null;
                       replaceSelectedFile(file);
-                      setFileError(getProjectFileValidationError(file));
+                      setFileError(getProjectFileValidationError(file, copy));
                     }}
                   />
                 </label>
@@ -814,7 +813,9 @@ export function AdminProjectEditorScreen({
                     disabled={!selectedFile || uploading}
                     onClick={() => void handleUploadImage()}
                   >
-                    {uploading ? "Uploading image..." : "Upload image"}
+                    {uploading
+                      ? copy.uploadingImageAction
+                      : copy.uploadImageAction}
                   </Button>
                   {selectedFile ? (
                     <Button
@@ -826,14 +827,13 @@ export function AdminProjectEditorScreen({
                         setFileError(null);
                       }}
                     >
-                      Clear selection
+                      {copy.clearSelectionAction}
                     </Button>
                   ) : null}
                 </div>
               ) : (
                 <p className="text-sm leading-6 text-muted-foreground">
-                  Create the project first, then upload its image from the edit
-                  screen.
+                  {copy.createFirstHint}
                 </p>
               )}
 
@@ -844,18 +844,18 @@ export function AdminProjectEditorScreen({
                   disabled={uploading}
                   onClick={() => void handleRemoveUploadedImage()}
                 >
-                  Remove uploaded image
+                  {copy.removeUploadedImageAction}
                 </Button>
               ) : null}
 
               {formValues.liveUrl ? (
                 <Button asChild variant="ghost" size="sm">
                   <Link
-                    href={formValues.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Open live URL
+                  href={formValues.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                    {copy.openLiveUrlAction}
                     <ArrowUpRight className="size-4" />
                   </Link>
                 </Button>

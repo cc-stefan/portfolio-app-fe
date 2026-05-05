@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import type { AppLocale } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
 import {
   createInquiryFormSchema,
@@ -17,6 +18,7 @@ import {
 } from "./inquiry-form-schema";
 
 interface InquiryFormProps {
+  locale: AppLocale;
   copy: PortfolioDictionary["inquiryForm"];
 }
 
@@ -29,7 +31,7 @@ interface InquirySuccessResponse {
   receivedAt?: string;
 }
 
-export function InquiryForm({ copy }: InquiryFormProps) {
+export function InquiryForm({ locale, copy }: InquiryFormProps) {
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const resolver = useMemo(
@@ -54,6 +56,7 @@ export function InquiryForm({ copy }: InquiryFormProps) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-app-locale": locale,
       },
       body: JSON.stringify(values),
     });

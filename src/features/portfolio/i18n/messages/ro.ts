@@ -5,10 +5,10 @@ export const dictionary: PortfolioDictionary = {
     siteName: "Claudiu Ștefan",
     defaultTitle: "Claudiu Ștefan",
     description:
-      "Inginer frontend care construiește interfețe rapide, scalabile și orientate spre produs cu React, Next.js, Angular și TypeScript.",
-    homeTitle: "Inginer frontend",
+      "Dezvoltator frontend care construiește interfețe rapide, scalabile și orientate spre produs cu React, Next.js, Angular și TypeScript.",
+    homeTitle: "Dezvoltator frontend",
     homeDescription:
-      "Portofoliu pentru Claudiu Ștefan, inginer frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
+      "Portofoliu pentru Claudiu Ștefan, dezvoltator frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
     projectUnavailableTitle: "Proiect indisponibil",
     projectUnavailableDescription:
       "Backend-ul nu a putut returna conținutul pentru acest proiect.",
@@ -23,7 +23,8 @@ export const dictionary: PortfolioDictionary = {
   header: {
     brand: "Claudiu Ștefan",
     avatarInitials: "CCS",
-    tagline: "Inginer frontend",
+    tagline: "Dezvoltator frontend",
+    navigationLabel: "Navigație principală",
     navHome: "Acasă",
     navAbout: "Despre",
     navOverview: "Prezentare",
@@ -37,7 +38,7 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      "Inginer frontend axat pe UI de produs clar, arhitectură React scalabilă și livrare pregătită pentru producție.",
+      "Dezvoltator frontend axat pe UI de produs clar, arhitectură React scalabilă și livrare pregătită pentru producție.",
     quickLinksLabel: "Link-uri rapide",
     copyrightLabel: "Toate drepturile rezervate.",
   },
@@ -49,6 +50,7 @@ export const dictionary: PortfolioDictionary = {
     primaryCta: "Vezi proiectele",
     secondaryCta: "Ia legătura",
     metrics: {
+      ariaLabel: "Indicatori portofoliu",
       technologies: "Stack principal",
     },
     metricCards: [
@@ -86,7 +88,7 @@ export const dictionary: PortfolioDictionary = {
     profilePanels: [
       {
         label: "Experiență",
-        value: "5+ ani",
+        value: "4+ ani",
       },
       {
         label: "Focus principal",
@@ -120,7 +122,7 @@ export const dictionary: PortfolioDictionary = {
       "Publică un proiect în zona de administrare și va apărea automat aici.",
     capabilitiesLabel: "Despre",
     capabilitiesTitle:
-      "Lucrez la intersecția dintre inginerie frontend și claritate de produs.",
+      "Lucrez la intersecția dintre dezvoltare frontend și claritate de produs.",
     capabilitiesDescription:
       "Valoarea pe care o aduc stă în profunzimea tehnică, execuția curată și discernământul de a face interfețele mai ușor de folosit și de extins.",
     capabilities: [
@@ -171,7 +173,7 @@ export const dictionary: PortfolioDictionary = {
     credentialsTitle:
       "Stack-ul pe care îl folosesc cel mai des și felul în care îl aplic.",
     credentialsDescription:
-      "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un inginer frontend puternic.",
+      "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un dezvoltator frontend puternic.",
     credentialGroups: [
       {
         title: "Stack frontend",
@@ -197,7 +199,7 @@ export const dictionary: PortfolioDictionary = {
     ],
     inquiryLabel: "Contact",
     inquiryTitle:
-      "Ai nevoie de un frontend engineer care poate transforma cerințele într-un UI de produs bine finisat?",
+      "Ai nevoie de un dezvoltator frontend care poate transforma cerințele într-un UI de produs bine finisat?",
     inquiryDescription:
       "Sunt deschis pentru roluri de frontend, proiecte de product engineering și colaborări contractuale în care contează performanța, claritatea și livrarea fiabilă.",
     inquiryHighlights: [
@@ -258,6 +260,8 @@ export const dictionary: PortfolioDictionary = {
   admin: {
     brand: "Administrare portofoliu",
     openMenu: "Deschide meniul de administrare",
+    closeMenu: "Închide meniul de administrare",
+    navigationLabel: "Navigație administrare",
     navDashboard: "Panou",
     navProjects: "Proiecte",
     navInquiries: "Mesaje",
@@ -290,6 +294,17 @@ export const dictionary: PortfolioDictionary = {
     dashboardLoadErrorTitle: "Panoul nu este disponibil",
     dashboardLoadErrorDescription:
       "Datele operaționale nu au putut fi încărcate în acest moment.",
+    dashboardGroups: {
+      projectsTitle: "Proiecte",
+      projectsDescription:
+        "Inventarul de conținut, starea publicării și acoperirea cu imagini pentru portofoliu.",
+      inquiriesTitle: "Mesaje",
+      inquiriesDescription:
+        "Volumul actual din inbox și starea de follow-up pentru solicitările recente de contact.",
+      accessTitle: "Acces",
+      accessDescription:
+        "Utilizatorii autentificați disponibili în acest moment în backend-ul portofoliului.",
+    },
     statTotalProjects: "Total proiecte",
     statPublishedProjects: "Publicate",
     statDraftProjects: "Drafturi",
@@ -326,6 +341,232 @@ export const dictionary: PortfolioDictionary = {
     inquiryStatusInReview: "În analiză",
     inquiryStatusResolved: "Rezolvat",
     inquiryStatusArchived: "Arhivat",
+    projectsPage: {
+      eyebrow: "Proiecte administrare",
+      title: "Gestionează intrările din portofoliu",
+      description:
+        "Creează, editează, publică, marchează ca recomandate, ordonează, încarcă imagini sau șterge proiecte folosind exact endpoint-urile de administrare expuse de backend.",
+      backToDashboard: "Înapoi la panou",
+      newProject: "Proiect nou",
+      loadErrorTitle: "Proiectele nu au putut fi încărcate",
+      loadErrorFallback: "Nu s-au putut încărca proiectele din administrare",
+      emptyTitle: "Nu există proiecte",
+      emptyDescription:
+        "Creează primul proiect pentru a popula lista publicată din portofoliu.",
+      createProject: "Creează proiectul",
+      noTechnologies: "Fără tehnologii",
+      updatedLabel: "Actualizat",
+      movedToDraft: "Proiectul a fost mutat în draft",
+      publishedSuccess: "Proiectul a fost publicat",
+      moveToDraftAction: "Mută în draft",
+      publishAction: "Publică",
+      featuredRemoved: "Marcajul de recomandat a fost eliminat",
+      featuredSuccess: "Proiectul a fost marcat ca recomandat",
+      unfeatureAction: "Scoate din recomandate",
+      featureAction: "Recomandă",
+      displayOrderLabel: "Ordine afișare",
+      displayOrderInvalid:
+        "Ordinea de afișare trebuie să fie un număr întreg mai mare sau egal cu 0",
+      displayOrderSaved: "Ordinea de afișare a fost actualizată",
+      saveAction: "Salvează",
+      editProjectAction: "Editează proiectul",
+      deleteAction: "Șterge",
+      deleteSuccess: "Proiectul a fost șters",
+      deleteErrorFallback: "Proiectul nu a putut fi șters",
+      updateErrorFallback: "Proiectul nu a putut fi actualizat",
+      deleteConfirm: "Ștergi „{title}”? Această acțiune nu poate fi anulată.",
+    },
+    inquiriesPage: {
+      eyebrow: "Mesaje administrare",
+      title: "Analizează solicitările de contact",
+      description:
+        "Urmărește mesajele trimise din formularul public, actualizează statusul lor și păstrează notițe interne într-un singur loc.",
+      backToDashboard: "Înapoi la panou",
+      loadErrorTitle: "Mesajele nu au putut fi încărcate",
+      loadErrorFallback: "Nu s-au putut încărca mesajele din administrare",
+      emptyTitle: "Nu există mesaje încă",
+      emptyDescription:
+        "Mesajele trimise din formularul public vor apărea aici după ce endpoint-urile backend pentru solicitări sunt disponibile.",
+      receivedLabel: "Primit",
+      actionsLabel: "Acțiuni",
+      openInquiryAction: "Deschide mesajul",
+      replyByEmailAction: "Răspunde prin email",
+      markUnreadSuccess: "Mesajul a fost marcat ca necitit",
+      markReadSuccess: "Mesajul a fost marcat ca citit",
+      markUnreadAction: "Marchează necitit",
+      markReadAction: "Marchează citit",
+      updateErrorFallback: "Mesajul nu a putut fi actualizat",
+    },
+    inquiryDetailPage: {
+      eyebrow: "Detaliu mesaj",
+      description:
+        "Analizează solicitarea, păstrează notițe interne și mută mesajul prin fluxul de administrare.",
+      backToInquiries: "Înapoi la mesaje",
+      notFoundTitle: "Mesajul nu a fost găsit",
+      notFoundDescription:
+        "Backend-ul nu a returnat un mesaj pentru acest identificator.",
+      loadErrorTitle: "Mesajul nu a putut fi încărcat",
+      loadErrorFallback:
+        "Backend-ul nu a returnat date utilizabile pentru acest mesaj.",
+      markUnreadAction: "Marchează necitit",
+      markReadAction: "Marchează citit",
+      deleteAction: "Șterge",
+      deleteConfirm:
+        "Ștergi mesajul trimis de {name}? Această acțiune nu poate fi anulată.",
+      deleteSuccess: "Mesajul a fost șters",
+      deleteErrorFallback: "Mesajul nu a putut fi șters",
+      updateErrorFallback: "Mesajul nu a putut fi actualizat",
+      updateSuccess: "Mesajul a fost actualizat",
+      markReadSuccess: "Mesajul a fost marcat ca citit",
+      markUnreadSuccess: "Mesajul a fost marcat ca necitit",
+      messageTitle: "Mesaj",
+      messageDescription:
+        "Solicitările de contact sunt stocate exact așa cum au fost introduse în formularul public.",
+      replyByEmailAction: "Răspunde prin email",
+      internalNotesLabel: "Notițe interne",
+      internalNotesPlaceholder:
+        "Adaugă detalii pentru follow-up, decizii sau pașii următori.",
+      saveHint:
+        "Statusul și notițele sunt salvate prin endpoint-ul opțional de actualizare a solicitărilor din administrare.",
+      savingAction: "Se salvează...",
+      saveAction: "Salvează modificările",
+      statusTitle: "Status",
+      statusDescription:
+        "Alege starea de lucru care reflectă cel mai bine etapa actuală de follow-up.",
+      selectedStatus: "Selectat",
+      setStatus: "Setează",
+      metadataTitle: "Metadate",
+      metadataDescription:
+        "Detalii despre timp și persistență venite din înregistrarea backend.",
+      receivedLabel: "Primit",
+      updatedLabel: "Actualizat",
+      readStateLabel: "Stare citire",
+      recordIdLabel: "ID înregistrare",
+    },
+    projectEditor: {
+      editEyebrow: "Editează proiectul",
+      createEyebrow: "Creează proiect",
+      newTitle: "Proiect nou",
+      fallbackTitle: "Editor proiect",
+      description:
+        "Actualizează câmpurile proiectului bazate pe DTO, alege manual data proiectului și încarcă separat imaginea după ce proiectul există.",
+      backToProjects: "Înapoi la proiecte",
+      deleteAction: "Șterge",
+      deleteConfirm: "Ștergi „{title}”? Această acțiune nu poate fi anulată.",
+      notFoundTitle: "Proiectul nu a fost găsit",
+      notFoundDescription:
+        "Backend-ul nu a returnat un proiect pentru acest identificator.",
+      loadErrorTitle: "Proiectul nu a putut fi încărcat",
+      loadErrorFallback: "Nu s-a putut încărca acest proiect",
+      coreFieldsLabel: "Câmpuri principale",
+      coreFieldsDescription:
+        "`title` și `summary` sunt obligatorii. `slug` rămâne opțional și trebuie să respecte formatul lowercase kebab-case.",
+      titleFieldLabel: "Titlu",
+      titleFieldDescription: "Obligatoriu, între 1 și 120 de caractere.",
+      titleFieldPlaceholder: "Titlul proiectului",
+      slugFieldLabel: "Slug",
+      slugFieldDescription:
+        "Opțional, lowercase kebab-case, până la 160 de caractere.",
+      slugFieldPlaceholder: "generat-automat-din-titlu",
+      summaryFieldLabel: "Rezumat",
+      summaryFieldDescription: "Obligatoriu, între 1 și 300 de caractere.",
+      summaryFieldPlaceholder: "Rezumat scurt pentru portofoliu",
+      descriptionFieldLabel: "Descriere",
+      descriptionFieldDescription: "Opțional, până la 5000 de caractere.",
+      descriptionFieldPlaceholder: "Conținut extins despre proiect",
+      linksSectionLabel: "Link-uri și cronologie",
+      linksSectionDescription:
+        "Data proiectului este un câmp manual pentru cronologia din portofoliu și este separată de timestamp-urile din baza de date.",
+      projectDateFieldLabel: "Data proiectului",
+      projectDateFieldDescription:
+        "Opțional. Este folosită pentru afișarea publică în cronologie.",
+      liveUrlFieldLabel: "URL live",
+      liveUrlFieldDescription: "Opțional, până la 500 de caractere.",
+      liveUrlFieldPlaceholder: "https://...",
+      repositoryUrlFieldLabel: "URL repository",
+      repositoryUrlFieldDescription: "Opțional, până la 500 de caractere.",
+      repositoryUrlFieldPlaceholder: "https://github.com/...",
+      technologiesSectionLabel: "Tehnologii",
+      technologiesSectionDescription:
+        "Maximum 20 de intrări. Valorile sunt tăiate și deduplicate înainte de trimitere.",
+      technologyListLabel: "Listă tehnologii",
+      technologyListDescription: "Array opțional cu maximum 20 de elemente.",
+      technologyInputPlaceholder: "Adaugă tehnologie",
+      addTechnologyAction: "Adaugă",
+      noTechnologiesAdded: "Nu au fost adăugate tehnologii încă.",
+      publishingSectionLabel: "Publicare",
+      publishingSectionDescription:
+        "Flag-urile pentru publicare și recomandare sunt trimise direct la backend împreună cu ordinea numerică de afișare.",
+      publishedFieldLabel: "Publicat",
+      publishedFieldDescription:
+        "Controlează vizibilitatea în lista publică `/projects`.",
+      featuredFieldLabel: "Recomandat",
+      featuredFieldDescription:
+        "Proiectele recomandate sunt prioritizate vizual pe site-ul public.",
+      displayOrderFieldLabel: "Ordine afișare",
+      displayOrderFieldDescription:
+        "Număr întreg opțional mai mare sau egal cu 0.",
+      displayOrderFieldPlaceholder: "0",
+      payloadHint:
+        "Payload-ul include doar câmpurile suportate de backend. URL-urile pentru imagini nu sunt trimise manual.",
+      savingProjectAction: "Se salvează proiectul...",
+      creatingProjectAction: "Se creează proiectul...",
+      saveChangesAction: "Salvează modificările",
+      createProjectAction: "Creează proiectul",
+      imageTitle: "Imagine proiect",
+      imageDescription:
+        "Încărcările folosesc endpoint-ul multipart dedicat și actualizează doar `imageUrl` în backend.",
+      imagePreviewAlt: "Previzualizare imagine proiect",
+      noImageUploaded: "Nu există încă o imagine încărcată pentru proiect.",
+      pendingUploadBadge: "În așteptare pentru încărcare",
+      uploadedImageBadge: "Imagine încărcată",
+      uploadFieldLabel: "Încarcă fișier",
+      uploadFieldDescription:
+        "JPEG, PNG, WEBP, GIF sau AVIF de maximum 5 MB.",
+      chooseImageAction: "Alege imaginea",
+      uploadImageAction: "Încarcă imaginea",
+      uploadingImageAction: "Se încarcă imaginea...",
+      clearSelectionAction: "Curăță selecția",
+      createFirstHint:
+        "Creează mai întâi proiectul, apoi încarcă imaginea din ecranul de editare.",
+      removeUploadedImageAction: "Elimină imaginea încărcată",
+      openLiveUrlAction: "Deschide URL-ul live",
+      chooseImageBeforeUpload:
+        "Alege o imagine înainte de a începe încărcarea",
+      uploadImageError: "Imaginea proiectului nu a putut fi încărcată",
+      uploadImageSuccess: "Imaginea proiectului a fost încărcată",
+      saveProjectError: "Proiectul nu a putut fi salvat",
+      projectUpdatedSuccess: "Proiectul a fost actualizat",
+      projectCreatedSuccess: "Proiectul a fost creat",
+      removeImageError: "Imaginea proiectului nu a putut fi eliminată",
+      removeImageSuccess: "Imaginea proiectului a fost eliminată",
+      deleteProjectError: "Proiectul nu a putut fi șters",
+      deleteProjectSuccess: "Proiectul a fost șters",
+      validation: {
+        titleRequired: "Titlul este obligatoriu",
+        titleMaxLength: "Titlul trebuie să aibă cel mult 120 de caractere",
+        slugMaxLength: "Slug-ul trebuie să aibă cel mult 160 de caractere",
+        slugPattern:
+          "Slug-ul trebuie să respecte formatul lowercase kebab-case",
+        summaryRequired: "Rezumatul este obligatoriu",
+        summaryMaxLength: "Rezumatul trebuie să aibă cel mult 300 de caractere",
+        descriptionMaxLength:
+          "Descrierea trebuie să aibă cel mult 5000 de caractere",
+        projectDateInvalid:
+          "Data proiectului trebuie să fie o dată calendaristică validă",
+        liveUrlMaxLength: "URL-ul live trebuie să aibă cel mult 500 de caractere",
+        repositoryUrlMaxLength:
+          "URL-ul repository trebuie să aibă cel mult 500 de caractere",
+        technologiesMaxItems: "Poți adăuga maximum 20 de tehnologii",
+        technologyMaxLength:
+          "Fiecare tehnologie trebuie să aibă cel mult 40 de caractere",
+        displayOrderInvalid:
+          "Ordinea de afișare trebuie să fie un număr întreg mai mare sau egal cu 0",
+        fileTypeInvalid:
+          "Imaginea proiectului trebuie să fie JPEG, PNG, WEBP, GIF sau AVIF",
+        fileSizeInvalid: "Imaginea proiectului trebuie să aibă maximum 5 MB",
+      },
+    },
   },
   inquiryForm: {
     nameLabel: "Nume",
@@ -353,6 +594,13 @@ export const dictionary: PortfolioDictionary = {
     errorTitle: "Mesajul nu a putut fi trimis",
     errorDescription:
       "Verifică câmpurile formularului sau încearcă din nou în câteva momente.",
+    reviewError: "Verifică câmpurile formularului și încearcă din nou.",
+    endpointUnavailableError:
+      "Endpoint-ul backend pentru solicitări nu este disponibil încă. Implementează POST /api/inquiries în backend.",
+    submitUnavailableError:
+      "Mesajul nu poate fi trimis în acest moment.",
+    backendUnavailableError:
+      "Backend-ul pentru solicitări nu este disponibil acum. Pornește backend-ul sau implementează mai întâi POST /api/inquiries.",
     privacyNote:
       "Mesajul tău va fi folosit doar pentru a analiza cererea și a-ți răspunde direct.",
   },

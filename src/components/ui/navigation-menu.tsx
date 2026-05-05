@@ -9,7 +9,6 @@ function NavigationMenu({
 }: React.ComponentProps<"nav">) {
   return (
     <nav
-      aria-label={props["aria-label"] ?? "Main"}
       data-slot="navigation-menu"
       className={cn("relative flex max-w-max flex-1 items-center", className)}
       {...props}

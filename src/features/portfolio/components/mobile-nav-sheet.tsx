@@ -22,6 +22,7 @@ interface MobileNavSheetProps {
   locale: AppLocale;
   localeNames: PortfolioDictionary["localeNames"];
   menuLabel: string;
+  closeLabel: string;
   themeLabel: string;
   languageLabel: string;
   title: string;
@@ -36,6 +37,7 @@ export function MobileNavSheet({
   locale,
   localeNames,
   menuLabel,
+  closeLabel,
   languageLabel,
   title,
   description,
@@ -57,7 +59,7 @@ export function MobileNavSheet({
           <Menu className="size-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="gap-7">
+      <SheetContent className="gap-7" closeLabel={closeLabel}>
         <div className="space-y-2 pr-10">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

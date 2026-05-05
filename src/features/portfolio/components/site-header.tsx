@@ -68,7 +68,10 @@ export function SiteHeader({
           </span>
         </ScrollTopLink>
 
-        <NavigationMenu className="ml-4 hidden lg:flex">
+        <NavigationMenu
+          className="ml-4 hidden lg:flex"
+          aria-label={dictionary.header.navigationLabel}
+        >
           <NavigationMenuList>
             {navItems.map((item) => (
               <NavigationMenuItem key={item.href}>
@@ -112,6 +115,7 @@ export function SiteHeader({
             locale={locale}
             localeNames={dictionary.localeNames}
             menuLabel={dictionary.header.openMenu}
+            closeLabel={dictionary.header.closeMenu}
             themeLabel={dictionary.header.themeLabel}
             languageLabel={dictionary.header.languageLabel}
             title={dictionary.header.brand}

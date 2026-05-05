@@ -32,11 +32,20 @@ interface LoginResult {
   error?: string;
 }
 
+interface LoginMessages {
+  invalidCredentials: string;
+  accessDenied: string;
+}
+
 interface AdminAuthContextValue {
   status: AdminAuthStatus;
   user: AdminUser | null;
   accessToken: string | null;
-  login: (email: string, password: string) => Promise<LoginResult>;
+  login: (
+    email: string,
+    password: string,
+    messages: LoginMessages,
+  ) => Promise<LoginResult>;
   logout: () => Promise<void>;
   clearAccessDenied: () => void;
   authFetch: (path: string, init?: RequestInit) => Promise<Response>;
@@ -236,7 +245,11 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
   }, [bootstrapSession]);
 
   const login = useCallback(
-    async (email: string, password: string): Promise<LoginResult> => {
+    async (
+      email: string,
+      password: string,
+      messages: LoginMessages,
+    ): Promise<LoginResult> => {
       const response = await fetch(buildBackendApiUrl("/auth/login"), {
         method: "POST",
         headers: {
@@ -255,7 +268,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
           ok: false,
           error: getBackendErrorMessage(
             errorBody,
-            "Unable to sign in with those credentials",
+            messages.invalidCredentials,
           ),
         };
       }
@@ -266,7 +279,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
         clearAuthState("access-denied", session.user);
         return {
           ok: false,
-          error: "Access denied. Admin role required.",
+          error: messages.accessDenied,
         };
       }
 

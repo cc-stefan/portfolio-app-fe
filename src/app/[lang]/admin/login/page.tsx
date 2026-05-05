@@ -8,10 +8,22 @@ interface AdminLoginPageProps {
   params: Promise<{ lang: string }>;
 }
 
-export const metadata: Metadata = {
-  title: "Admin login",
-  description: "Admin access for the portfolio back office.",
-};
+export async function generateMetadata({
+  params,
+}: AdminLoginPageProps): Promise<Metadata> {
+  const { lang } = await params;
+
+  if (!isAppLocale(lang)) {
+    return {};
+  }
+
+  const dictionary = await getDictionary(lang);
+
+  return {
+    title: dictionary.admin.loginLabel,
+    description: dictionary.admin.loginDescription,
+  };
+}
 
 export default async function AdminLoginPage({ params }: AdminLoginPageProps) {
   const { lang } = await params;

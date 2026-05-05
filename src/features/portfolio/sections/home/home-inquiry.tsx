@@ -1,14 +1,16 @@
-import { CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { InquiryForm } from "../../forms/inquiry-form";
 import { SectionIntro } from "../../components/section-intro";
+import type { AppLocale } from "../../i18n/routing";
 import type { PortfolioDictionary } from "../../i18n/types";
 
 interface HomeInquiryProps {
+  locale: AppLocale;
   dictionary: PortfolioDictionary;
 }
 
-export function HomeInquiry({ dictionary }: HomeInquiryProps) {
+export function HomeInquiry({ locale, dictionary }: HomeInquiryProps) {
   return (
     <section id="contact" className="anchor-target">
       <div className="section-divider" />
@@ -32,9 +34,13 @@ export function HomeInquiry({ dictionary }: HomeInquiryProps) {
                       {item.href ? (
                         <a
                           href={item.href}
-                          className="mt-1 inline-flex w-fit break-all text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground"
+                          className="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-primary/12 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                         >
-                          {item.description}
+                          <Mail className="size-3.5 shrink-0 text-primary" />
+                          <span className="break-all">
+                            {item.description}
+                          </span>
+                          <ArrowUpRight className="size-3.5 shrink-0 text-muted-foreground" />
                         </a>
                       ) : (
                         <p className="mt-1 text-sm leading-6 text-muted-foreground">
@@ -50,7 +56,7 @@ export function HomeInquiry({ dictionary }: HomeInquiryProps) {
 
           <Card variant="solid">
             <CardContent className="p-5 sm:p-6 lg:p-8">
-              <InquiryForm copy={dictionary.inquiryForm} />
+              <InquiryForm locale={locale} copy={dictionary.inquiryForm} />
             </CardContent>
           </Card>
         </div>

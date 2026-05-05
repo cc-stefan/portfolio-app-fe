@@ -3,7 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowUpRight, RefreshCcw } from "lucide-react";
+import {
+  ArrowUpRight,
+  FolderKanban,
+  Inbox,
+  RefreshCcw,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +32,10 @@ import {
   getBackendErrorMessage,
   readBackendError,
 } from "../lib/backend-errors";
+import {
+  formatInquiryStatus,
+  getInquiryBadgeVariant,
+} from "../lib/inquiry-status";
 import { resolveProjectImageUrl } from "../lib/project-form";
 import type { AdminDashboardResponse, AdminInquiry } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
@@ -51,23 +62,6 @@ export function AdminDashboardScreen({
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const statEntries = [
-    ["totalProjects", dictionary.admin.statTotalProjects],
-    ["publishedProjects", dictionary.admin.statPublishedProjects],
-    ["draftProjects", dictionary.admin.statDraftProjects],
-    ["featuredProjects", dictionary.admin.statFeaturedProjects],
-    ["projectsWithImages", dictionary.admin.statProjectsWithImages],
-    ["totalUsers", dictionary.admin.statTotalUsers],
-    ["adminUsers", dictionary.admin.statAdminUsers],
-    ["regularUsers", dictionary.admin.statRegularUsers],
-  ] as const;
-  const inquiryStatEntries = [
-    [dictionary.admin.statTotalInquiries, inquiryStats.total],
-    [dictionary.admin.statUnreadInquiries, inquiryStats.unread],
-    [dictionary.admin.statInReviewInquiries, inquiryStats.inReview],
-    [dictionary.admin.statResolvedInquiries, inquiryStats.resolved],
-  ] as const;
-
   const formatDate = useCallback(
     (value: string) =>
       new Intl.DateTimeFormat(localeTags[lang], {
@@ -164,9 +158,9 @@ export function AdminDashboardScreen({
           <Skeleton className="h-10 w-52" />
           <Skeleton className="h-5 w-96" />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <Skeleton key={index} className="h-30" />
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1.05fr)_minmax(0,0.9fr)]">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className="h-80" />
           ))}
         </div>
         <div className="grid gap-6 xl:grid-cols-2">
@@ -194,6 +188,58 @@ export function AdminDashboardScreen({
     );
   }
 
+  const projectRows = [
+    {
+      label: dictionary.admin.statPublishedProjects,
+      value: dashboard.stats.publishedProjects,
+      tone: "success",
+    },
+    {
+      label: dictionary.admin.statDraftProjects,
+      value: dashboard.stats.draftProjects,
+      tone: "warning",
+    },
+    {
+      label: dictionary.admin.statFeaturedProjects,
+      value: dashboard.stats.featuredProjects,
+      tone: "accent",
+    },
+    {
+      label: dictionary.admin.statProjectsWithImages,
+      value: dashboard.stats.projectsWithImages,
+      tone: "neutral",
+    },
+  ] as const;
+  const inquiryRows = [
+    {
+      label: dictionary.admin.statUnreadInquiries,
+      value: inquiryStats.unread,
+      tone: "accent",
+    },
+    {
+      label: dictionary.admin.statInReviewInquiries,
+      value: inquiryStats.inReview,
+      tone: "warning",
+    },
+    {
+      label: dictionary.admin.statResolvedInquiries,
+      value: inquiryStats.resolved,
+      tone: "success",
+    },
+  ] as const;
+  const accessRows = [
+    {
+      label: dictionary.admin.statAdminUsers,
+      value: dashboard.stats.adminUsers,
+      tone: "neutral",
+    },
+    {
+      label: dictionary.admin.statRegularUsers,
+      value: dashboard.stats.regularUsers,
+      tone: "neutral",
+    },
+  ] as const;
+
   return (
     <div className="space-y-8">
       <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -213,31 +259,31 @@ export function AdminDashboardScreen({
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {statEntries.map(([key, label]) => (
-          <Card key={key} variant="solid">
-            <CardContent className="p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                {label}
-              </p>
-              <p className="mt-4 text-3xl font-semibold text-foreground">
-                {dashboard.stats[key]}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-        {inquiryStatEntries.map(([label, value]) => (
-          <Card key={label} variant="solid">
-            <CardContent className="p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                {label}
-              </p>
-              <p className="mt-4 text-3xl font-semibold text-foreground">
-                {value}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1.05fr)_minmax(0,0.9fr)]">
+        <SummaryPanel
+          icon={FolderKanban}
+          title={dictionary.admin.dashboardGroups.projectsTitle}
+          description={dictionary.admin.dashboardGroups.projectsDescription}
+          totalLabel={dictionary.admin.statTotalProjects}
+          totalValue={dashboard.stats.totalProjects}
+          rows={projectRows}
+        />
+        <SummaryPanel
+          icon={Inbox}
+          title={dictionary.admin.dashboardGroups.inquiriesTitle}
+          description={dictionary.admin.dashboardGroups.inquiriesDescription}
+          totalLabel={dictionary.admin.statTotalInquiries}
+          totalValue={inquiryStats.total}
+          rows={inquiryRows}
+        />
+        <SummaryPanel
+          icon={ShieldCheck}
+          title={dictionary.admin.dashboardGroups.accessTitle}
+          description={dictionary.admin.dashboardGroups.accessDescription}
+          totalLabel={dictionary.admin.statTotalUsers}
+          totalValue={dashboard.stats.totalUsers}
+          rows={accessRows}
+        />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-2">
@@ -391,7 +437,7 @@ function RecentInquiryRow({
             {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
           </Badge>
           <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
-            {formatInquiryStatus(inquiry.status, dictionary)}
+            {formatInquiryStatus(inquiry.status, dictionary.admin)}
           </Badge>
         </div>
       </div>
@@ -410,41 +456,61 @@ function RecentInquiryRow({
   );
 }
 
-function getInquiryBadgeVariant(status: AdminInquiry["status"]) {
-  if (status === "RESOLVED") {
-    return "success";
-  }
-
-  if (status === "NEW") {
-    return "accent";
-  }
-
-  if (status === "IN_REVIEW") {
-    return "warning";
-  }
-
-  if (status === "ARCHIVED") {
-    return "outline";
-  }
-
-  return "neutral";
-}
-
-function formatInquiryStatus(
-  status: AdminInquiry["status"],
-  dictionary: PortfolioDictionary,
-) {
-  if (status === "NEW") {
-    return dictionary.admin.inquiryStatusNew;
-  }
-
-  if (status === "IN_REVIEW") {
-    return dictionary.admin.inquiryStatusInReview;
-  }
-
-  if (status === "RESOLVED") {
-    return dictionary.admin.inquiryStatusResolved;
-  }
-
-  return dictionary.admin.inquiryStatusArchived;
+function SummaryPanel({
+  icon: Icon,
+  title,
+  description,
+  totalLabel,
+  totalValue,
+  rows,
+}: {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  totalLabel: string;
+  totalValue: number;
+  rows: ReadonlyArray<{
+    label: string;
+    value: number;
+    tone: "neutral" | "accent" | "warning" | "success";
+  }>;
+}) {
+  return (
+    <Card variant="solid">
+      <CardHeader className="gap-4 pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2">
+            <CardTitle className="text-xl">{title}</CardTitle>
+            <CardDescription className="max-w-md">{description}</CardDescription>
+          </div>
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-primary">
+            <Icon className="size-5" />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="grid gap-6">
+        <div className="rounded-2xl border border-border bg-background/70 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+            {totalLabel}
+          </p>
+          <p className="mt-4 text-4xl font-semibold tracking-tight text-foreground">
+            {totalValue}
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+          {rows.map((row) => (
+            <div
+              key={row.label}
+              className="flex items-center justify-between gap-4 rounded-xl border border-border bg-background/40 px-4 py-3"
+            >
+              <Badge variant={row.tone}>{row.label}</Badge>
+              <span className="text-lg font-semibold text-foreground">
+                {row.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
 }

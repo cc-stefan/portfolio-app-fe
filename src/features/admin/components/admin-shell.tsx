@@ -145,7 +145,10 @@ export function AdminShell({
                 </Link>
               </div>
 
-              <NavigationMenu className="ml-4 hidden lg:flex">
+              <NavigationMenu
+                className="ml-4 hidden lg:flex"
+                aria-label={dictionary.admin.navigationLabel}
+              >
                 <NavigationMenuList className="rounded-xl border border-border bg-background/70 p-1">
                   {navItems.map((item) => {
                     const isActive = isNavItemActive(pathname, item.href, lang);
