@@ -5,6 +5,7 @@ import {setRequestLocale} from "next-intl/server";
 import {notFound} from "next/navigation";
 import {ThemeProvider} from "@/components/providers/theme-provider";
 import {Toaster} from "@/components/ui/sonner";
+import {AdminAuthProvider} from "@/features/admin/auth/admin-auth-provider";
 import {getDictionary} from "@/features/portfolio/i18n/dictionaries";
 import {appLocales, localeTags} from "@/features/portfolio/i18n/routing";
 import {routing} from "@/i18n/routing";
@@ -100,8 +101,10 @@ export default async function LocaleLayout({
             enableColorScheme={false}
             disableTransitionOnChange
           >
-            <div className="min-h-full">{children}</div>
-            <Toaster position="top-right" richColors closeButton />
+            <AdminAuthProvider>
+              <div className="min-h-full">{children}</div>
+              <Toaster position="top-right" richColors closeButton />
+            </AdminAuthProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

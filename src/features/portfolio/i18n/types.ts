@@ -432,6 +432,7 @@ export interface PortfolioDictionary {
   };
   actions: {
     adminLogin: string;
+    adminPanel: string;
     viewProject: string;
     live: string;
     code: string;

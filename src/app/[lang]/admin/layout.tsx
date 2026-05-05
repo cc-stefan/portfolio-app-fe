@@ -1,9 +1,7 @@
-import { AdminAuthProvider } from "@/features/admin/auth/admin-auth-provider";
-
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminAuthProvider>{children}</AdminAuthProvider>;
+  return children;
 }

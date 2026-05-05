@@ -591,6 +591,7 @@ export const dictionary: PortfolioDictionary = {
   },
   actions: {
     adminLogin: "Admin",
+    adminPanel: "Admin Panel",
     viewProject: "View project",
     live: "Live",
     code: "Code",

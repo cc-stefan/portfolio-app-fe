@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { localizeHref, type AppLocale } from "../i18n/routing";
 import type { PortfolioDictionary } from "../i18n/types";
+import { AdminPanelButton } from "./admin-panel-button";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNavSheet } from "./mobile-nav-sheet";
 import { ScrollTopLink } from "./scroll-top-link";
@@ -86,7 +87,12 @@ export function SiteHeader({
         </NavigationMenu>
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
-          {statusSlot}
+          {statusSlot ?? (
+            <AdminPanelButton
+              locale={locale}
+              label={dictionary.actions.adminPanel}
+            />
+          )}
           {secondaryAction ? (
             <HeaderButton
               action={secondaryAction}
@@ -110,7 +116,6 @@ export function SiteHeader({
         </div>
 
         <div className="ml-auto flex items-center gap-2 md:hidden">
-          <ThemeToggle label={dictionary.header.themeLabel} />
           <MobileNavSheet
             locale={locale}
             localeNames={dictionary.localeNames}
@@ -118,6 +123,7 @@ export function SiteHeader({
             closeLabel={dictionary.header.closeMenu}
             themeLabel={dictionary.header.themeLabel}
             languageLabel={dictionary.header.languageLabel}
+            adminPanelLabel={dictionary.actions.adminPanel}
             title={dictionary.header.brand}
             description={dictionary.meta.description}
             navItems={navItems}
