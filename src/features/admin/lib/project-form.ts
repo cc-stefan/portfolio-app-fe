@@ -1,10 +1,19 @@
 import { isBackendUploadPath, resolveBackendAssetUrl } from "@/lib/backend";
 import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
+import {
+  appLocales,
+  defaultLocale,
+  type AppLocale,
+} from "@/features/portfolio/i18n/routing";
+import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
 import type {
   AdminProject,
   ProjectFieldErrors,
+  ProjectFieldName,
   ProjectFormValues,
+  ProjectLocalizedFieldName,
   ProjectMutationPayload,
+  ProjectTranslationFormValues,
 } from "../model/types";
 
 type ProjectEditorCopy = PortfolioDictionary["admin"]["projectEditor"];
@@ -32,6 +41,45 @@ function normalizeOptionalField(value: string) {
 function normalizeNullableField(value: string) {
   const trimmed = trimOptional(value);
   return trimmed.length > 0 ? trimmed : null;
+}
+
+function createEmptyTranslationValues(): ProjectTranslationFormValues {
+  return {
+    title: "",
+    summary: "",
+    description: "",
+  };
+}
+
+function createEmptyTranslationsByLocale(): Record<
+  AppLocale,
+  ProjectTranslationFormValues
+> {
+  return Object.fromEntries(
+    appLocales.map((locale) => [locale, createEmptyTranslationValues()]),
+  ) as Record<AppLocale, ProjectTranslationFormValues>;
+}
+
+function buildTranslationsPayload(values: ProjectFormValues) {
+  return appLocales.flatMap((locale) => {
+    const translation = values.translations[locale];
+    const title = translation.title.trim();
+    const summary = translation.summary.trim();
+    const description = translation.description.trim();
+
+    if (!title && !summary && !description) {
+      return [];
+    }
+
+    return [
+      {
+        locale,
+        title,
+        summary,
+        description: description || null,
+      },
+    ];
+  });
 }
 
 function normalizeTechnologies(technologies: string[]) {
@@ -81,12 +129,17 @@ function toNullableProjectDatePayload(value: string) {
   return new Date(`${trimmed}T00:00:00.000Z`).toISOString();
 }
 
+export function getLocalizedProjectFieldPath(
+  locale: AppLocale,
+  field: ProjectLocalizedFieldName,
+): Extract<ProjectFieldName, `translations.${AppLocale}.${string}`> {
+  return `translations.${locale}.${field}`;
+}
+
 export function createEmptyProjectFormValues(): ProjectFormValues {
   return {
-    title: "",
+    translations: createEmptyTranslationsByLocale(),
     slug: "",
-    summary: "",
-    description: "",
     liveUrl: "",
     repositoryUrl: "",
     projectDate: "",
@@ -100,11 +153,25 @@ export function createEmptyProjectFormValues(): ProjectFormValues {
 export function createProjectFormValues(
   project: AdminProject,
 ): ProjectFormValues {
+  const translations = createEmptyTranslationsByLocale();
+
+  for (const locale of appLocales) {
+    const translation = resolveProjectTranslation(project.translations, locale);
+
+    if (!translation || translation.locale !== locale) {
+      continue;
+    }
+
+    translations[locale] = {
+      title: translation.title,
+      summary: translation.summary,
+      description: translation.description ?? "",
+    };
+  }
+
   return {
-    title: project.title,
+    translations,
     slug: project.slug,
-    summary: project.summary,
-    description: project.description ?? "",
     liveUrl: project.liveUrl ?? "",
     repositoryUrl: project.repositoryUrl ?? "",
     projectDate: project.projectDate?.slice(0, 10) ?? "",
@@ -120,20 +187,42 @@ export function validateProjectForm(
   copy: ProjectEditorCopy,
 ): ProjectFieldErrors {
   const errors: ProjectFieldErrors = {};
-  const title = values.title.trim();
   const slug = values.slug.trim();
-  const summary = values.summary.trim();
-  const description = values.description.trim();
   const liveUrl = values.liveUrl.trim();
   const repositoryUrl = values.repositoryUrl.trim();
   const projectDate = values.projectDate.trim();
   const technologies = normalizeTechnologies(values.technologies);
   const displayOrder = values.displayOrder.trim();
 
-  if (!title) {
-    errors.title = copy.validation.titleRequired;
-  } else if (title.length > 120) {
-    errors.title = copy.validation.titleMaxLength;
+  for (const locale of appLocales) {
+    const translation = values.translations[locale];
+    const title = translation.title.trim();
+    const summary = translation.summary.trim();
+    const description = translation.description.trim();
+    const hasAnyLocalizedContent = Boolean(title || summary || description);
+
+    if (locale === defaultLocale || hasAnyLocalizedContent) {
+      if (!title) {
+        errors[getLocalizedProjectFieldPath(locale, "title")] =
+          copy.validation.titleRequired;
+      } else if (title.length > 120) {
+        errors[getLocalizedProjectFieldPath(locale, "title")] =
+          copy.validation.titleMaxLength;
+      }
+
+      if (!summary) {
+        errors[getLocalizedProjectFieldPath(locale, "summary")] =
+          copy.validation.summaryRequired;
+      } else if (summary.length > 300) {
+        errors[getLocalizedProjectFieldPath(locale, "summary")] =
+          copy.validation.summaryMaxLength;
+      }
+    }
+
+    if (description.length > 5000) {
+      errors[getLocalizedProjectFieldPath(locale, "description")] =
+        copy.validation.descriptionMaxLength;
+    }
   }
 
   if (slug) {
@@ -142,16 +231,6 @@ export function validateProjectForm(
     } else if (!SLUG_PATTERN.test(slug)) {
       errors.slug = copy.validation.slugPattern;
     }
-  }
-
-  if (!summary) {
-    errors.summary = copy.validation.summaryRequired;
-  } else if (summary.length > 300) {
-    errors.summary = copy.validation.summaryMaxLength;
-  }
-
-  if (description.length > 5000) {
-    errors.description = copy.validation.descriptionMaxLength;
   }
 
   if (projectDate && !isValidProjectDateInput(projectDate)) {
@@ -187,8 +266,7 @@ function buildSharedProjectPayload(
   values: ProjectFormValues,
 ): Omit<ProjectMutationPayload, "slug"> & { slug?: string } {
   const payload: ProjectMutationPayload = {
-    title: values.title.trim(),
-    summary: values.summary.trim(),
+    translations: buildTranslationsPayload(values),
     featured: values.featured,
     published: values.published,
   };
@@ -207,7 +285,6 @@ export function buildCreateProjectPayload(
 ): ProjectMutationPayload {
   const payload = buildSharedProjectPayload(values);
   const slug = normalizeOptionalField(values.slug);
-  const description = normalizeOptionalField(values.description);
   const liveUrl = normalizeOptionalField(values.liveUrl);
   const repositoryUrl = normalizeOptionalField(values.repositoryUrl);
   const projectDate = toProjectDatePayload(values.projectDate);
@@ -215,10 +292,6 @@ export function buildCreateProjectPayload(
 
   if (slug) {
     payload.slug = slug;
-  }
-
-  if (description) {
-    payload.description = description;
   }
 
   if (liveUrl) {
@@ -250,7 +323,6 @@ export function buildUpdateProjectPayload(
     payload.slug = slug;
   }
 
-  payload.description = normalizeNullableField(values.description);
   payload.liveUrl = normalizeNullableField(values.liveUrl);
   payload.repositoryUrl = normalizeNullableField(values.repositoryUrl);
   payload.projectDate = toNullableProjectDatePayload(values.projectDate);

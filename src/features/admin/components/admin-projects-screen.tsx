@@ -22,6 +22,7 @@ import {
   readBackendError,
 } from "../lib/backend-errors";
 import { resolveProjectImageUrl } from "../lib/project-form";
+import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
 import type { AdminProject, ProjectMutationPayload } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
 
@@ -127,11 +128,13 @@ export function AdminProjectsScreen({
   }
 
   async function handleDelete(project: AdminProject) {
+    const localizedProject = resolveProjectTranslation(project.translations, lang);
+
     if (
       !window.confirm(
         dictionary.admin.projectsPage.deleteConfirm.replace(
           "{title}",
-          project.title,
+          localizedProject?.title ?? project.slug,
         ),
       )
     ) {
@@ -242,6 +245,12 @@ export function AdminProjectsScreen({
           {projects.map((project) => {
             const imageUrl = resolveProjectImageUrl(project.imageUrl);
             const isPending = pendingProjectId === project.id;
+            const localizedProject = resolveProjectTranslation(
+              project.translations,
+              lang,
+            );
+            const projectTitle = localizedProject?.title ?? project.slug;
+            const projectSummary = localizedProject?.summary ?? "";
 
             return (
               <Card key={project.id} variant="solid">
@@ -250,7 +259,7 @@ export function AdminProjectsScreen({
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
-                        alt={project.title}
+                        alt={projectTitle}
                         fill
                         unoptimized
                         className="object-cover"
@@ -268,7 +277,7 @@ export function AdminProjectsScreen({
                           )}
                           className="inline-flex items-center gap-2 text-lg font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                         >
-                          <span className="truncate">{project.title}</span>
+                          <span className="truncate">{projectTitle}</span>
                           <ArrowUpRight className="size-4 shrink-0" />
                         </Link>
                         <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
@@ -292,7 +301,7 @@ export function AdminProjectsScreen({
                     </div>
 
                     <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                      {project.summary}
+                      {projectSummary}
                     </p>
 
                     <div className="mt-4 flex flex-wrap gap-2">

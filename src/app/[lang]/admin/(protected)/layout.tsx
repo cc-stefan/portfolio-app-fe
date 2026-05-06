@@ -3,6 +3,8 @@ import { AdminProtectedLayout } from "@/features/admin/components/admin-protecte
 import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
 import { isAppLocale } from "@/features/portfolio/i18n/routing";
 
+export const dynamic = "force-dynamic";
+
 interface AdminProtectedAreaLayoutProps {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;

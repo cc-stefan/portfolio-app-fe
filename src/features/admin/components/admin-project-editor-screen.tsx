@@ -25,13 +25,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StateCard } from "@/features/portfolio/components/state-card";
 import {
+  appLocales,
+  defaultLocale,
   localizeHref,
   type AppLocale,
 } from "@/features/portfolio/i18n/routing";
 import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
+import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
 import { cn } from "@/lib/utils";
 import { useAdminAuth } from "../auth/use-admin-auth";
 import {
@@ -46,6 +50,7 @@ import {
   createEmptyProjectFormValues,
   createProjectFormValues,
   getProjectFileValidationError,
+  getLocalizedProjectFieldPath,
   isUploadedProjectImage,
   resolveProjectImageUrl,
   validateProjectForm,
@@ -55,6 +60,7 @@ import type {
   ProjectFieldErrors,
   ProjectFieldName,
   ProjectFormValues,
+  ProjectLocalizedFieldName,
 } from "../model/types";
 
 interface AdminProjectEditorScreenProps {
@@ -64,18 +70,33 @@ interface AdminProjectEditorScreenProps {
 }
 
 const projectErrorFieldByFormField: Partial<
-  Record<keyof ProjectFormValues, ProjectFieldName>
+  Record<Exclude<keyof ProjectFormValues, "translations">, ProjectFieldName>
 > = {
-  title: "title",
   slug: "slug",
-  summary: "summary",
-  description: "description",
   liveUrl: "liveUrl",
   repositoryUrl: "repositoryUrl",
   projectDate: "projectDate",
   technologies: "technologies",
   displayOrder: "displayOrder",
 };
+
+function getLocalizedFieldError(
+  fieldErrors: ProjectFieldErrors,
+  locale: AppLocale,
+  field: ProjectLocalizedFieldName,
+) {
+  return fieldErrors[getLocalizedProjectFieldPath(locale, field)];
+}
+
+function localeHasErrors(fieldErrors: ProjectFieldErrors, locale: AppLocale) {
+  const prefix = `translations.${locale}.`;
+
+  return Object.keys(fieldErrors).some((field) => field.startsWith(prefix));
+}
+
+function getFirstInvalidLocale(fieldErrors: ProjectFieldErrors) {
+  return appLocales.find((locale) => localeHasErrors(fieldErrors, locale));
+}
 
 export function AdminProjectEditorScreen({
   lang,
@@ -89,6 +110,7 @@ export function AdminProjectEditorScreen({
   const [formValues, setFormValues] = useState<ProjectFormValues>(
     createEmptyProjectFormValues(),
   );
+  const [activeLocale, setActiveLocale] = useState<AppLocale>(lang);
   const [technologyInput, setTechnologyInput] = useState("");
   const [fieldErrors, setFieldErrors] = useState<ProjectFieldErrors>({});
   const [pageError, setPageError] = useState<string | null>(null);
@@ -119,6 +141,14 @@ export function AdminProjectEditorScreen({
   }, [selectedImagePreviewUrl]);
 
   const previewImageUrl = selectedImagePreviewUrl ?? resolvedImageUrl;
+  const activeTranslation = formValues.translations[activeLocale];
+  const localizedProject = project
+    ? resolveProjectTranslation(project.translations, lang)
+    : null;
+  const previewImageAlt =
+    activeTranslation.title.trim() ||
+    formValues.translations[defaultLocale].title.trim() ||
+    copy.imagePreviewAlt;
 
   const applyProject = useCallback((nextProject: AdminProject) => {
     setProject(nextProject);
@@ -172,7 +202,7 @@ export function AdminProjectEditorScreen({
     return () => window.clearTimeout(timeoutId);
   }, [loadProject, status]);
 
-  function updateField<K extends keyof ProjectFormValues>(
+  function updateField<K extends Exclude<keyof ProjectFormValues, "translations">>(
     field: K,
     value: ProjectFormValues[K],
   ) {
@@ -189,6 +219,29 @@ export function AdminProjectEditorScreen({
         [errorField]: undefined,
       }));
     }
+  }
+
+  function updateLocalizedField(
+    locale: AppLocale,
+    field: ProjectLocalizedFieldName,
+    value: string,
+  ) {
+    const errorField = getLocalizedProjectFieldPath(locale, field);
+
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      translations: {
+        ...currentValues.translations,
+        [locale]: {
+          ...currentValues.translations[locale],
+          [field]: value,
+        },
+      },
+    }));
+    setFieldErrors((currentErrors) => ({
+      ...currentErrors,
+      [errorField]: undefined,
+    }));
   }
 
   function addTechnology() {
@@ -285,6 +338,12 @@ export function AdminProjectEditorScreen({
 
     if (Object.keys(validationErrors).length > 0) {
       setFieldErrors(validationErrors);
+      const firstInvalidLocale = getFirstInvalidLocale(validationErrors);
+
+      if (firstInvalidLocale) {
+        setActiveLocale(firstInvalidLocale);
+      }
+
       return;
     }
 
@@ -320,7 +379,14 @@ export function AdminProjectEditorScreen({
       }
 
       if (Object.keys(nextFieldErrors).length > 0) {
-        setFieldErrors(nextFieldErrors);
+        setFieldErrors(nextFieldErrors as ProjectFieldErrors);
+        const firstInvalidLocale = getFirstInvalidLocale(
+          nextFieldErrors as ProjectFieldErrors,
+        );
+
+        if (firstInvalidLocale) {
+          setActiveLocale(firstInvalidLocale);
+        }
       }
 
       setPageError(
@@ -378,7 +444,14 @@ export function AdminProjectEditorScreen({
       return;
     }
 
-    if (!window.confirm(copy.deleteConfirm.replace("{title}", project.title))) {
+    if (
+      !window.confirm(
+        copy.deleteConfirm.replace(
+          "{title}",
+          localizedProject?.title ?? project.slug,
+        ),
+      )
+    ) {
       return;
     }
 
@@ -458,7 +531,9 @@ export function AdminProjectEditorScreen({
             {isEditing ? copy.editEyebrow : copy.createEyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
-            {isEditing ? project?.title ?? copy.fallbackTitle : copy.newTitle}
+            {isEditing
+              ? localizedProject?.title ?? project?.slug ?? copy.fallbackTitle
+              : copy.newTitle}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
             {copy.description}
@@ -505,66 +580,125 @@ export function AdminProjectEditorScreen({
                     {copy.coreFieldsDescription}
                   </p>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field
-                    label={copy.titleFieldLabel}
-                    error={fieldErrors.title}
-                    description={copy.titleFieldDescription}
-                  >
-                    <Input
-                      value={formValues.title}
-                      onChange={(event) =>
-                        updateField("title", event.target.value)
-                      }
-                      placeholder={copy.titleFieldPlaceholder}
-                      aria-invalid={Boolean(fieldErrors.title)}
-                    />
-                  </Field>
-                  <Field
-                    label={copy.slugFieldLabel}
-                    error={fieldErrors.slug}
-                    description={copy.slugFieldDescription}
-                  >
-                    <Input
-                      value={formValues.slug}
-                      onChange={(event) =>
-                        updateField("slug", event.target.value)
-                      }
-                      placeholder={copy.slugFieldPlaceholder}
-                      aria-invalid={Boolean(fieldErrors.slug)}
-                    />
-                  </Field>
-                </div>
-                <Field
-                  label={copy.summaryFieldLabel}
-                  error={fieldErrors.summary}
-                  description={copy.summaryFieldDescription}
+                <Tabs
+                  value={activeLocale}
+                  onValueChange={(value) => setActiveLocale(value as AppLocale)}
+                  className="grid gap-4"
                 >
-                  <Textarea
-                    value={formValues.summary}
-                    onChange={(event) =>
-                      updateField("summary", event.target.value)
-                    }
-                    placeholder={copy.summaryFieldPlaceholder}
-                    className="min-h-28"
-                    aria-invalid={Boolean(fieldErrors.summary)}
-                  />
-                </Field>
-                <Field
-                  label={copy.descriptionFieldLabel}
-                  error={fieldErrors.description}
-                  description={copy.descriptionFieldDescription}
-                >
-                  <Textarea
-                    value={formValues.description}
-                    onChange={(event) =>
-                      updateField("description", event.target.value)
-                    }
-                    placeholder={copy.descriptionFieldPlaceholder}
-                    className="min-h-44"
-                    aria-invalid={Boolean(fieldErrors.description)}
-                  />
-                </Field>
+                  <TabsList className="w-full sm:w-auto">
+                    {appLocales.map((locale) => (
+                      <TabsTrigger
+                        key={locale}
+                        value={locale}
+                        className={cn(
+                          localeHasErrors(fieldErrors, locale) &&
+                            "text-destructive data-[state=active]:text-destructive",
+                        )}
+                      >
+                        {dictionary.localeNames[locale]}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  {appLocales.map((locale) => {
+                    const titleError = getLocalizedFieldError(
+                      fieldErrors,
+                      locale,
+                      "title",
+                    );
+                    const summaryError = getLocalizedFieldError(
+                      fieldErrors,
+                      locale,
+                      "summary",
+                    );
+                    const descriptionError = getLocalizedFieldError(
+                      fieldErrors,
+                      locale,
+                      "description",
+                    );
+
+                    return (
+                      <TabsContent key={locale} value={locale} className="mt-0">
+                        <div className="grid gap-4">
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <Field
+                              label={copy.titleFieldLabel}
+                              error={titleError}
+                              description={copy.titleFieldDescription}
+                            >
+                              <Input
+                                value={formValues.translations[locale].title}
+                                onChange={(event) =>
+                                  updateLocalizedField(
+                                    locale,
+                                    "title",
+                                    event.target.value,
+                                  )
+                                }
+                                placeholder={copy.titleFieldPlaceholder}
+                                aria-invalid={Boolean(titleError)}
+                              />
+                            </Field>
+                            <Field
+                              label={copy.slugFieldLabel}
+                              error={fieldErrors.slug}
+                              description={copy.slugFieldDescription}
+                            >
+                              <Input
+                                value={formValues.slug}
+                                onChange={(event) =>
+                                  updateField("slug", event.target.value)
+                                }
+                                placeholder={copy.slugFieldPlaceholder}
+                                aria-invalid={Boolean(fieldErrors.slug)}
+                              />
+                            </Field>
+                          </div>
+
+                          <Field
+                            label={copy.summaryFieldLabel}
+                            error={summaryError}
+                            description={copy.summaryFieldDescription}
+                          >
+                            <Textarea
+                              value={formValues.translations[locale].summary}
+                              onChange={(event) =>
+                                updateLocalizedField(
+                                  locale,
+                                  "summary",
+                                  event.target.value,
+                                )
+                              }
+                              placeholder={copy.summaryFieldPlaceholder}
+                              className="min-h-28"
+                              aria-invalid={Boolean(summaryError)}
+                            />
+                          </Field>
+
+                          <Field
+                            label={copy.descriptionFieldLabel}
+                            error={descriptionError}
+                            description={copy.descriptionFieldDescription}
+                          >
+                            <Textarea
+                              value={formValues.translations[locale].description}
+                              onChange={(event) =>
+                                updateLocalizedField(
+                                  locale,
+                                  "description",
+                                  event.target.value,
+                                )
+                              }
+                              placeholder={copy.descriptionFieldPlaceholder}
+                              className="min-h-44"
+                              aria-invalid={Boolean(descriptionError)}
+                            />
+                          </Field>
+                        </div>
+                      </TabsContent>
+                    );
+                  })}
+                </Tabs>
               </section>
 
               <section className="grid gap-5 border-t border-border pt-8">
@@ -752,7 +886,7 @@ export function AdminProjectEditorScreen({
                 {previewImageUrl ? (
                   <Image
                     src={previewImageUrl}
-                    alt={formValues.title || copy.imagePreviewAlt}
+                    alt={previewImageAlt}
                     fill
                     unoptimized
                     className="object-cover"

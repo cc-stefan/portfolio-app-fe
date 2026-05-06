@@ -1,3 +1,5 @@
+import type { AppLocale } from "./routing";
+
 export interface PortfolioDictionary {
   meta: {
     siteName: string;
@@ -10,10 +12,12 @@ export interface PortfolioDictionary {
     notFoundTitle: string;
     notFoundDescription: string;
   };
-  localeNames: {
-    en: string;
-    ro: string;
+  globalError: {
+    title: string;
+    description: string;
+    resetAction: string;
   };
+  localeNames: Record<AppLocale, string>;
   header: {
     brand: string;
     avatarInitials: string;

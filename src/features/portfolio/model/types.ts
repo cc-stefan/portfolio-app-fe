@@ -1,6 +1,15 @@
+import type { AppLocale } from "../i18n/routing";
+
 export interface PortfolioHealth {
   service: string;
   status: string;
+}
+
+export interface ProjectTranslation {
+  locale: AppLocale;
+  title: string;
+  summary: string;
+  description: string | null;
 }
 
 export interface PortfolioProject {
@@ -9,6 +18,8 @@ export interface PortfolioProject {
   slug: string;
   summary: string;
   description: string | null;
+  contentLocale: AppLocale;
+  availableLocales: AppLocale[];
   imageUrl: string | null;
   liveUrl: string | null;
   repositoryUrl: string | null;

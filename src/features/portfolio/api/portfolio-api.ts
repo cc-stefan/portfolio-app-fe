@@ -4,6 +4,7 @@ import {
   getBackendApiBaseUrl,
   getBackendOrigin,
 } from "@/lib/backend";
+import type { AppLocale } from "../i18n/routing";
 import type {
   ApiResult,
   PortfolioHealth,
@@ -26,6 +27,12 @@ export function getPortfolioApiBaseUrl() {
 
 export function getPortfolioApiOrigin() {
   return getBackendOrigin();
+}
+
+function appendLocale(path: string, locale: AppLocale) {
+  const url = new URL(path, "https://portfolio.local");
+  url.searchParams.set("locale", locale);
+  return `${url.pathname}${url.search}`;
 }
 
 async function requestJson<T>(path: string): Promise<T> {
@@ -88,10 +95,12 @@ export function getBackendHealth() {
   return safeRequest<PortfolioHealth>("/health");
 }
 
-export function getPublishedProjects() {
-  return safeRequest<PortfolioProject[]>("/projects");
+export function getPublishedProjects(locale: AppLocale) {
+  return safeRequest<PortfolioProject[]>(appendLocale("/projects", locale));
 }
 
-export function getProjectBySlug(slug: string) {
-  return safeRequest<PortfolioProject>(`/projects/${encodeURIComponent(slug)}`);
+export function getProjectBySlug(slug: string, locale: AppLocale) {
+  return safeRequest<PortfolioProject>(
+    appendLocale(`/projects/${encodeURIComponent(slug)}`, locale),
+  );
 }

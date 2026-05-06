@@ -16,6 +16,12 @@ export const dictionary: PortfolioDictionary = {
     notFoundDescription:
       "Ruta cerută nu există în această aplicație de portofoliu.",
   },
+  globalError: {
+    title: "A apărut o eroare",
+    description:
+      "Aplicația a întâmpinat o eroare neașteptată în timpul randării acestei pagini.",
+    resetAction: "Încearcă din nou",
+  },
   localeNames: {
     en: "English",
     ro: "Română",
@@ -80,7 +86,7 @@ export const dictionary: PortfolioDictionary = {
       },
     ],
     profileSnapshotLabel: "Profil rapid",
-    profileSnapshotTitle: "Construit pentru produse reale",
+    profileSnapshotTitle: "Transform idei în produse gata de lansare",
     profileSnapshotBadge: "Disponibil pentru colaborări",
     profileSummaryLabel: "De ce lucrează echipele cu mine",
     profileSummary:
@@ -449,7 +455,7 @@ export const dictionary: PortfolioDictionary = {
       newTitle: "Proiect nou",
       fallbackTitle: "Editor de proiect",
       description:
-        "Actualizează câmpurile proiectului definite în DTO, alege manual data proiectului și încarcă imaginea separat după ce proiectul a fost creat.",
+        "Administrează conținutul localizat al proiectului, metadatele comune și imaginea încărcată separat dintr-un singur flux de editare.",
       backToProjects: "Înapoi la proiecte",
       deleteAction: "Șterge",
       deleteConfirm: "Ștergi „{title}”? Această acțiune nu poate fi anulată.",
@@ -460,7 +466,7 @@ export const dictionary: PortfolioDictionary = {
       loadErrorFallback: "Nu s-a putut încărca acest proiect",
       coreFieldsLabel: "Câmpuri principale",
       coreFieldsDescription:
-        "`title` și `summary` sunt obligatorii. `slug` rămâne opțional și trebuie să fie în lowercase kebab-case.",
+        "`title` și `summary` sunt obligatorii pentru localizarea implicită. Celelalte taburi de limbă rămân complet manuale, iar `slug` este comun pentru toate traducerile.",
       titleFieldLabel: "Titlu",
       titleFieldDescription: "Obligatoriu, între 1 și 120 de caractere.",
       titleFieldPlaceholder: "Titlul proiectului",
@@ -508,7 +514,7 @@ export const dictionary: PortfolioDictionary = {
         "Număr întreg opțional mai mare sau egal cu 0.",
       displayOrderFieldPlaceholder: "0",
       payloadHint:
-        "Payload-ul include doar câmpurile acceptate de backend. URL-urile imaginilor nu se trimit manual.",
+        "Payload-ul trimite doar câmpurile acceptate de backend, inclusiv localizările care au conținut completat. URL-urile imaginilor nu se trimit manual.",
       savingProjectAction: "Se salvează proiectul...",
       creatingProjectAction: "Se creează proiectul...",
       saveChangesAction: "Salvează modificările",

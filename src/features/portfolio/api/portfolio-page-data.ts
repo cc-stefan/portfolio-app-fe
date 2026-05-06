@@ -11,6 +11,7 @@ import {
   getFeaturedProjects,
   getRelatedProjects,
 } from "../lib/portfolio-selectors";
+import type { AppLocale } from "../i18n/routing";
 import type { ApiResult, PortfolioProject } from "../model/types";
 
 export interface PortfolioHomePageData {
@@ -30,10 +31,12 @@ export interface PortfolioProjectPageData {
   relatedProjects: PortfolioProject[];
 }
 
-export async function getPortfolioHomePageData(): Promise<PortfolioHomePageData> {
+export async function getPortfolioHomePageData(
+  locale: AppLocale,
+): Promise<PortfolioHomePageData> {
   const [healthResult, projectsResult] = await Promise.all([
     getBackendHealth(),
-    getPublishedProjects(),
+    getPublishedProjects(locale),
   ]);
 
   const projects = projectsResult.data ?? [];
@@ -52,10 +55,11 @@ export async function getPortfolioHomePageData(): Promise<PortfolioHomePageData>
 
 export async function getPortfolioProjectPageData(
   slug: string,
+  locale: AppLocale,
 ): Promise<PortfolioProjectPageData> {
   const [projectResult, projectsResult] = await Promise.all([
-    getProjectBySlug(slug),
-    getPublishedProjects(),
+    getProjectBySlug(slug, locale),
+    getPublishedProjects(locale),
   ]);
 
   const project = projectResult.data;

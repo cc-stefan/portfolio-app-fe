@@ -37,6 +37,7 @@ import {
   getInquiryBadgeVariant,
 } from "../lib/inquiry-status";
 import { resolveProjectImageUrl } from "../lib/project-form";
+import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
 import type { AdminDashboardResponse, AdminInquiry } from "../model/types";
 import { useAdminAuth } from "../auth/use-admin-auth";
 
@@ -303,6 +304,11 @@ export function AdminDashboardScreen({
             ) : (
               dashboard.recentProjects.map((project) => {
                 const imageUrl = resolveProjectImageUrl(project.imageUrl);
+                const localizedProject = resolveProjectTranslation(
+                  project.translations,
+                  lang,
+                );
+                const projectTitle = localizedProject?.title ?? project.slug;
 
                 return (
                   <Link
@@ -314,7 +320,7 @@ export function AdminDashboardScreen({
                       {imageUrl ? (
                         <Image
                           src={imageUrl}
-                          alt={project.title}
+                          alt={projectTitle}
                           fill
                           unoptimized
                           className="object-cover"
@@ -325,7 +331,7 @@ export function AdminDashboardScreen({
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-foreground">
-                            {project.title}
+                            {projectTitle}
                           </p>
                           <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
                             {project.slug}

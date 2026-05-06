@@ -1,4 +1,5 @@
-import type { PortfolioProject } from "@/features/portfolio/model/types";
+import type { AppLocale } from "@/features/portfolio/i18n/routing";
+import type { ProjectTranslation } from "@/features/portfolio/model/types";
 
 export type UserRole = "USER" | "ADMIN";
 
@@ -12,7 +13,21 @@ export interface AdminUser {
   updatedAt: string;
 }
 
-export type AdminProject = PortfolioProject;
+export interface AdminProject {
+  id: string;
+  slug: string;
+  translations: ProjectTranslation[];
+  imageUrl: string | null;
+  liveUrl: string | null;
+  repositoryUrl: string | null;
+  projectDate: string | null;
+  technologies: string[];
+  featured: boolean;
+  published: boolean;
+  displayOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface AuthResponse {
   accessToken: string;
@@ -58,8 +73,8 @@ export interface AdminDashboardResponse {
     Pick<
       AdminProject,
       | "id"
-      | "title"
       | "slug"
+      | "translations"
       | "published"
       | "featured"
       | "imageUrl"
@@ -69,11 +84,15 @@ export interface AdminDashboardResponse {
   >;
 }
 
-export interface ProjectFormValues {
+export interface ProjectTranslationFormValues {
   title: string;
-  slug: string;
   summary: string;
   description: string;
+}
+
+export interface ProjectFormValues {
+  translations: Record<AppLocale, ProjectTranslationFormValues>;
+  slug: string;
   liveUrl: string;
   repositoryUrl: string;
   projectDate: string;
@@ -83,11 +102,16 @@ export interface ProjectFormValues {
   displayOrder: string;
 }
 
-export interface ProjectMutationPayload {
+export interface ProjectTranslationPayload {
+  locale: AppLocale;
   title: string;
-  slug?: string;
   summary: string;
   description?: string | null;
+}
+
+export interface ProjectMutationPayload {
+  translations: ProjectTranslationPayload[];
+  slug?: string;
   liveUrl?: string | null;
   repositoryUrl?: string | null;
   projectDate?: string | null;
@@ -97,11 +121,11 @@ export interface ProjectMutationPayload {
   displayOrder?: number;
 }
 
+export type ProjectLocalizedFieldName = keyof ProjectTranslationFormValues;
+
 export type ProjectFieldName =
-  | "title"
+  | `translations.${AppLocale}.${ProjectLocalizedFieldName}`
   | "slug"
-  | "summary"
-  | "description"
   | "liveUrl"
   | "repositoryUrl"
   | "projectDate"

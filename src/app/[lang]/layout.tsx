@@ -11,6 +11,8 @@ import {appLocales, localeTags} from "@/features/portfolio/i18n/routing";
 import {routing} from "@/i18n/routing";
 import "../globals.css";
 
+export const dynamic = "force-dynamic";
+
 interface LocaleLayoutProps {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;

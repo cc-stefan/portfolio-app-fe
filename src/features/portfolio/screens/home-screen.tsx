@@ -25,7 +25,7 @@ export async function PortfolioHomeScreen({
     projectsResult,
     featuredProjects,
     apiOrigin,
-  } = await getPortfolioHomePageData();
+  } = await getPortfolioHomePageData(locale);
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
 
   return (

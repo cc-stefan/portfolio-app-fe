@@ -16,6 +16,12 @@ export const dictionary: PortfolioDictionary = {
     notFoundDescription:
       "The requested route does not exist in this portfolio application.",
   },
+  globalError: {
+    title: "Something went wrong",
+    description:
+      "The application hit an unexpected error while rendering this page.",
+    resetAction: "Try again",
+  },
   localeNames: {
     en: "English",
     ro: "Română",
@@ -77,7 +83,7 @@ export const dictionary: PortfolioDictionary = {
       },
     ],
     profileSnapshotLabel: "Quick profile",
-    profileSnapshotTitle: "Built to ship real products",
+    profileSnapshotTitle: "Turning ideas into launch-ready products",
     profileSnapshotBadge: "Open to collaborations",
     profileSummaryLabel: "Why teams hire me",
     profileSummary:
@@ -443,7 +449,7 @@ export const dictionary: PortfolioDictionary = {
       newTitle: "New project",
       fallbackTitle: "Project editor",
       description:
-        "Update the DTO-backed project fields, choose a manual project date, and upload the project image separately once the project exists.",
+        "Manage localized project content, shared metadata, and the separately uploaded project image from one editor flow.",
       backToProjects: "Back to projects",
       deleteAction: "Delete",
       deleteConfirm: "Delete “{title}”? This cannot be undone.",
@@ -454,7 +460,7 @@ export const dictionary: PortfolioDictionary = {
       loadErrorFallback: "Unable to load this project",
       coreFieldsLabel: "Core fields",
       coreFieldsDescription:
-        "`title` and `summary` are required. `slug` stays optional and must remain lowercase kebab-case.",
+        "`title` and `summary` are required for the default locale. Other locale tabs stay manual, and `slug` remains shared across every translation.",
       titleFieldLabel: "Title",
       titleFieldDescription: "Required, 1 to 120 characters.",
       titleFieldPlaceholder: "Project title",
@@ -502,7 +508,7 @@ export const dictionary: PortfolioDictionary = {
         "Optional integer greater than or equal to 0.",
       displayOrderFieldPlaceholder: "0",
       payloadHint:
-        "The payload includes only backend-supported fields. Image URLs are never sent manually.",
+        "The payload sends only backend-supported fields, including the locale entries that currently contain content. Image URLs are never sent manually.",
       savingProjectAction: "Saving project...",
       creatingProjectAction: "Creating project...",
       saveChangesAction: "Save changes",

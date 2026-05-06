@@ -26,7 +26,7 @@ export async function PortfolioProjectScreen({
   dictionary,
 }: PortfolioProjectScreenProps) {
   const { projectResult, project, relatedProjects } =
-    await getPortfolioProjectPageData(slug);
+    await getPortfolioProjectPageData(slug, locale);
   const hasProjectLinks = Boolean(project?.liveUrl || project?.repositoryUrl);
 
   if (projectResult.status === 404) {

@@ -13,7 +13,7 @@ export function getBackendFieldErrors(body: BackendErrorBody | null) {
   }
 
   for (const error of body.errors) {
-    const field = error.path?.[0];
+    const field = error.path?.join(".");
 
     if (field && error.message) {
       fieldErrors[field] = error.message;

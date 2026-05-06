@@ -20,7 +20,7 @@ export async function generateMetadata({
 
   const dictionary = await getDictionary(lang);
 
-  return getPortfolioProjectMetadata(slug, dictionary);
+  return getPortfolioProjectMetadata(slug, lang, dictionary);
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
