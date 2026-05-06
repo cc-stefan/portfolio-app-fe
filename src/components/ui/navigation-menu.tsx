@@ -50,7 +50,7 @@ function NavigationMenuLink({
     <Comp
       data-slot="navigation-menu-link"
       className={cn(
-        "rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45",
+        "shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45",
         className,
       )}
       {...props}

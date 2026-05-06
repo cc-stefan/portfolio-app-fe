@@ -56,16 +56,26 @@ export function getBackendErrorMessage(
   return fallback;
 }
 
-export function getProjectSlugConflictMessage(body: BackendErrorBody | null) {
+function isConflictMessage(message: string, pattern: RegExp) {
+  return pattern.test(message) && /already|unique|exists|use/i.test(message);
+}
+
+export function getProjectSlugConflictMessage(
+  body: BackendErrorBody | null,
+  fallback: string,
+) {
   const message = getBackendErrorMessage(body, "");
-  return /slug/i.test(message) && /already|unique|exists|use/i.test(message)
-    ? "Project slug is already in use"
+  return isConflictMessage(message, /slug/i)
+    ? fallback
     : null;
 }
 
-export function getEmailConflictMessage(body: BackendErrorBody | null) {
+export function getEmailConflictMessage(
+  body: BackendErrorBody | null,
+  fallback: string,
+) {
   const message = getBackendErrorMessage(body, "");
-  return /email/i.test(message) && /already|unique|exists|use/i.test(message)
-    ? "Email is already in use"
+  return isConflictMessage(message, /email/i)
+    ? fallback
     : null;
 }

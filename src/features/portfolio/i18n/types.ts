@@ -388,6 +388,7 @@ export interface PortfolioDictionary {
         titleMaxLength: string;
         slugMaxLength: string;
         slugPattern: string;
+        slugInUse: string;
         summaryRequired: string;
         summaryMaxLength: string;
         descriptionMaxLength: string;

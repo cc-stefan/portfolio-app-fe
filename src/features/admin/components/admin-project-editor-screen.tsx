@@ -310,7 +310,10 @@ export function AdminProjectEditorScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       const nextFieldErrors = getBackendFieldErrors(errorBody);
-      const slugConflictMessage = getProjectSlugConflictMessage(errorBody);
+      const slugConflictMessage = getProjectSlugConflictMessage(
+        errorBody,
+        copy.validation.slugInUse,
+      );
 
       if (slugConflictMessage) {
         nextFieldErrors.slug = slugConflictMessage;

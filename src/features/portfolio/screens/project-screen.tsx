@@ -66,11 +66,7 @@ export async function PortfolioProjectScreen({
             <StateCard
               eyebrow={dictionary.project.label}
               title={dictionary.project.unavailableTitle}
-              description={
-                projectResult.error
-                  ? `${dictionary.project.unavailableDescription} ${projectResult.error}`
-                  : dictionary.project.unavailableDescription
-              }
+              description={dictionary.project.unavailableDescription}
               tone="warning"
               action={
                 <Button asChild size="lg">

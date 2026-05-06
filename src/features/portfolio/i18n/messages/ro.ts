@@ -5,13 +5,13 @@ export const dictionary: PortfolioDictionary = {
     siteName: "Claudiu Ștefan",
     defaultTitle: "Claudiu Ștefan",
     description:
-      "Dezvoltator frontend care construiește interfețe rapide, scalabile și orientate spre produs cu React, Next.js, Angular și TypeScript.",
+      "Dezvoltator frontend care livrează interfețe rapide, scalabile și orientate spre produs, cu React, Next.js, Angular și TypeScript.",
     homeTitle: "Dezvoltator frontend",
     homeDescription:
-      "Portofoliu pentru Claudiu Ștefan, dezvoltator frontend axat pe interfețe pregătite pentru producție, arhitectură scalabilă și claritate de produs.",
+      "Portofoliul lui Claudiu Ștefan, dezvoltator frontend concentrat pe interfețe gata de producție, arhitectură scalabilă și claritate de produs.",
     projectUnavailableTitle: "Proiect indisponibil",
     projectUnavailableDescription:
-      "Backend-ul nu a putut returna conținutul pentru acest proiect.",
+      "Backend-ul nu a putut livra conținutul pentru acest proiect.",
     notFoundTitle: "Pagină negăsită",
     notFoundDescription:
       "Ruta cerută nu există în această aplicație de portofoliu.",
@@ -38,20 +38,20 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      "Dezvoltator frontend axat pe UI de produs clar, arhitectură React scalabilă și livrare pregătită pentru producție.",
-    quickLinksLabel: "Link-uri rapide",
+      "Dezvoltator frontend concentrat pe interfețe de produs clare, arhitectură React scalabilă și livrare gata de producție.",
+    quickLinksLabel: "Linkuri rapide",
     copyrightLabel: "Toate drepturile rezervate.",
   },
   home: {
     title:
-      "Interfețe de produs rapide, scalabile, clare pentru utilizatori și construite să reziste.",
+      "Interfețe de produs rapide, scalabile, clare și construite să reziste.",
     description:
-      "Construiesc interfețe pregătite pentru producție cu React, Next.js, Angular și TypeScript, combinând arhitectură frontend solidă cu UX clar și gândire de produs.",
+      "Construiesc interfețe gata de producție cu React, Next.js, Angular și TypeScript, combinând o arhitectură frontend solidă cu UX clar și gândire de produs.",
     primaryCta: "Vezi proiectele",
-    secondaryCta: "Ia legătura",
+    secondaryCta: "Contactează-mă",
     metrics: {
-      ariaLabel: "Indicatori portofoliu",
-      technologies: "Stack principal",
+      ariaLabel: "Indicatorii portofoliului",
+      technologies: "Tehnologii de bază",
     },
     metricCards: [
       {
@@ -80,11 +80,11 @@ export const dictionary: PortfolioDictionary = {
       },
     ],
     profileSnapshotLabel: "Profil rapid",
-    profileSnapshotTitle: "Construit pentru a livra produse reale",
+    profileSnapshotTitle: "Construit pentru produse reale",
     profileSnapshotBadge: "Disponibil pentru colaborări",
-    profileSummaryLabel: "De ce mă aleg echipele",
+    profileSummaryLabel: "De ce lucrează echipele cu mine",
     profileSummary:
-      "Aduc mai mult decât viteză de implementare. Transform cerințele de produs în interfețe clare, mentenabile și gata de producție.",
+      "Aduc mai mult decât viteză de implementare. Transform cerințele de produs în interfețe clare, mentenabile și gata de lansare.",
     profilePanels: [
       {
         label: "Experiență",
@@ -122,14 +122,14 @@ export const dictionary: PortfolioDictionary = {
       "Publică un proiect în zona de administrare și va apărea automat aici.",
     capabilitiesLabel: "Despre",
     capabilitiesTitle:
-      "Lucrez la intersecția dintre dezvoltare frontend și claritate de produs.",
+      "Lucrez acolo unde dezvoltarea frontend se întâlnește cu claritatea de produs.",
     capabilitiesDescription:
-      "Valoarea pe care o aduc stă în profunzimea tehnică, execuția curată și discernământul de a face interfețele mai ușor de folosit și de extins.",
+      "Aduc profunzime tehnică, execuție curată și discernământul de a face interfețele mai ușor de folosit și de extins.",
     capabilities: [
       {
         title: "Frontend pregătit pentru producție",
         description:
-          "Construiesc sisteme de componente scalabile, layout-uri responsive și cod de aplicație mentenabil, capabil să susțină creșterea reală a produsului.",
+          "Construiesc sisteme de componente scalabile, layouturi responsive și cod de aplicație mentenabil, capabil să susțină creșterea reală a produsului.",
       },
       {
         title: "Gândire de produs",
@@ -139,20 +139,20 @@ export const dictionary: PortfolioDictionary = {
       {
         title: "Sisteme și integrare",
         description:
-          "Lucrez confortabil cu state, date asincrone, formulare, analytics, localizare și contracte backend fără să pierd din calitatea UI.",
+          "Lucrez firesc cu state, date asincrone, formulare, analytics, localizare și contracte backend, fără să pierd din calitatea UI.",
       },
     ],
     processLabel: "Cum lucrez",
     processTitle:
       "Livrarea fiabilă vine din structură clară, compromisuri bine judecate și atenție la detalii.",
     processDescription:
-      "Păstrez frontend-ul practic: ușor de înțeles pentru echipe, scalabil pentru lucru viitor și suficient de bine finisat încât să inspire încredere.",
+      "Păstrez frontend-ul practic: ușor de urmărit pentru echipe, scalabil pentru ce urmează și suficient de bine finisat încât să inspire încredere.",
     processStepLabel: "Pas",
     processCards: [
       {
         title: "Structură înainte de toate",
         description:
-          "Stabilesc granițe clare între componente, o gestionare predictibilă a stării și pattern-uri reutilizabile înainte ca complexitatea să înceapă să se răspândească.",
+          "Stabilesc granițe clare între componente, o gestionare predictibilă a stării și modele reutilizabile înainte ca complexitatea să înceapă să se răspândească.",
       },
       {
         title: "Claritate pentru utilizator",
@@ -171,22 +171,22 @@ export const dictionary: PortfolioDictionary = {
     experienceCards: [],
     credentialsLabel: "Competențe",
     credentialsTitle:
-      "Stack-ul pe care îl folosesc cel mai des și felul în care îl aplic.",
+      "Stack-ul pe care îl folosesc cel mai des și modul în care îl aplic.",
     credentialsDescription:
-      "Concentrat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un dezvoltator frontend puternic.",
+      "Axat pe tehnologiile și obiceiurile de lucru relevante pentru echipele care caută un dezvoltator frontend solid.",
     credentialGroups: [
       {
         title: "Stack frontend",
         items: [
           "React, Next.js, Angular, TypeScript, Styled Components și Material UI.",
-          "UI bazat pe componente, construit pentru claritate, reutilizare și mentenabilitate pe termen lung.",
+          "UI bazat pe componente, gândit pentru claritate, reutilizare și mentenabilitate pe termen lung.",
         ],
       },
       {
         title: "Stratul de aplicație",
         items: [
-          "React Query, Redux Toolkit, routing, formulare, REST, GraphQL și localizare.",
-          "Interfețe conectate la backend-uri reale, fluxuri asincrone și călătorii de utilizator cu state complexe.",
+          "React Query, Redux Toolkit, rutare, formulare, REST, GraphQL și localizare.",
+          "Interfețe conectate la backend-uri reale, fluxuri asincrone și parcursuri de utilizator cu state complexe.",
         ],
       },
       {
@@ -199,9 +199,9 @@ export const dictionary: PortfolioDictionary = {
     ],
     inquiryLabel: "Contact",
     inquiryTitle:
-      "Ai nevoie de un dezvoltator frontend care poate transforma cerințele într-un UI de produs bine finisat?",
+      "Ai nevoie de un dezvoltator frontend care poate transforma cerințele într-o interfață de produs bine finisată?",
     inquiryDescription:
-      "Sunt deschis pentru roluri de frontend, proiecte de product engineering și colaborări contractuale în care contează performanța, claritatea și livrarea fiabilă.",
+      "Sunt deschis la roluri de frontend, proiecte de product engineering și colaborări contractuale în care contează performanța, claritatea și livrarea fiabilă.",
     inquiryHighlights: [
       {
         title: "Contact",
@@ -209,9 +209,9 @@ export const dictionary: PortfolioDictionary = {
         href: "mailto:cc.stefan@icloud.com",
       },
       {
-        title: "Potrivire bună",
+        title: "Colaborare potrivită",
         description:
-          "Echipe care apreciază execuția UI puternică, gândirea de produs și colaborarea clară cu design și backend.",
+          "Echipe care apreciază execuția UI solidă, gândirea de produs și colaborarea clară cu designul și backend-ul.",
       },
     ],
   },
@@ -221,11 +221,11 @@ export const dictionary: PortfolioDictionary = {
     summaryTitle: "Ce am construit",
     overviewTitle: "Prezentare",
     descriptionTitle: "Descriere",
-    factsTitle: "Detalii proiect",
+    factsTitle: "Detalii despre proiect",
     stackTitle: "Stack",
-    linksTitle: "Link-uri",
-    liveTitle: "Live",
-    repositoryTitle: "Repository",
+    linksTitle: "Linkuri",
+    liveTitle: "Versiune live",
+    repositoryTitle: "Cod sursă",
     timelineTitle: "Cronologie",
     projectDateTitle: "Data proiectului",
     deliveryTitle: "De ce funcționează",
@@ -244,16 +244,16 @@ export const dictionary: PortfolioDictionary = {
     relatedLabel: "Proiecte similare",
     relatedTitle: "Alte proiecte",
     relatedDescription:
-      "Mai multe proiecte frontend, de la suprafețe de marketing la interfețe de produs și livrare bazată pe API.",
+      "Mai multe proiecte frontend, de la site-uri de marketing la interfețe de produs și implementări bazate pe API.",
     unavailableTitle: "Acest proiect nu este disponibil momentan.",
     unavailableDescription:
       "Backend-ul nu a returnat conținutul necesar pentru a afișa acest proiect.",
     unavailableHint:
       "Pornește portfolio-app-be pe portul 3001 sau actualizează PORTFOLIO_API_BASE_URL în mediul frontend.",
-    notFoundTitle: "Această rută nu corespunde unui proiect publicat.",
+    notFoundTitle: "Ruta aceasta nu corespunde niciunui proiect publicat.",
     notFoundDescription:
       "Slug-ul poate fi greșit, proiectul poate fi încă în draft sau backend-ul nu are o intrare corespunzătoare.",
-    noDescription: "Nu există o descriere pentru acest proiect",
+    noDescription: "Acest proiect nu are încă o descriere",
     noProjectDate: "Data proiectului nu a fost adăugată încă",
     noProjectImage: "Imaginea proiectului va fi adăugată în curând",
   },
@@ -261,7 +261,7 @@ export const dictionary: PortfolioDictionary = {
     brand: "Administrare portofoliu",
     openMenu: "Deschide meniul de administrare",
     closeMenu: "Închide meniul de administrare",
-    navigationLabel: "Navigație administrare",
+    navigationLabel: "Navigație de administrare",
     navDashboard: "Panou",
     navProjects: "Proiecte",
     navInquiries: "Mesaje",
@@ -287,23 +287,23 @@ export const dictionary: PortfolioDictionary = {
       "Acest cont nu are permisiunea de a folosi zona de administrare.",
     signInWithAnotherAccount: "Autentifică-te cu alt cont",
     retry: "Încearcă din nou",
-    dashboardLabel: "Imagine de ansamblu",
-    dashboardTitle: "Operațiuni portofoliu",
+    dashboardLabel: "Panou de ansamblu",
+    dashboardTitle: "Administrare portofoliu",
     dashboardDescription:
-      "Monitorizează starea publicării, mesajele primite și indicatorii de acces dintr-o singură vedere operațională.",
+      "Urmărește publicarea, mesajele primite și accesul dintr-un singur panou.",
     dashboardLoadErrorTitle: "Panoul nu este disponibil",
     dashboardLoadErrorDescription:
       "Datele operaționale nu au putut fi încărcate în acest moment.",
     dashboardGroups: {
       projectsTitle: "Proiecte",
       projectsDescription:
-        "Inventarul de conținut, starea publicării și acoperirea cu imagini pentru portofoliu.",
+        "Volumul de conținut, starea publicării și acoperirea cu imagini în portofoliu.",
       inquiriesTitle: "Mesaje",
       inquiriesDescription:
-        "Volumul actual din inbox și starea de follow-up pentru solicitările recente de contact.",
+        "Volumul actual din inbox și stadiul mesajelor recente de contact.",
       accessTitle: "Acces",
       accessDescription:
-        "Utilizatorii autentificați disponibili în acest moment în backend-ul portofoliului.",
+        "Utilizatorii autentificați existenți în backend-ul portofoliului.",
     },
     statTotalProjects: "Total proiecte",
     statPublishedProjects: "Publicate",
@@ -325,7 +325,7 @@ export const dictionary: PortfolioDictionary = {
       "Proiectele vor apărea aici după ce sunt create primele intrări.",
     recentInquiriesTitle: "Mesaje recente",
     recentInquiriesDescription:
-      "Cele mai recente mesaje primite care pot necesita analiză sau follow-up.",
+      "Cele mai recente mesaje primite care pot necesita analiză sau răspuns.",
     recentInquiriesEmptyTitle: "Nu există mesaje încă",
     recentInquiriesEmptyDescription:
       "Noile solicitări de contact vor apărea aici după ce site-ul începe să primească mesaje.",
@@ -335,17 +335,17 @@ export const dictionary: PortfolioDictionary = {
     updated: "Actualizat",
     unread: "Necitit",
     read: "Citit",
-    hasNotes: "Are notițe",
+    hasNotes: "Cu notițe",
     received: "Primit",
     inquiryStatusNew: "Nou",
     inquiryStatusInReview: "În analiză",
     inquiryStatusResolved: "Rezolvat",
     inquiryStatusArchived: "Arhivat",
     projectsPage: {
-      eyebrow: "Proiecte administrare",
-      title: "Gestionează intrările din portofoliu",
+      eyebrow: "Administrare proiecte",
+      title: "Gestionează proiectele din portofoliu",
       description:
-        "Creează, editează, publică, marchează ca recomandate, ordonează, încarcă imagini sau șterge proiecte folosind exact endpoint-urile de administrare expuse de backend.",
+        "Creează, editează, publică, recomandă, ordonează, încarcă imagini și șterge proiecte folosind endpoint-urile de administrare expuse de backend.",
       backToDashboard: "Înapoi la panou",
       newProject: "Proiect nou",
       loadErrorTitle: "Proiectele nu au putut fi încărcate",
@@ -353,18 +353,18 @@ export const dictionary: PortfolioDictionary = {
       emptyTitle: "Nu există proiecte",
       emptyDescription:
         "Creează primul proiect pentru a popula lista publicată din portofoliu.",
-      createProject: "Creează proiectul",
+      createProject: "Creează proiect",
       noTechnologies: "Fără tehnologii",
       updatedLabel: "Actualizat",
       movedToDraft: "Proiectul a fost mutat în draft",
       publishedSuccess: "Proiectul a fost publicat",
       moveToDraftAction: "Mută în draft",
       publishAction: "Publică",
-      featuredRemoved: "Marcajul de recomandat a fost eliminat",
+      featuredRemoved: "Marcajul de recomandare a fost eliminat",
       featuredSuccess: "Proiectul a fost marcat ca recomandat",
       unfeatureAction: "Scoate din recomandate",
       featureAction: "Recomandă",
-      displayOrderLabel: "Ordine afișare",
+      displayOrderLabel: "Ordine de afișare",
       displayOrderInvalid:
         "Ordinea de afișare trebuie să fie un număr întreg mai mare sau egal cu 0",
       displayOrderSaved: "Ordinea de afișare a fost actualizată",
@@ -377,16 +377,16 @@ export const dictionary: PortfolioDictionary = {
       deleteConfirm: "Ștergi „{title}”? Această acțiune nu poate fi anulată.",
     },
     inquiriesPage: {
-      eyebrow: "Mesaje administrare",
-      title: "Analizează solicitările de contact",
+      eyebrow: "Administrare mesaje",
+      title: "Gestionează mesajele de contact",
       description:
-        "Urmărește mesajele trimise din formularul public, actualizează statusul lor și păstrează notițe interne într-un singur loc.",
+        "Urmărește mesajele trimise din formularul public, actualizează-le statusul și păstrează notițe interne într-un singur loc.",
       backToDashboard: "Înapoi la panou",
       loadErrorTitle: "Mesajele nu au putut fi încărcate",
       loadErrorFallback: "Nu s-au putut încărca mesajele din administrare",
       emptyTitle: "Nu există mesaje încă",
       emptyDescription:
-        "Mesajele trimise din formularul public vor apărea aici după ce endpoint-urile backend pentru solicitări sunt disponibile.",
+        "Mesajele trimise din formularul public vor apărea aici după ce endpoint-urile pentru solicitări sunt disponibile în backend.",
       receivedLabel: "Primit",
       actionsLabel: "Acțiuni",
       openInquiryAction: "Deschide mesajul",
@@ -400,7 +400,7 @@ export const dictionary: PortfolioDictionary = {
     inquiryDetailPage: {
       eyebrow: "Detaliu mesaj",
       description:
-        "Analizează solicitarea, păstrează notițe interne și mută mesajul prin fluxul de administrare.",
+        "Revizuiește mesajul, păstrează notițe interne și mută-l prin fluxul de administrare.",
       backToInquiries: "Înapoi la mesaje",
       notFoundTitle: "Mesajul nu a fost găsit",
       notFoundDescription:
@@ -425,31 +425,31 @@ export const dictionary: PortfolioDictionary = {
       replyByEmailAction: "Răspunde prin email",
       internalNotesLabel: "Notițe interne",
       internalNotesPlaceholder:
-        "Adaugă detalii pentru follow-up, decizii sau pașii următori.",
+        "Adaugă detalii pentru continuarea conversației, decizii sau pașii următori.",
       saveHint:
-        "Statusul și notițele sunt salvate prin endpoint-ul opțional de actualizare a solicitărilor din administrare.",
+        "Statusul și notițele se salvează prin endpoint-ul opțional de actualizare a solicitărilor din administrare.",
       savingAction: "Se salvează...",
       saveAction: "Salvează modificările",
       statusTitle: "Status",
       statusDescription:
-        "Alege starea de lucru care reflectă cel mai bine etapa actuală de follow-up.",
+        "Alege starea care descrie cel mai bine etapa actuală a mesajului.",
       selectedStatus: "Selectat",
-      setStatus: "Setează",
+      setStatus: "Aplică",
       metadataTitle: "Metadate",
       metadataDescription:
-        "Detalii despre timp și persistență venite din înregistrarea backend.",
+        "Detalii despre creare, actualizare și persistență, direct din înregistrarea backend.",
       receivedLabel: "Primit",
       updatedLabel: "Actualizat",
       readStateLabel: "Stare citire",
-      recordIdLabel: "ID înregistrare",
+      recordIdLabel: "ID-ul înregistrării",
     },
     projectEditor: {
       editEyebrow: "Editează proiectul",
       createEyebrow: "Creează proiect",
       newTitle: "Proiect nou",
-      fallbackTitle: "Editor proiect",
+      fallbackTitle: "Editor de proiect",
       description:
-        "Actualizează câmpurile proiectului bazate pe DTO, alege manual data proiectului și încarcă separat imaginea după ce proiectul există.",
+        "Actualizează câmpurile proiectului definite în DTO, alege manual data proiectului și încarcă imaginea separat după ce proiectul a fost creat.",
       backToProjects: "Înapoi la proiecte",
       deleteAction: "Șterge",
       deleteConfirm: "Ștergi „{title}”? Această acțiune nu poate fi anulată.",
@@ -460,7 +460,7 @@ export const dictionary: PortfolioDictionary = {
       loadErrorFallback: "Nu s-a putut încărca acest proiect",
       coreFieldsLabel: "Câmpuri principale",
       coreFieldsDescription:
-        "`title` și `summary` sunt obligatorii. `slug` rămâne opțional și trebuie să respecte formatul lowercase kebab-case.",
+        "`title` și `summary` sunt obligatorii. `slug` rămâne opțional și trebuie să fie în lowercase kebab-case.",
       titleFieldLabel: "Titlu",
       titleFieldDescription: "Obligatoriu, între 1 și 120 de caractere.",
       titleFieldPlaceholder: "Titlul proiectului",
@@ -473,13 +473,13 @@ export const dictionary: PortfolioDictionary = {
       summaryFieldPlaceholder: "Rezumat scurt pentru portofoliu",
       descriptionFieldLabel: "Descriere",
       descriptionFieldDescription: "Opțional, până la 5000 de caractere.",
-      descriptionFieldPlaceholder: "Conținut extins despre proiect",
-      linksSectionLabel: "Link-uri și cronologie",
+      descriptionFieldPlaceholder: "Descriere detaliată a proiectului",
+      linksSectionLabel: "Linkuri și cronologie",
       linksSectionDescription:
-        "Data proiectului este un câmp manual pentru cronologia din portofoliu și este separată de timestamp-urile din baza de date.",
+        "Data proiectului este un câmp introdus manual pentru cronologia din portofoliu și este separată de timestamp-urile din baza de date.",
       projectDateFieldLabel: "Data proiectului",
       projectDateFieldDescription:
-        "Opțional. Este folosită pentru afișarea publică în cronologie.",
+        "Opțional. Este folosită în afișarea publică din cronologie.",
       liveUrlFieldLabel: "URL live",
       liveUrlFieldDescription: "Opțional, până la 500 de caractere.",
       liveUrlFieldPlaceholder: "https://...",
@@ -488,51 +488,51 @@ export const dictionary: PortfolioDictionary = {
       repositoryUrlFieldPlaceholder: "https://github.com/...",
       technologiesSectionLabel: "Tehnologii",
       technologiesSectionDescription:
-        "Maximum 20 de intrări. Valorile sunt tăiate și deduplicate înainte de trimitere.",
-      technologyListLabel: "Listă tehnologii",
-      technologyListDescription: "Array opțional cu maximum 20 de elemente.",
+        "Maximum 20 de intrări. Valorile sunt curățate și deduplicate înainte de trimitere.",
+      technologyListLabel: "Listă de tehnologii",
+      technologyListDescription: "Listă opțională cu maximum 20 de elemente.",
       technologyInputPlaceholder: "Adaugă tehnologie",
       addTechnologyAction: "Adaugă",
       noTechnologiesAdded: "Nu au fost adăugate tehnologii încă.",
       publishingSectionLabel: "Publicare",
       publishingSectionDescription:
-        "Flag-urile pentru publicare și recomandare sunt trimise direct la backend împreună cu ordinea numerică de afișare.",
+        "Marcajele pentru publicare și recomandare sunt trimise direct către backend, împreună cu ordinea numerică de afișare.",
       publishedFieldLabel: "Publicat",
       publishedFieldDescription:
         "Controlează vizibilitatea în lista publică `/projects`.",
       featuredFieldLabel: "Recomandat",
       featuredFieldDescription:
         "Proiectele recomandate sunt prioritizate vizual pe site-ul public.",
-      displayOrderFieldLabel: "Ordine afișare",
+      displayOrderFieldLabel: "Ordine de afișare",
       displayOrderFieldDescription:
         "Număr întreg opțional mai mare sau egal cu 0.",
       displayOrderFieldPlaceholder: "0",
       payloadHint:
-        "Payload-ul include doar câmpurile suportate de backend. URL-urile pentru imagini nu sunt trimise manual.",
+        "Payload-ul include doar câmpurile acceptate de backend. URL-urile imaginilor nu se trimit manual.",
       savingProjectAction: "Se salvează proiectul...",
       creatingProjectAction: "Se creează proiectul...",
       saveChangesAction: "Salvează modificările",
-      createProjectAction: "Creează proiectul",
-      imageTitle: "Imagine proiect",
+      createProjectAction: "Creează proiect",
+      imageTitle: "Imaginea proiectului",
       imageDescription:
         "Încărcările folosesc endpoint-ul multipart dedicat și actualizează doar `imageUrl` în backend.",
       imagePreviewAlt: "Previzualizare imagine proiect",
-      noImageUploaded: "Nu există încă o imagine încărcată pentru proiect.",
-      pendingUploadBadge: "În așteptare pentru încărcare",
+      noImageUploaded: "Nu există încă o imagine încărcată pentru acest proiect.",
+      pendingUploadBadge: "Pregătită pentru încărcare",
       uploadedImageBadge: "Imagine încărcată",
       uploadFieldLabel: "Încarcă fișier",
       uploadFieldDescription:
         "JPEG, PNG, WEBP, GIF sau AVIF de maximum 5 MB.",
-      chooseImageAction: "Alege imaginea",
+      chooseImageAction: "Alege imagine",
       uploadImageAction: "Încarcă imaginea",
       uploadingImageAction: "Se încarcă imaginea...",
-      clearSelectionAction: "Curăță selecția",
+      clearSelectionAction: "Șterge selecția",
       createFirstHint:
         "Creează mai întâi proiectul, apoi încarcă imaginea din ecranul de editare.",
       removeUploadedImageAction: "Elimină imaginea încărcată",
-      openLiveUrlAction: "Deschide URL-ul live",
+      openLiveUrlAction: "Deschide versiunea live",
       chooseImageBeforeUpload:
-        "Alege o imagine înainte de a începe încărcarea",
+        "Alege o imagine înainte să începi încărcarea",
       uploadImageError: "Imaginea proiectului nu a putut fi încărcată",
       uploadImageSuccess: "Imaginea proiectului a fost încărcată",
       saveProjectError: "Proiectul nu a putut fi salvat",
@@ -548,6 +548,7 @@ export const dictionary: PortfolioDictionary = {
         slugMaxLength: "Slug-ul trebuie să aibă cel mult 160 de caractere",
         slugPattern:
           "Slug-ul trebuie să respecte formatul lowercase kebab-case",
+        slugInUse: "Slug-ul este deja folosit",
         summaryRequired: "Rezumatul este obligatoriu",
         summaryMaxLength: "Rezumatul trebuie să aibă cel mult 300 de caractere",
         descriptionMaxLength:
@@ -583,30 +584,30 @@ export const dictionary: PortfolioDictionary = {
     scopePlaceholder: "",
     messageLabel: "Mesaj",
     messagePlaceholder:
-      "Spune-mi ce construiești, cu ce ai nevoie de ajutor și ce constrângeri contează.",
+      "Spune-mi ce construiești, unde ai nevoie de ajutor și ce constrângeri contează.",
     messageValidation:
       "Adaugă mai mult context pentru ca solicitarea să fie utilă.",
-    submit: "Trimite mesajul",
+    submit: "Trimite mesaj",
     submitting: "Se trimite...",
     successTitle: "Mesaj trimis",
     successDescription:
-      "Mesajul tău a fost primit. Îl voi analiza și voi reveni cât mai curând.",
+      "Am primit mesajul tău. Îl analizez și revin cât mai curând.",
     errorTitle: "Mesajul nu a putut fi trimis",
     errorDescription:
-      "Verifică câmpurile formularului sau încearcă din nou în câteva momente.",
+      "Verifică formularul sau încearcă din nou peste câteva momente.",
     reviewError: "Verifică câmpurile formularului și încearcă din nou.",
     endpointUnavailableError:
-      "Endpoint-ul backend pentru solicitări nu este disponibil încă. Implementează POST /api/inquiries în backend.",
+      "Endpoint-ul pentru solicitări nu este disponibil încă în backend. Implementează POST /api/inquiries.",
     submitUnavailableError:
       "Mesajul nu poate fi trimis în acest moment.",
     backendUnavailableError:
-      "Backend-ul pentru solicitări nu este disponibil acum. Pornește backend-ul sau implementează mai întâi POST /api/inquiries.",
+      "Backend-ul pentru solicitări nu este disponibil acum. Pornește-l sau implementează mai întâi POST /api/inquiries.",
     privacyNote:
-      "Mesajul tău va fi folosit doar pentru a analiza cererea și a-ți răspunde direct.",
+      "Mesajul tău va fi folosit doar pentru a înțelege cererea și a-ți răspunde direct.",
   },
   actions: {
     adminLogin: "Admin",
-    adminPanel: "Panou admin",
+    adminPanel: "Panou de administrare",
     viewProject: "Vezi proiectul",
     live: "Live",
     code: "Cod",
@@ -617,6 +618,6 @@ export const dictionary: PortfolioDictionary = {
     featured: "Recomandat",
     lastUpdated: "Ultima actualizare",
     technologies: "Tehnologii",
-    noTechnologies: "Nicio tehnologie listată încă",
+    noTechnologies: "Nicio tehnologie listată momentan",
   },
 };

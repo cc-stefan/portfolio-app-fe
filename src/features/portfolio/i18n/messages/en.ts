@@ -539,6 +539,7 @@ export const dictionary: PortfolioDictionary = {
         titleMaxLength: "Title must be 120 characters or less",
         slugMaxLength: "Slug must be 160 characters or less",
         slugPattern: "Slug must use lowercase kebab-case",
+        slugInUse: "Project slug is already in use",
         summaryRequired: "Summary is required",
         summaryMaxLength: "Summary must be 300 characters or less",
         descriptionMaxLength: "Description must be 5000 characters or less",
