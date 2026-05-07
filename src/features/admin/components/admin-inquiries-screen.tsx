@@ -1,42 +1,32 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, RefreshCcw } from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { StateCard } from "@/features/portfolio/components/state-card";
-import {
-  localeTags,
-  localizeHref,
-  type AppLocale,
-} from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import {
-  getBackendErrorMessage,
-  readBackendError,
-} from "../lib/backend-errors";
-import { dispatchAdminInquiriesUpdated } from "../lib/inquiry-events";
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ArrowUpRight, RefreshCcw } from 'lucide-react';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { StateCard } from '@/features/portfolio/components/state-card';
+import { localeTags, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
+import { dispatchAdminInquiriesUpdated } from '../lib/inquiry-events';
 import {
   formatInquiryStatus,
   getInquiryBadgeVariant,
   inquiryStatusOrder,
-} from "../lib/inquiry-status";
-import type { AdminInquiry, InquiryStatus } from "../model/types";
-import { useAdminAuth } from "../auth/use-admin-auth";
+} from '../lib/inquiry-status';
+import type { AdminInquiry, InquiryStatus } from '../model/types';
+import { useAdminAuth } from '../auth/use-admin-auth';
 
 interface AdminInquiriesScreenProps {
   lang: AppLocale;
   dictionary: PortfolioDictionary;
 }
 
-export function AdminInquiriesScreen({
-  lang,
-  dictionary,
-}: AdminInquiriesScreenProps) {
+export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenProps) {
   const { authFetch, status } = useAdminAuth();
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,39 +36,34 @@ export function AdminInquiriesScreen({
   const formatDate = useMemo(
     () => (value: string) =>
       new Intl.DateTimeFormat(localeTags[lang], {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       }).format(new Date(value)),
-    [lang],
+    [lang]
   );
 
   const stats = useMemo(
     () => ({
       total: inquiries.length,
       unreadCount: inquiries.filter((inquiry) => !inquiry.isRead).length,
-      inReviewCount: inquiries.filter((inquiry) => inquiry.status === "IN_REVIEW")
-        .length,
-      resolvedCount: inquiries.filter((inquiry) => inquiry.status === "RESOLVED")
-        .length,
+      inReviewCount: inquiries.filter((inquiry) => inquiry.status === 'IN_REVIEW').length,
+      resolvedCount: inquiries.filter((inquiry) => inquiry.status === 'RESOLVED').length,
     }),
-    [inquiries],
+    [inquiries]
   );
 
   const loadInquiries = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    const response = await authFetch("/admin/inquiries");
+    const response = await authFetch('/admin/inquiries');
 
     if (!response.ok) {
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(
-            errorBody,
-            dictionary.admin.inquiriesPage.loadErrorFallback,
-          ),
+          getBackendErrorMessage(errorBody, dictionary.admin.inquiriesPage.loadErrorFallback)
         );
       }
 
@@ -92,7 +77,7 @@ export function AdminInquiriesScreen({
   }, [authFetch, dictionary.admin.inquiriesPage.loadErrorFallback]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -106,14 +91,14 @@ export function AdminInquiriesScreen({
   async function patchInquiry(
     inquiryId: string,
     payload: { isRead?: boolean; status?: InquiryStatus },
-    successMessage: string,
+    successMessage: string
   ) {
     setPendingInquiryId(inquiryId);
 
     const response = await authFetch(`/admin/inquiries/${inquiryId}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -121,10 +106,7 @@ export function AdminInquiriesScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.inquiriesPage.updateErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.inquiriesPage.updateErrorFallback)
       );
       setPendingInquiryId(null);
       return;
@@ -190,7 +172,7 @@ export function AdminInquiriesScreen({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin")}>
+            <Link href={localizeHref(lang, '/admin')}>
               {dictionary.admin.inquiriesPage.backToDashboard}
             </Link>
           </Button>
@@ -198,11 +180,7 @@ export function AdminInquiriesScreen({
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          label={dictionary.admin.statTotalInquiries}
-          value={stats.total}
-          tone="neutral"
-        />
+        <StatCard label={dictionary.admin.statTotalInquiries} value={stats.total} tone="neutral" />
         <StatCard
           label={dictionary.admin.statUnreadInquiries}
           value={stats.unreadCount}
@@ -235,8 +213,7 @@ export function AdminInquiriesScreen({
                 Number(left.isRead) - Number(right.isRead) ||
                 inquiryStatusOrder.indexOf(left.status) -
                   inquiryStatusOrder.indexOf(right.status) ||
-                new Date(right.createdAt).getTime() -
-                  new Date(left.createdAt).getTime(),
+                new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()
             )
             .map((inquiry) => (
               <Card key={inquiry.id} variant="solid">
@@ -251,21 +228,14 @@ export function AdminInquiriesScreen({
                           <span className="truncate">{inquiry.name}</span>
                           <ArrowUpRight className="size-4 shrink-0" />
                         </Link>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {inquiry.email}
-                        </p>
+                        <p className="mt-1 text-sm text-muted-foreground">{inquiry.email}</p>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant={inquiry.isRead ? "outline" : "accent"}>
-                          {inquiry.isRead
-                            ? dictionary.admin.read
-                            : dictionary.admin.unread}
+                        <Badge variant={inquiry.isRead ? 'outline' : 'accent'}>
+                          {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
                         </Badge>
                         <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
-                          {formatInquiryStatus(
-                            inquiry.status,
-                            dictionary.admin,
-                          )}
+                          {formatInquiryStatus(inquiry.status, dictionary.admin)}
                         </Badge>
                       </div>
                     </div>
@@ -276,13 +246,11 @@ export function AdminInquiriesScreen({
 
                     <div className="mt-4 flex flex-wrap gap-2">
                       <Badge variant="outline">
-                        {dictionary.admin.inquiriesPage.receivedLabel}{" "}
+                        {dictionary.admin.inquiriesPage.receivedLabel}{' '}
                         {formatDate(inquiry.createdAt)}
                       </Badge>
                       {inquiry.adminNotes?.trim() ? (
-                        <Badge variant="neutral">
-                          {dictionary.admin.hasNotes}
-                        </Badge>
+                        <Badge variant="neutral">{dictionary.admin.hasNotes}</Badge>
                       ) : null}
                     </div>
                   </div>
@@ -312,7 +280,7 @@ export function AdminInquiriesScreen({
                           { isRead: !inquiry.isRead },
                           inquiry.isRead
                             ? dictionary.admin.inquiriesPage.markUnreadSuccess
-                            : dictionary.admin.inquiriesPage.markReadSuccess,
+                            : dictionary.admin.inquiriesPage.markReadSuccess
                         )
                       }
                     >
@@ -333,20 +301,20 @@ export function AdminInquiriesScreen({
 function StatCard({
   label,
   value,
-  tone = "neutral",
+  tone = 'neutral',
 }: {
   label: string;
   value: number;
-  tone?: "neutral" | "accent" | "warning" | "success";
+  tone?: 'neutral' | 'accent' | 'warning' | 'success';
 }) {
   const badgeVariant =
-    tone === "accent"
-      ? "accent"
-      : tone === "success"
-        ? "success"
-        : tone === "warning"
-          ? "warning"
-          : "neutral";
+    tone === 'accent'
+      ? 'accent'
+      : tone === 'success'
+        ? 'success'
+        : tone === 'warning'
+          ? 'warning'
+          : 'neutral';
 
   return (
     <Card variant="solid">

@@ -1,34 +1,28 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import {
-  FolderKanban,
-  Inbox,
-  LayoutDashboard,
-  LogOut,
-  type LucideIcon,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { FolderKanban, Inbox, LayoutDashboard, LogOut, type LucideIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { LocaleSwitcher } from "@/features/portfolio/components/locale-switcher";
-import { SiteFooter } from "@/features/portfolio/components/site-footer";
-import { ThemeToggle } from "@/features/portfolio/components/theme-toggle";
-import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import { getPortfolioHomeSectionLinks } from "@/features/portfolio/lib/portfolio-navigation";
-import { cn } from "@/lib/utils";
-import { AdminMobileNavSheet } from "./admin-mobile-nav-sheet";
-import { useAdminAuth } from "../auth/use-admin-auth";
-import { ADMIN_INQUIRIES_UPDATED_EVENT } from "../lib/inquiry-events";
-import type { AdminInquiry } from "../model/types";
+} from '@/components/ui/navigation-menu';
+import { LocaleSwitcher } from '@/features/portfolio/components/locale-switcher';
+import { SiteFooter } from '@/features/portfolio/components/site-footer';
+import { ThemeToggle } from '@/features/portfolio/components/theme-toggle';
+import { localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { getPortfolioHomeSectionLinks } from '@/features/portfolio/lib/portfolio-navigation';
+import { cn } from '@/lib/utils';
+import { AdminMobileNavSheet } from './admin-mobile-nav-sheet';
+import { useAdminAuth } from '../auth/use-admin-auth';
+import { ADMIN_INQUIRIES_UPDATED_EVENT } from '../lib/inquiry-events';
+import type { AdminInquiry } from '../model/types';
 
 interface AdminShellProps {
   lang: AppLocale;
@@ -45,48 +39,41 @@ export interface AdminNavItem {
 function isNavItemActive(pathname: string, href: string, lang: AppLocale) {
   const localizedHref = localizeHref(lang, href);
 
-  if (href === "/admin") {
+  if (href === '/admin') {
     return pathname === localizedHref;
   }
 
   return pathname === localizedHref || pathname.startsWith(`${localizedHref}/`);
 }
 
-export function AdminShell({
-  lang,
-  dictionary,
-  children,
-}: AdminShellProps) {
+export function AdminShell({ lang, dictionary, children }: AdminShellProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { authFetch, logout, user } = useAdminAuth();
-  const [unreadInquiryCount, setUnreadInquiryCount] = useState<number | null>(
-    null,
-  );
+  const [unreadInquiryCount, setUnreadInquiryCount] = useState<number | null>(null);
   const navItems: AdminNavItem[] = [
     {
-      href: "/admin",
+      href: '/admin',
       label: dictionary.admin.navDashboard,
       icon: LayoutDashboard,
     },
     {
-      href: "/admin/projects",
+      href: '/admin/projects',
       label: dictionary.admin.navProjects,
       icon: FolderKanban,
     },
     {
-      href: "/admin/inquiries",
+      href: '/admin/inquiries',
       label: dictionary.admin.navInquiries,
       icon: Inbox,
     },
   ];
   const activeNavItem =
-    navItems.find((item) => isNavItemActive(pathname, item.href, lang)) ??
-    navItems[0];
+    navItems.find((item) => isNavItemActive(pathname, item.href, lang)) ?? navItems[0];
   const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   const loadUnreadInquiryCount = useCallback(async () => {
-    const response = await authFetch("/admin/inquiries");
+    const response = await authFetch('/admin/inquiries');
 
     if (!response.ok) {
       setUnreadInquiryCount(0);
@@ -106,23 +93,17 @@ export function AdminShell({
       void loadUnreadInquiryCount();
     };
 
-    window.addEventListener(
-      ADMIN_INQUIRIES_UPDATED_EVENT,
-      handleInquiryUpdate,
-    );
+    window.addEventListener(ADMIN_INQUIRIES_UPDATED_EVENT, handleInquiryUpdate);
 
     return () => {
       window.clearTimeout(timeoutId);
-      window.removeEventListener(
-        ADMIN_INQUIRIES_UPDATED_EVENT,
-        handleInquiryUpdate,
-      );
+      window.removeEventListener(ADMIN_INQUIRIES_UPDATED_EVENT, handleInquiryUpdate);
     };
   }, [loadUnreadInquiryCount]);
 
   async function handleLogout() {
     await logout();
-    router.replace(localizeHref(lang, "/admin/login"));
+    router.replace(localizeHref(lang, '/admin/login'));
   }
 
   return (
@@ -133,7 +114,7 @@ export function AdminShell({
             <div className="flex items-center gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <Link
-                  href={localizeHref(lang, "/admin")}
+                  href={localizeHref(lang, '/admin')}
                   className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                 >
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-xs font-semibold text-background transition-transform duration-200 group-hover:scale-95">
@@ -154,7 +135,7 @@ export function AdminShell({
                     const isActive = isNavItemActive(pathname, item.href, lang);
                     const Icon = item.icon;
                     const showInquiryBadge =
-                      item.href === "/admin/inquiries" &&
+                      item.href === '/admin/inquiries' &&
                       unreadInquiryCount !== null &&
                       unreadInquiryCount > 0;
 
@@ -163,10 +144,10 @@ export function AdminShell({
                         <NavigationMenuLink
                           asChild
                           className={cn(
-                            "inline-flex items-center gap-2",
+                            'inline-flex items-center gap-2',
                             isActive
-                              ? "bg-secondary text-foreground shadow-sm"
-                              : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                              ? 'bg-secondary text-foreground shadow-sm'
+                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                           )}
                         >
                           <Link href={localizeHref(lang, item.href)}>
@@ -187,9 +168,7 @@ export function AdminShell({
 
               <div className="ml-auto hidden items-center gap-2 lg:flex">
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={localizeHref(lang, "/")}>
-                    {dictionary.admin.viewSite}
-                  </Link>
+                  <Link href={localizeHref(lang, '/')}>{dictionary.admin.viewSite}</Link>
                 </Button>
                 <LocaleSwitcher
                   locale={lang}
@@ -226,15 +205,9 @@ export function AdminShell({
           </div>
         </header>
 
-        <main className="min-w-0 flex-1 pt-10 pb-6 sm:pt-12 sm:pb-8">
-          {children}
-        </main>
+        <main className="min-w-0 flex-1 pt-10 pb-6 sm:pt-12 sm:pb-8">{children}</main>
 
-        <SiteFooter
-          locale={lang}
-          dictionary={dictionary}
-          navItems={footerNavItems}
-        />
+        <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
       </div>
     </div>
   );

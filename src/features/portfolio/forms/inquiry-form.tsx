@@ -1,25 +1,22 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Resolver } from "react-hook-form";
-import { toast } from "sonner";
-import { CheckCircle2, LoaderCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import type { AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import {
-  createInquiryFormSchema,
-  type InquiryFormValues,
-} from "./inquiry-form-schema";
+import { useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, type Resolver } from 'react-hook-form';
+import { toast } from 'sonner';
+import { CheckCircle2, LoaderCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import type { AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import { createInquiryFormSchema, type InquiryFormValues } from './inquiry-form-schema';
 
 interface InquiryFormProps {
   locale: AppLocale;
-  copy: PortfolioDictionary["inquiryForm"];
+  copy: PortfolioDictionary['inquiryForm'];
 }
 
 interface InquiryErrorResponse {
@@ -35,16 +32,15 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const resolver = useMemo(
-    () =>
-      zodResolver(createInquiryFormSchema(copy) as never) as Resolver<InquiryFormValues>,
-    [copy],
+    () => zodResolver(createInquiryFormSchema(copy) as never) as Resolver<InquiryFormValues>,
+    [copy]
   );
   const form = useForm<InquiryFormValues>({
     resolver,
     defaultValues: {
-      name: "",
-      email: "",
-      message: "",
+      name: '',
+      email: '',
+      message: '',
     },
   });
 
@@ -52,11 +48,11 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
     setSubmittedAt(null);
     setSubmissionError(null);
 
-    const response = await fetch("/api/inquiry", {
-      method: "POST",
+    const response = await fetch('/api/inquiry', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "x-app-locale": locale,
+        'Content-Type': 'application/json',
+        'x-app-locale': locale,
       },
       body: JSON.stringify(values),
     });
@@ -128,8 +124,8 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
               placeholder={copy.namePlaceholder}
               autoComplete="name"
               aria-invalid={Boolean(errors.name)}
-              aria-describedby={getFieldDescribedBy("name", errors.name?.message)}
-              {...form.register("name")}
+              aria-describedby={getFieldDescribedBy('name', errors.name?.message)}
+              {...form.register('name')}
             />
           </Field>
 
@@ -145,8 +141,8 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
               placeholder={copy.emailPlaceholder}
               autoComplete="email"
               aria-invalid={Boolean(errors.email)}
-              aria-describedby={getFieldDescribedBy("email", errors.email?.message)}
-              {...form.register("email")}
+              aria-describedby={getFieldDescribedBy('email', errors.email?.message)}
+              {...form.register('email')}
             />
           </Field>
         </div>
@@ -162,15 +158,13 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
           id="message"
           placeholder={copy.messagePlaceholder}
           aria-invalid={Boolean(errors.message)}
-          aria-describedby={getFieldDescribedBy("message", errors.message?.message)}
-          {...form.register("message")}
+          aria-describedby={getFieldDescribedBy('message', errors.message?.message)}
+          {...form.register('message')}
         />
       </Field>
 
       <div className="flex flex-col gap-3 border-t border-border pt-4 md:flex-row md:items-center md:justify-between">
-        <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-          {copy.privacyNote}
-        </p>
+        <p className="max-w-xl text-sm leading-6 text-muted-foreground">{copy.privacyNote}</p>
         <Button
           type="submit"
           size="lg"
@@ -192,9 +186,7 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
 }
 
 function getFieldDescribedBy(htmlFor: string, error?: string) {
-  return error
-    ? `${htmlFor}-description ${htmlFor}-error`
-    : `${htmlFor}-description`;
+  return error ? `${htmlFor}-description ${htmlFor}-error` : `${htmlFor}-description`;
 }
 
 interface FieldProps {
@@ -219,7 +211,7 @@ function Field({ label, description, error, htmlFor, children }: FieldProps) {
         <p
           id={`${htmlFor}-error`}
           aria-live="polite"
-          className={cn("text-xs leading-4 text-destructive")}
+          className={cn('text-xs leading-4 text-destructive')}
         >
           {error}
         </p>

@@ -1,8 +1,8 @@
-import { MetricCard } from "../../components/metric-card";
-import type { PortfolioDictionary } from "../../i18n/types";
+import { MetricCard } from '../../components/metric-card';
+import type { PortfolioDictionary } from '../../i18n/types';
 
 interface HomeMetricsProps {
-  copy: PortfolioDictionary["home"];
+  copy: PortfolioDictionary['home'];
 }
 
 export function HomeMetrics({ copy }: HomeMetricsProps) {

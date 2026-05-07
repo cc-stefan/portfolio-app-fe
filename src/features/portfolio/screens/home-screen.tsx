@@ -1,46 +1,35 @@
-import { SiteShell } from "../components/site-shell";
-import { SiteHeader } from "../components/site-header";
-import type { AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import { HomeCapabilities } from "../sections/home/home-capabilities";
-import { HomeCredentials } from "../sections/home/home-credentials";
-import { HomeHero } from "../sections/home/home-hero";
-import { HomeInquiry } from "../sections/home/home-inquiry";
-import { HomeMetrics } from "../sections/home/home-metrics";
-import { HomeProcess } from "../sections/home/home-process";
-import { HomeShowcase } from "../sections/home/home-showcase";
-import { getPortfolioHomePageData } from "../api/portfolio-page-data";
-import { getPortfolioHomeSectionLinks } from "../lib/portfolio-navigation";
+import { SiteShell } from '../components/site-shell';
+import { SiteHeader } from '../components/site-header';
+import type { AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import { HomeCapabilities } from '../sections/home/home-capabilities';
+import { HomeCredentials } from '../sections/home/home-credentials';
+import { HomeHero } from '../sections/home/home-hero';
+import { HomeInquiry } from '../sections/home/home-inquiry';
+import { HomeMetrics } from '../sections/home/home-metrics';
+import { HomeProcess } from '../sections/home/home-process';
+import { HomeShowcase } from '../sections/home/home-showcase';
+import { getPortfolioHomePageData } from '../api/portfolio-page-data';
+import { getPortfolioHomeSectionLinks } from '../lib/portfolio-navigation';
 
 interface PortfolioHomeScreenProps {
   locale: AppLocale;
   dictionary: PortfolioDictionary;
 }
 
-export async function PortfolioHomeScreen({
-  locale,
-  dictionary,
-}: PortfolioHomeScreenProps) {
-  const {
-    projectsResult,
-    featuredProjects,
-    apiOrigin,
-  } = await getPortfolioHomePageData(locale);
+export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeScreenProps) {
+  const { projectsResult, featuredProjects, apiOrigin } = await getPortfolioHomePageData(locale);
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
 
   return (
-    <SiteShell
-      locale={locale}
-      dictionary={dictionary}
-      footerNavItems={sectionLinks}
-    >
+    <SiteShell locale={locale} dictionary={dictionary} footerNavItems={sectionLinks}>
       <SiteHeader
         locale={locale}
         dictionary={dictionary}
         eyebrow={dictionary.header.tagline}
         navItems={sectionLinks}
         primaryAction={{
-          href: "/#contact",
+          href: '/#contact',
           label: dictionary.actions.startProject,
         }}
         className="page-enter"

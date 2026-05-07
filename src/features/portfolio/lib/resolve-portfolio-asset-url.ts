@@ -1,7 +1,4 @@
-export function resolvePortfolioAssetUrl(
-  value: string | null,
-  apiOrigin: string,
-) {
+export function resolvePortfolioAssetUrl(value: string | null, apiOrigin: string) {
   if (!value) {
     return null;
   }
@@ -10,6 +7,6 @@ export function resolvePortfolioAssetUrl(
     return value;
   }
 
-  const normalizedValue = value.startsWith("/") ? value : `/${value}`;
+  const normalizedValue = value.startsWith('/') ? value : `/${value}`;
   return `${apiOrigin}${normalizedValue}`;
 }

@@ -1,40 +1,30 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, RefreshCcw, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { StateCard } from "@/features/portfolio/components/state-card";
-import {
-  localeTags,
-  localizeHref,
-  type AppLocale,
-} from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import {
-  getBackendErrorMessage,
-  readBackendError,
-} from "../lib/backend-errors";
-import { resolveProjectImageUrl } from "../lib/project-form";
-import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
-import type { AdminProject, ProjectMutationPayload } from "../model/types";
-import { useAdminAuth } from "../auth/use-admin-auth";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ArrowUpRight, RefreshCcw, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { StateCard } from '@/features/portfolio/components/state-card';
+import { localeTags, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
+import { resolveProjectImageUrl } from '../lib/project-form';
+import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
+import type { AdminProject, ProjectMutationPayload } from '../model/types';
+import { useAdminAuth } from '../auth/use-admin-auth';
 
 interface AdminProjectsScreenProps {
   lang: AppLocale;
   dictionary: PortfolioDictionary;
 }
 
-export function AdminProjectsScreen({
-  lang,
-  dictionary,
-}: AdminProjectsScreenProps) {
+export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenProps) {
   const { authFetch, status } = useAdminAuth();
   const [projects, setProjects] = useState<AdminProject[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,27 +35,24 @@ export function AdminProjectsScreen({
   const formatDate = useMemo(
     () => (value: string) =>
       new Intl.DateTimeFormat(localeTags[lang], {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       }).format(new Date(value)),
-    [lang],
+    [lang]
   );
 
   const loadProjects = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    const response = await authFetch("/admin/projects");
+    const response = await authFetch('/admin/projects');
 
     if (!response.ok) {
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(
-            errorBody,
-            dictionary.admin.projectsPage.loadErrorFallback,
-          ),
+          getBackendErrorMessage(errorBody, dictionary.admin.projectsPage.loadErrorFallback)
         );
       }
 
@@ -76,15 +63,13 @@ export function AdminProjectsScreen({
     const payload = (await response.json()) as AdminProject[];
     setProjects(payload);
     setOrderDrafts(
-      Object.fromEntries(
-        payload.map((project) => [project.id, project.displayOrder.toString()]),
-      ),
+      Object.fromEntries(payload.map((project) => [project.id, project.displayOrder.toString()]))
     );
     setLoading(false);
   }, [authFetch, dictionary.admin.projectsPage.loadErrorFallback]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -98,14 +83,14 @@ export function AdminProjectsScreen({
   async function patchProject(
     projectId: string,
     payload: Partial<ProjectMutationPayload>,
-    successMessage: string,
+    successMessage: string
   ) {
     setPendingProjectId(projectId);
 
     const response = await authFetch(`/admin/projects/${projectId}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -113,10 +98,7 @@ export function AdminProjectsScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.projectsPage.updateErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.projectsPage.updateErrorFallback)
       );
       setPendingProjectId(null);
       return;
@@ -133,9 +115,9 @@ export function AdminProjectsScreen({
     if (
       !window.confirm(
         dictionary.admin.projectsPage.deleteConfirm.replace(
-          "{title}",
-          localizedProject?.title ?? project.slug,
-        ),
+          '{title}',
+          localizedProject?.title ?? project.slug
+        )
       )
     ) {
       return;
@@ -144,25 +126,20 @@ export function AdminProjectsScreen({
     setPendingProjectId(project.id);
 
     const response = await authFetch(`/admin/projects/${project.id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.projectsPage.deleteErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.projectsPage.deleteErrorFallback)
       );
       setPendingProjectId(null);
       return;
     }
 
     toast.success(dictionary.admin.projectsPage.deleteSuccess);
-    setProjects((currentProjects) =>
-      currentProjects.filter((entry) => entry.id !== project.id),
-    );
+    setProjects((currentProjects) => currentProjects.filter((entry) => entry.id !== project.id));
     setPendingProjectId(null);
   }
 
@@ -215,12 +192,12 @@ export function AdminProjectsScreen({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin")}>
+            <Link href={localizeHref(lang, '/admin')}>
               {dictionary.admin.projectsPage.backToDashboard}
             </Link>
           </Button>
           <Button asChild size="sm">
-            <Link href={localizeHref(lang, "/admin/projects/new")}>
+            <Link href={localizeHref(lang, '/admin/projects/new')}>
               {dictionary.admin.projectsPage.newProject}
             </Link>
           </Button>
@@ -234,7 +211,7 @@ export function AdminProjectsScreen({
           description={dictionary.admin.projectsPage.emptyDescription}
           action={
             <Button asChild size="lg">
-              <Link href={localizeHref(lang, "/admin/projects/new")}>
+              <Link href={localizeHref(lang, '/admin/projects/new')}>
                 {dictionary.admin.projectsPage.createProject}
               </Link>
             </Button>
@@ -245,12 +222,9 @@ export function AdminProjectsScreen({
           {projects.map((project) => {
             const imageUrl = resolveProjectImageUrl(project.imageUrl);
             const isPending = pendingProjectId === project.id;
-            const localizedProject = resolveProjectTranslation(
-              project.translations,
-              lang,
-            );
+            const localizedProject = resolveProjectTranslation(project.translations, lang);
             const projectTitle = localizedProject?.title ?? project.slug;
-            const projectSummary = localizedProject?.summary ?? "";
+            const projectSummary = localizedProject?.summary ?? '';
 
             return (
               <Card key={project.id} variant="solid">
@@ -271,10 +245,7 @@ export function AdminProjectsScreen({
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
                         <Link
-                          href={localizeHref(
-                            lang,
-                            `/admin/projects/${project.id}`,
-                          )}
+                          href={localizeHref(lang, `/admin/projects/${project.id}`)}
                           className="inline-flex items-center gap-2 text-lg font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
                         >
                           <span className="truncate">{projectTitle}</span>
@@ -285,24 +256,16 @@ export function AdminProjectsScreen({
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        <Badge
-                          variant={project.published ? "success" : "warning"}
-                        >
-                          {project.published
-                            ? dictionary.admin.published
-                            : dictionary.admin.draft}
+                        <Badge variant={project.published ? 'success' : 'warning'}>
+                          {project.published ? dictionary.admin.published : dictionary.admin.draft}
                         </Badge>
                         {project.featured ? (
-                          <Badge variant="accent">
-                            {dictionary.admin.featured}
-                          </Badge>
+                          <Badge variant="accent">{dictionary.admin.featured}</Badge>
                         ) : null}
                       </div>
                     </div>
 
-                    <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                      {projectSummary}
-                    </p>
+                    <p className="mt-4 text-sm leading-7 text-muted-foreground">{projectSummary}</p>
 
                     <div className="mt-4 flex flex-wrap gap-2">
                       {project.technologies.length > 0 ? (
@@ -319,8 +282,7 @@ export function AdminProjectsScreen({
                     </div>
 
                     <p className="mt-4 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                      {dictionary.admin.projectsPage.updatedLabel}{" "}
-                      {formatDate(project.updatedAt)}
+                      {dictionary.admin.projectsPage.updatedLabel} {formatDate(project.updatedAt)}
                     </p>
                   </div>
 
@@ -328,7 +290,7 @@ export function AdminProjectsScreen({
                     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                       <Button
                         type="button"
-                        variant={project.published ? "secondary" : "primary"}
+                        variant={project.published ? 'secondary' : 'primary'}
                         size="sm"
                         disabled={isPending}
                         onClick={() =>
@@ -337,7 +299,7 @@ export function AdminProjectsScreen({
                             { published: !project.published },
                             project.published
                               ? dictionary.admin.projectsPage.movedToDraft
-                              : dictionary.admin.projectsPage.publishedSuccess,
+                              : dictionary.admin.projectsPage.publishedSuccess
                           )
                         }
                       >
@@ -348,7 +310,7 @@ export function AdminProjectsScreen({
 
                       <Button
                         type="button"
-                        variant={project.featured ? "secondary" : "outline"}
+                        variant={project.featured ? 'secondary' : 'outline'}
                         size="sm"
                         disabled={isPending}
                         onClick={() =>
@@ -357,7 +319,7 @@ export function AdminProjectsScreen({
                             { featured: !project.featured },
                             project.featured
                               ? dictionary.admin.projectsPage.featuredRemoved
-                              : dictionary.admin.projectsPage.featuredSuccess,
+                              : dictionary.admin.projectsPage.featuredSuccess
                           )
                         }
                       >
@@ -368,12 +330,10 @@ export function AdminProjectsScreen({
                     </div>
 
                     <div className="grid gap-2">
-                      <LabelRow>
-                        {dictionary.admin.projectsPage.displayOrderLabel}
-                      </LabelRow>
+                      <LabelRow>{dictionary.admin.projectsPage.displayOrderLabel}</LabelRow>
                       <div className="flex items-center gap-2">
                         <Input
-                          value={orderDrafts[project.id] ?? ""}
+                          value={orderDrafts[project.id] ?? ''}
                           inputMode="numeric"
                           onChange={(event) =>
                             setOrderDrafts((currentDrafts) => ({
@@ -388,7 +348,7 @@ export function AdminProjectsScreen({
                           size="sm"
                           disabled={isPending}
                           onClick={() => {
-                            const rawValue = orderDrafts[project.id] ?? "";
+                            const rawValue = orderDrafts[project.id] ?? '';
                             const parsedValue = Number(rawValue);
 
                             if (
@@ -396,16 +356,14 @@ export function AdminProjectsScreen({
                               !Number.isInteger(parsedValue) ||
                               parsedValue < 0
                             ) {
-                              toast.error(
-                                dictionary.admin.projectsPage.displayOrderInvalid,
-                              );
+                              toast.error(dictionary.admin.projectsPage.displayOrderInvalid);
                               return;
                             }
 
                             void patchProject(
                               project.id,
                               { displayOrder: parsedValue },
-                              dictionary.admin.projectsPage.displayOrderSaved,
+                              dictionary.admin.projectsPage.displayOrderSaved
                             );
                           }}
                         >
@@ -416,12 +374,7 @@ export function AdminProjectsScreen({
 
                     <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
                       <Button asChild variant="outline" size="sm">
-                        <Link
-                          href={localizeHref(
-                            lang,
-                            `/admin/projects/${project.id}`,
-                          )}
-                        >
+                        <Link href={localizeHref(lang, `/admin/projects/${project.id}`)}>
                           {dictionary.admin.projectsPage.editProjectAction}
                         </Link>
                       </Button>
@@ -449,8 +402,6 @@ export function AdminProjectsScreen({
 
 function LabelRow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-      {children}
-    </p>
+    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{children}</p>
   );
 }

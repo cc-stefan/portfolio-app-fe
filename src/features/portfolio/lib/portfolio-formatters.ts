@@ -12,10 +12,7 @@ function parseProjectDate(value: string | null | undefined) {
   return parsedValue;
 }
 
-export function formatProjectDate(
-  value: string | null | undefined,
-  locale: string,
-) {
+export function formatProjectDate(value: string | null | undefined, locale: string) {
   const parsedValue = parseProjectDate(value);
 
   if (!parsedValue) {
@@ -23,15 +20,12 @@ export function formatProjectDate(
   }
 
   return new Intl.DateTimeFormat(locale, {
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
   }).format(parsedValue);
 }
 
-export function formatProjectMonth(
-  value: string | null | undefined,
-  locale: string,
-) {
+export function formatProjectMonth(value: string | null | undefined, locale: string) {
   return formatProjectDate(value, locale);
 }

@@ -1,8 +1,8 @@
-import { ProjectGridTabs } from "../../components/project-grid-tabs";
-import { SectionIntro } from "../../components/section-intro";
-import type { AppLocale } from "../../i18n/routing";
-import type { PortfolioDictionary } from "../../i18n/types";
-import type { PortfolioProject } from "../../model/types";
+import { ProjectGridTabs } from '../../components/project-grid-tabs';
+import { SectionIntro } from '../../components/section-intro';
+import type { AppLocale } from '../../i18n/routing';
+import type { PortfolioDictionary } from '../../i18n/types';
+import type { PortfolioProject } from '../../model/types';
 
 interface HomeShowcaseProps {
   locale: AppLocale;

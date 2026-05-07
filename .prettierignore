@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next.js generated files
+.next
+out
+next-env.d.ts
+
+# Build output
+build
+dist
+coverage
+*.tsbuildinfo
+
+# Deployment
+.vercel

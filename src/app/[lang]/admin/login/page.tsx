@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { AdminLoginScreen } from "@/features/admin/components/admin-login-screen";
-import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
-import { isAppLocale } from "@/features/portfolio/i18n/routing";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { AdminLoginScreen } from '@/features/admin/components/admin-login-screen';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { isAppLocale } from '@/features/portfolio/i18n/routing';
 
 interface AdminLoginPageProps {
   params: Promise<{ lang: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: AdminLoginPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: AdminLoginPageProps): Promise<Metadata> {
   const { lang } = await params;
 
   if (!isAppLocale(lang)) {

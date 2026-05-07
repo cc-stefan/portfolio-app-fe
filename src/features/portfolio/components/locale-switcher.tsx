@@ -1,33 +1,28 @@
-"use client";
+'use client';
 
-import {ChevronDown, Languages} from "lucide-react";
-import {useSearchParams} from "next/navigation";
-import {usePathname, useRouter} from "@/i18n/navigation";
-import {Button} from "@/components/ui/button";
+import { ChevronDown, Languages } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {cn} from "@/lib/utils";
-import {appLocales, type AppLocale} from "../i18n/routing";
-import type {PortfolioDictionary} from "../i18n/types";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
+import { appLocales, type AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
 
 interface LocaleSwitcherProps {
   locale: AppLocale;
-  localeNames: PortfolioDictionary["localeNames"];
+  localeNames: PortfolioDictionary['localeNames'];
   label: string;
   className?: string;
 }
 
-export function LocaleSwitcher({
-  locale,
-  localeNames,
-  label,
-  className,
-}: LocaleSwitcherProps) {
+export function LocaleSwitcher({ locale, localeNames, label, className }: LocaleSwitcherProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,20 +33,15 @@ export function LocaleSwitcher({
     }
 
     const search = searchParams.toString();
-    const currentHref = `${pathname}${search ? `?${search}` : ""}${window.location.hash}`;
+    const currentHref = `${pathname}${search ? `?${search}` : ''}${window.location.hash}`;
 
-    router.replace(currentHref, {locale: nextLocale});
+    router.replace(currentHref, { locale: nextLocale });
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className={cn("min-w-0", className)}
-        >
+        <Button type="button" variant="outline" size="sm" className={cn('min-w-0', className)}>
           <Languages className="size-4" />
           <span className="truncate">{localeNames[locale]}</span>
           <ChevronDown className="size-4 text-muted-foreground" />
@@ -62,7 +52,7 @@ export function LocaleSwitcher({
         {appLocales.map((entry) => (
           <DropdownMenuItem
             key={entry}
-            className={cn(entry === locale && "bg-secondary text-foreground")}
+            className={cn(entry === locale && 'bg-secondary text-foreground')}
             onSelect={() => handleLocaleChange(entry)}
           >
             <span className="min-w-8 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">

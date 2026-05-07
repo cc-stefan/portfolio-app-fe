@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { AdminProjectEditorScreen } from "@/features/admin/components/admin-project-editor-screen";
-import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
-import { isAppLocale } from "@/features/portfolio/i18n/routing";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { AdminProjectEditorScreen } from '@/features/admin/components/admin-project-editor-screen';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { isAppLocale } from '@/features/portfolio/i18n/routing';
 
 interface AdminProjectEditPageProps {
   params: Promise<{ lang: string; id: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: AdminProjectEditPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: AdminProjectEditPageProps): Promise<Metadata> {
   const { lang } = await params;
 
   if (!isAppLocale(lang)) {
@@ -25,9 +23,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function AdminProjectEditPage({
-  params,
-}: AdminProjectEditPageProps) {
+export default async function AdminProjectEditPage({ params }: AdminProjectEditPageProps) {
   const { lang, id } = await params;
 
   if (!isAppLocale(lang)) {
@@ -36,11 +32,5 @@ export default async function AdminProjectEditPage({
 
   const dictionary = await getDictionary(lang);
 
-  return (
-    <AdminProjectEditorScreen
-      lang={lang}
-      dictionary={dictionary}
-      projectId={id}
-    />
-  );
+  return <AdminProjectEditorScreen lang={lang} dictionary={dictionary} projectId={id} />;
 }

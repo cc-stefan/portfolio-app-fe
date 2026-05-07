@@ -1,18 +1,18 @@
-import "server-only";
+import 'server-only';
 import {
   getBackendHealth,
   getPortfolioApiBaseUrl,
   getPortfolioApiOrigin,
   getProjectBySlug,
   getPublishedProjects,
-} from "./portfolio-api";
+} from './portfolio-api';
 import {
   collectTechnologies,
   getFeaturedProjects,
   getRelatedProjects,
-} from "../lib/portfolio-selectors";
-import type { AppLocale } from "../i18n/routing";
-import type { ApiResult, PortfolioProject } from "../model/types";
+} from '../lib/portfolio-selectors';
+import type { AppLocale } from '../i18n/routing';
+import type { ApiResult, PortfolioProject } from '../model/types';
 
 export interface PortfolioHomePageData {
   healthResult: Awaited<ReturnType<typeof getBackendHealth>>;
@@ -31,9 +31,7 @@ export interface PortfolioProjectPageData {
   relatedProjects: PortfolioProject[];
 }
 
-export async function getPortfolioHomePageData(
-  locale: AppLocale,
-): Promise<PortfolioHomePageData> {
+export async function getPortfolioHomePageData(locale: AppLocale): Promise<PortfolioHomePageData> {
   const [healthResult, projectsResult] = await Promise.all([
     getBackendHealth(),
     getPublishedProjects(locale),
@@ -55,7 +53,7 @@ export async function getPortfolioHomePageData(
 
 export async function getPortfolioProjectPageData(
   slug: string,
-  locale: AppLocale,
+  locale: AppLocale
 ): Promise<PortfolioProjectPageData> {
   const [projectResult, projectsResult] = await Promise.all([
     getProjectBySlug(slug, locale),
@@ -67,8 +65,6 @@ export async function getPortfolioProjectPageData(
   return {
     projectResult,
     project,
-    relatedProjects: project
-      ? getRelatedProjects(projectsResult.data ?? [], project.slug)
-      : [],
+    relatedProjects: project ? getRelatedProjects(projectsResult.data ?? [], project.slug) : [],
   };
 }

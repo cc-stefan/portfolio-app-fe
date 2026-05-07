@@ -1,23 +1,15 @@
-import "server-only";
-import {
-  buildBackendApiUrl,
-  getBackendApiBaseUrl,
-  getBackendOrigin,
-} from "@/lib/backend";
-import type { AppLocale } from "../i18n/routing";
-import type {
-  ApiResult,
-  PortfolioHealth,
-  PortfolioProject,
-} from "../model/types";
+import 'server-only';
+import { buildBackendApiUrl, getBackendApiBaseUrl, getBackendOrigin } from '@/lib/backend';
+import type { AppLocale } from '../i18n/routing';
+import type { ApiResult, PortfolioHealth, PortfolioProject } from '../model/types';
 
 class PortfolioApiRequestError extends Error {
   constructor(
     readonly status: number,
-    message: string,
+    message: string
   ) {
     super(message);
-    this.name = "PortfolioApiRequestError";
+    this.name = 'PortfolioApiRequestError';
   }
 }
 
@@ -30,20 +22,20 @@ export function getPortfolioApiOrigin() {
 }
 
 function appendLocale(path: string, locale: AppLocale) {
-  const url = new URL(path, "https://portfolio.local");
-  url.searchParams.set("locale", locale);
+  const url = new URL(path, 'https://portfolio.local');
+  url.searchParams.set('locale', locale);
   return `${url.pathname}${url.search}`;
 }
 
 async function requestJson<T>(path: string): Promise<T> {
   const response = await fetch(buildBackendApiUrl(path), {
-    cache: "no-store",
+    cache: 'no-store',
   });
 
   if (!response.ok) {
     throw new PortfolioApiRequestError(
       response.status,
-      `Request failed with status ${response.status}`,
+      `Request failed with status ${response.status}`
     );
   }
 
@@ -92,15 +84,15 @@ async function safeRequest<T>(path: string): Promise<ApiResult<T>> {
 }
 
 export function getBackendHealth() {
-  return safeRequest<PortfolioHealth>("/health");
+  return safeRequest<PortfolioHealth>('/health');
 }
 
 export function getPublishedProjects(locale: AppLocale) {
-  return safeRequest<PortfolioProject[]>(appendLocale("/projects", locale));
+  return safeRequest<PortfolioProject[]>(appendLocale('/projects', locale));
 }
 
 export function getProjectBySlug(slug: string, locale: AppLocale) {
   return safeRequest<PortfolioProject>(
-    appendLocale(`/projects/${encodeURIComponent(slug)}`, locale),
+    appendLocale(`/projects/${encodeURIComponent(slug)}`, locale)
   );
 }

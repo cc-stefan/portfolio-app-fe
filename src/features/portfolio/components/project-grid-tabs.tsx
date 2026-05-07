@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import type { PortfolioProject } from "../model/types";
-import { ProjectCard } from "./project-card";
-import { StateCard } from "./state-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import type { PortfolioProject } from '../model/types';
+import { ProjectCard } from './project-card';
+import { StateCard } from './state-card';
 
 interface ProjectGridTabsProps {
   locale: AppLocale;
@@ -25,16 +25,14 @@ export function ProjectGridTabs({
   const hasFeaturedProjects = featuredProjects.length > 0;
 
   return (
-    <Tabs defaultValue={hasFeaturedProjects ? "featured" : "all"} className="mt-8">
+    <Tabs defaultValue={hasFeaturedProjects ? 'featured' : 'all'} className="mt-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
           {projects.length} {dictionary.home.showcaseCountLabel}
         </p>
         <TabsList>
           {hasFeaturedProjects ? (
-            <TabsTrigger value="featured">
-              {dictionary.home.featuredTab}
-            </TabsTrigger>
+            <TabsTrigger value="featured">{dictionary.home.featuredTab}</TabsTrigger>
           ) : null}
           <TabsTrigger value="all">{dictionary.home.allTab}</TabsTrigger>
         </TabsList>

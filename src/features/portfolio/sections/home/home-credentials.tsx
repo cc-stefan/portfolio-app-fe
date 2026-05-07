@@ -1,10 +1,10 @@
-import { Gauge, Handshake, Layers3 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { SectionIntro } from "../../components/section-intro";
-import type { PortfolioDictionary } from "../../i18n/types";
+import { Gauge, Handshake, Layers3 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { SectionIntro } from '../../components/section-intro';
+import type { PortfolioDictionary } from '../../i18n/types';
 
 interface HomeCredentialsProps {
-  copy: PortfolioDictionary["home"];
+  copy: PortfolioDictionary['home'];
 }
 
 const icons = [Gauge, Layers3, Handshake];
@@ -30,16 +30,11 @@ export function HomeCredentials({ copy }: HomeCredentialsProps) {
                     <span className="flex size-10 items-center justify-center rounded-xl border border-border bg-secondary text-primary">
                       <Icon className="size-5" />
                     </span>
-                    <h3 className="text-lg font-semibold text-foreground">
-                      {group.title}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-foreground">{group.title}</h3>
                   </div>
                   <ul className="mt-5 grid gap-3">
                     {group.items.map((item) => (
-                      <li
-                        key={item}
-                        className="text-sm leading-6 text-muted-foreground"
-                      >
+                      <li key={item} className="text-sm leading-6 text-muted-foreground">
                         {item}
                       </li>
                     ))}

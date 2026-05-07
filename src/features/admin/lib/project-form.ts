@@ -1,11 +1,7 @@
-import { isBackendUploadPath, resolveBackendAssetUrl } from "@/lib/backend";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import {
-  appLocales,
-  defaultLocale,
-  type AppLocale,
-} from "@/features/portfolio/i18n/routing";
-import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
+import { isBackendUploadPath, resolveBackendAssetUrl } from '@/lib/backend';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { appLocales, defaultLocale, type AppLocale } from '@/features/portfolio/i18n/routing';
+import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
 import type {
   AdminProject,
   ProjectFieldErrors,
@@ -14,17 +10,17 @@ import type {
   ProjectLocalizedFieldName,
   ProjectMutationPayload,
   ProjectTranslationFormValues,
-} from "../model/types";
+} from '../model/types';
 
-type ProjectEditorCopy = PortfolioDictionary["admin"]["projectEditor"];
+type ProjectEditorCopy = PortfolioDictionary['admin']['projectEditor'];
 
 export const PROJECT_IMAGE_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_PROJECT_IMAGE_MIME_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/avif",
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
 ]);
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -45,18 +41,15 @@ function normalizeNullableField(value: string) {
 
 function createEmptyTranslationValues(): ProjectTranslationFormValues {
   return {
-    title: "",
-    summary: "",
-    description: "",
+    title: '',
+    summary: '',
+    description: '',
   };
 }
 
-function createEmptyTranslationsByLocale(): Record<
-  AppLocale,
-  ProjectTranslationFormValues
-> {
+function createEmptyTranslationsByLocale(): Record<AppLocale, ProjectTranslationFormValues> {
   return Object.fromEntries(
-    appLocales.map((locale) => [locale, createEmptyTranslationValues()]),
+    appLocales.map((locale) => [locale, createEmptyTranslationValues()])
   ) as Record<AppLocale, ProjectTranslationFormValues>;
 }
 
@@ -103,10 +96,7 @@ function isValidProjectDateInput(value: string) {
 
   const parsedValue = new Date(`${value}T00:00:00.000Z`);
 
-  return (
-    !Number.isNaN(parsedValue.getTime()) &&
-    parsedValue.toISOString().slice(0, 10) === value
-  );
+  return !Number.isNaN(parsedValue.getTime()) && parsedValue.toISOString().slice(0, 10) === value;
 }
 
 function toProjectDatePayload(value: string) {
@@ -131,7 +121,7 @@ function toNullableProjectDatePayload(value: string) {
 
 export function getLocalizedProjectFieldPath(
   locale: AppLocale,
-  field: ProjectLocalizedFieldName,
+  field: ProjectLocalizedFieldName
 ): Extract<ProjectFieldName, `translations.${AppLocale}.${string}`> {
   return `translations.${locale}.${field}`;
 }
@@ -139,20 +129,18 @@ export function getLocalizedProjectFieldPath(
 export function createEmptyProjectFormValues(): ProjectFormValues {
   return {
     translations: createEmptyTranslationsByLocale(),
-    slug: "",
-    liveUrl: "",
-    repositoryUrl: "",
-    projectDate: "",
+    slug: '',
+    liveUrl: '',
+    repositoryUrl: '',
+    projectDate: '',
     technologies: [],
     featured: false,
     published: false,
-    displayOrder: "",
+    displayOrder: '',
   };
 }
 
-export function createProjectFormValues(
-  project: AdminProject,
-): ProjectFormValues {
+export function createProjectFormValues(project: AdminProject): ProjectFormValues {
   const translations = createEmptyTranslationsByLocale();
 
   for (const locale of appLocales) {
@@ -165,16 +153,16 @@ export function createProjectFormValues(
     translations[locale] = {
       title: translation.title,
       summary: translation.summary,
-      description: translation.description ?? "",
+      description: translation.description ?? '',
     };
   }
 
   return {
     translations,
     slug: project.slug,
-    liveUrl: project.liveUrl ?? "",
-    repositoryUrl: project.repositoryUrl ?? "",
-    projectDate: project.projectDate?.slice(0, 10) ?? "",
+    liveUrl: project.liveUrl ?? '',
+    repositoryUrl: project.repositoryUrl ?? '',
+    projectDate: project.projectDate?.slice(0, 10) ?? '',
     technologies: project.technologies,
     featured: project.featured,
     published: project.published,
@@ -184,7 +172,7 @@ export function createProjectFormValues(
 
 export function validateProjectForm(
   values: ProjectFormValues,
-  copy: ProjectEditorCopy,
+  copy: ProjectEditorCopy
 ): ProjectFieldErrors {
   const errors: ProjectFieldErrors = {};
   const slug = values.slug.trim();
@@ -203,24 +191,20 @@ export function validateProjectForm(
 
     if (locale === defaultLocale || hasAnyLocalizedContent) {
       if (!title) {
-        errors[getLocalizedProjectFieldPath(locale, "title")] =
-          copy.validation.titleRequired;
+        errors[getLocalizedProjectFieldPath(locale, 'title')] = copy.validation.titleRequired;
       } else if (title.length > 120) {
-        errors[getLocalizedProjectFieldPath(locale, "title")] =
-          copy.validation.titleMaxLength;
+        errors[getLocalizedProjectFieldPath(locale, 'title')] = copy.validation.titleMaxLength;
       }
 
       if (!summary) {
-        errors[getLocalizedProjectFieldPath(locale, "summary")] =
-          copy.validation.summaryRequired;
+        errors[getLocalizedProjectFieldPath(locale, 'summary')] = copy.validation.summaryRequired;
       } else if (summary.length > 300) {
-        errors[getLocalizedProjectFieldPath(locale, "summary")] =
-          copy.validation.summaryMaxLength;
+        errors[getLocalizedProjectFieldPath(locale, 'summary')] = copy.validation.summaryMaxLength;
       }
     }
 
     if (description.length > 5000) {
-      errors[getLocalizedProjectFieldPath(locale, "description")] =
+      errors[getLocalizedProjectFieldPath(locale, 'description')] =
         copy.validation.descriptionMaxLength;
     }
   }
@@ -263,8 +247,8 @@ export function validateProjectForm(
 }
 
 function buildSharedProjectPayload(
-  values: ProjectFormValues,
-): Omit<ProjectMutationPayload, "slug"> & { slug?: string } {
+  values: ProjectFormValues
+): Omit<ProjectMutationPayload, 'slug'> & { slug?: string } {
   const payload: ProjectMutationPayload = {
     translations: buildTranslationsPayload(values),
     featured: values.featured,
@@ -280,9 +264,7 @@ function buildSharedProjectPayload(
   return payload;
 }
 
-export function buildCreateProjectPayload(
-  values: ProjectFormValues,
-): ProjectMutationPayload {
+export function buildCreateProjectPayload(values: ProjectFormValues): ProjectMutationPayload {
   const payload = buildSharedProjectPayload(values);
   const slug = normalizeOptionalField(values.slug);
   const liveUrl = normalizeOptionalField(values.liveUrl);
@@ -313,9 +295,7 @@ export function buildCreateProjectPayload(
   return payload;
 }
 
-export function buildUpdateProjectPayload(
-  values: ProjectFormValues,
-): ProjectMutationPayload {
+export function buildUpdateProjectPayload(values: ProjectFormValues): ProjectMutationPayload {
   const payload = buildSharedProjectPayload(values);
   const slug = normalizeOptionalField(values.slug);
 
@@ -331,10 +311,7 @@ export function buildUpdateProjectPayload(
   return payload;
 }
 
-export function getProjectFileValidationError(
-  file: File | null,
-  copy: ProjectEditorCopy,
-) {
+export function getProjectFileValidationError(file: File | null, copy: ProjectEditorCopy) {
   if (!file) {
     return null;
   }

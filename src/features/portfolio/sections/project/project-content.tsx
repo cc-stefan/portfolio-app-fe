@@ -1,18 +1,13 @@
-import Link from "next/link";
-import { ArrowUpRight, Code2, Globe } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { getProjectDescriptionParagraphs } from "../../lib/portfolio-selectors";
-import { formatProjectDate } from "../../lib/portfolio-formatters";
-import { localeTags, type AppLocale } from "../../i18n/routing";
-import type { PortfolioDictionary } from "../../i18n/types";
-import type { PortfolioProject } from "../../model/types";
+import Link from 'next/link';
+import { ArrowUpRight, Code2, Globe } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getProjectDescriptionParagraphs } from '../../lib/portfolio-selectors';
+import { formatProjectDate } from '../../lib/portfolio-formatters';
+import { localeTags, type AppLocale } from '../../i18n/routing';
+import type { PortfolioDictionary } from '../../i18n/types';
+import type { PortfolioProject } from '../../model/types';
 
 interface ProjectContentProps {
   locale: AppLocale;
@@ -20,14 +15,8 @@ interface ProjectContentProps {
   project: PortfolioProject;
 }
 
-export function ProjectContent({
-  locale,
-  dictionary,
-  project,
-}: ProjectContentProps) {
-  const descriptionParagraphs = getProjectDescriptionParagraphs(
-    project.description,
-  );
+export function ProjectContent({ locale, dictionary, project }: ProjectContentProps) {
+  const descriptionParagraphs = getProjectDescriptionParagraphs(project.description);
   const projectLinks: Array<{
     href: string;
     label: string;
@@ -49,10 +38,7 @@ export function ProjectContent({
       icon: <Code2 className="size-4" />,
     });
   }
-  const localizedProjectDate = formatProjectDate(
-    project.projectDate,
-    localeTags[locale],
-  );
+  const localizedProjectDate = formatProjectDate(project.projectDate, localeTags[locale]);
 
   return (
     <section id="overview" className="anchor-target">
@@ -69,17 +55,13 @@ export function ProjectContent({
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 sm:p-8">
-              <p className="text-base leading-8 text-foreground/90">
-                {project.summary}
-              </p>
+              <p className="text-base leading-8 text-foreground/90">{project.summary}</p>
             </CardContent>
           </Card>
 
           <Card variant="solid">
             <CardHeader className="p-6 pb-0 sm:p-8 sm:pb-0">
-              <CardTitle className="text-2xl">
-                {dictionary.project.descriptionTitle}
-              </CardTitle>
+              <CardTitle className="text-2xl">{dictionary.project.descriptionTitle}</CardTitle>
             </CardHeader>
             <CardContent className="p-6 sm:p-8">
               {descriptionParagraphs.length > 0 ? (
@@ -116,9 +98,7 @@ export function ProjectContent({
                     </Badge>
                   ))
                 ) : (
-                  <Badge variant="outline">
-                    {dictionary.common.noTechnologies}
-                  </Badge>
+                  <Badge variant="outline">{dictionary.common.noTechnologies}</Badge>
                 )}
               </div>
             </CardContent>
@@ -155,9 +135,7 @@ export function ProjectContent({
                 <dl className="mt-5 grid gap-4">
                   <Fact
                     label={dictionary.project.projectDateTitle}
-                    value={
-                      localizedProjectDate ?? dictionary.project.noProjectDate
-                    }
+                    value={localizedProjectDate ?? dictionary.project.noProjectDate}
                   />
                 </dl>
               </CardContent>
@@ -173,9 +151,7 @@ function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-border pb-4 last:border-b-0 last:pb-0">
       <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="text-right text-sm font-semibold text-foreground">
-        {value}
-      </dd>
+      <dd className="text-right text-sm font-semibold text-foreground">{value}</dd>
     </div>
   );
 }

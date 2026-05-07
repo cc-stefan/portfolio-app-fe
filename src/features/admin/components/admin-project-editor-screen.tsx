@@ -1,49 +1,36 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  ImagePlus,
-  RefreshCcw,
-  Trash2,
-  X,
-} from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { StateCard } from "@/features/portfolio/components/state-card";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, ArrowUpRight, ImagePlus, RefreshCcw, Trash2, X } from 'lucide-react';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { StateCard } from '@/features/portfolio/components/state-card';
 import {
   appLocales,
   defaultLocale,
   localizeHref,
   type AppLocale,
-} from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import { resolveProjectTranslation } from "@/features/portfolio/lib/project-translations";
-import { cn } from "@/lib/utils";
-import { useAdminAuth } from "../auth/use-admin-auth";
+} from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
+import { cn } from '@/lib/utils';
+import { useAdminAuth } from '../auth/use-admin-auth';
 import {
   getBackendFieldErrors,
   getBackendErrorMessage,
   getProjectSlugConflictMessage,
   readBackendError,
-} from "../lib/backend-errors";
+} from '../lib/backend-errors';
 import {
   buildCreateProjectPayload,
   buildUpdateProjectPayload,
@@ -54,14 +41,14 @@ import {
   isUploadedProjectImage,
   resolveProjectImageUrl,
   validateProjectForm,
-} from "../lib/project-form";
+} from '../lib/project-form';
 import type {
   AdminProject,
   ProjectFieldErrors,
   ProjectFieldName,
   ProjectFormValues,
   ProjectLocalizedFieldName,
-} from "../model/types";
+} from '../model/types';
 
 interface AdminProjectEditorScreenProps {
   lang: AppLocale;
@@ -70,20 +57,20 @@ interface AdminProjectEditorScreenProps {
 }
 
 const projectErrorFieldByFormField: Partial<
-  Record<Exclude<keyof ProjectFormValues, "translations">, ProjectFieldName>
+  Record<Exclude<keyof ProjectFormValues, 'translations'>, ProjectFieldName>
 > = {
-  slug: "slug",
-  liveUrl: "liveUrl",
-  repositoryUrl: "repositoryUrl",
-  projectDate: "projectDate",
-  technologies: "technologies",
-  displayOrder: "displayOrder",
+  slug: 'slug',
+  liveUrl: 'liveUrl',
+  repositoryUrl: 'repositoryUrl',
+  projectDate: 'projectDate',
+  technologies: 'technologies',
+  displayOrder: 'displayOrder',
 };
 
 function getLocalizedFieldError(
   fieldErrors: ProjectFieldErrors,
   locale: AppLocale,
-  field: ProjectLocalizedFieldName,
+  field: ProjectLocalizedFieldName
 ) {
   return fieldErrors[getLocalizedProjectFieldPath(locale, field)];
 }
@@ -107,11 +94,9 @@ export function AdminProjectEditorScreen({
   const { authFetch, status } = useAdminAuth();
   const copy = dictionary.admin.projectEditor;
   const [project, setProject] = useState<AdminProject | null>(null);
-  const [formValues, setFormValues] = useState<ProjectFormValues>(
-    createEmptyProjectFormValues(),
-  );
+  const [formValues, setFormValues] = useState<ProjectFormValues>(createEmptyProjectFormValues());
   const [activeLocale, setActiveLocale] = useState<AppLocale>(lang);
-  const [technologyInput, setTechnologyInput] = useState("");
+  const [technologyInput, setTechnologyInput] = useState('');
   const [fieldErrors, setFieldErrors] = useState<ProjectFieldErrors>({});
   const [pageError, setPageError] = useState<string | null>(null);
   const [loading, setLoading] = useState(Boolean(projectId));
@@ -120,15 +105,13 @@ export function AdminProjectEditorScreen({
   const [uploading, setUploading] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedImagePreviewUrl, setSelectedImagePreviewUrl] = useState<
-    string | null
-  >(null);
+  const [selectedImagePreviewUrl, setSelectedImagePreviewUrl] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
 
   const isEditing = Boolean(projectId);
   const resolvedImageUrl = useMemo(
     () => resolveProjectImageUrl(project?.imageUrl ?? null),
-    [project?.imageUrl],
+    [project?.imageUrl]
   );
   const usesUploadedImage = isUploadedProjectImage(project?.imageUrl ?? null);
 
@@ -142,9 +125,7 @@ export function AdminProjectEditorScreen({
 
   const previewImageUrl = selectedImagePreviewUrl ?? resolvedImageUrl;
   const activeTranslation = formValues.translations[activeLocale];
-  const localizedProject = project
-    ? resolveProjectTranslation(project.translations, lang)
-    : null;
+  const localizedProject = project ? resolveProjectTranslation(project.translations, lang) : null;
   const previewImageAlt =
     activeTranslation.title.trim() ||
     formValues.translations[defaultLocale].title.trim() ||
@@ -176,9 +157,7 @@ export function AdminProjectEditorScreen({
     if (!response.ok) {
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
-        setPageError(
-          getBackendErrorMessage(errorBody, copy.loadErrorFallback),
-        );
+        setPageError(getBackendErrorMessage(errorBody, copy.loadErrorFallback));
       }
 
       setLoading(false);
@@ -191,7 +170,7 @@ export function AdminProjectEditorScreen({
   }, [applyProject, authFetch, copy.loadErrorFallback, projectId]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -202,9 +181,9 @@ export function AdminProjectEditorScreen({
     return () => window.clearTimeout(timeoutId);
   }, [loadProject, status]);
 
-  function updateField<K extends Exclude<keyof ProjectFormValues, "translations">>(
+  function updateField<K extends Exclude<keyof ProjectFormValues, 'translations'>>(
     field: K,
-    value: ProjectFormValues[K],
+    value: ProjectFormValues[K]
   ) {
     const errorField = projectErrorFieldByFormField[field];
 
@@ -224,7 +203,7 @@ export function AdminProjectEditorScreen({
   function updateLocalizedField(
     locale: AppLocale,
     field: ProjectLocalizedFieldName,
-    value: string,
+    value: string
   ) {
     const errorField = getLocalizedProjectFieldPath(locale, field);
 
@@ -251,21 +230,19 @@ export function AdminProjectEditorScreen({
       return;
     }
 
-    updateField("technologies", [...formValues.technologies, nextTechnology]);
-    setTechnologyInput("");
+    updateField('technologies', [...formValues.technologies, nextTechnology]);
+    setTechnologyInput('');
   }
 
   function removeTechnology(technology: string) {
     updateField(
-      "technologies",
-      formValues.technologies.filter((entry) => entry !== technology),
+      'technologies',
+      formValues.technologies.filter((entry) => entry !== technology)
     );
   }
 
-  function handleTechnologyKeyDown(
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) {
-    if (event.key === "Enter" || event.key === ",") {
+  function handleTechnologyKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' || event.key === ',') {
       event.preventDefault();
       addTechnology();
     }
@@ -306,19 +283,16 @@ export function AdminProjectEditorScreen({
     setFileError(null);
 
     const payload = new FormData();
-    payload.set("file", selectedFile);
+    payload.set('file', selectedFile);
 
     const response = await authFetch(`/admin/projects/${projectId}/image`, {
-      method: "POST",
+      method: 'POST',
       body: payload,
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
-      const message = getBackendErrorMessage(
-        errorBody,
-        copy.uploadImageError,
-      );
+      const message = getBackendErrorMessage(errorBody, copy.uploadImageError);
       setFileError(message);
       toast.error(message);
       setUploading(false);
@@ -352,18 +326,16 @@ export function AdminProjectEditorScreen({
     setPageError(null);
 
     const response = await authFetch(
-      isEditing ? `/admin/projects/${projectId}` : "/admin/projects",
+      isEditing ? `/admin/projects/${projectId}` : '/admin/projects',
       {
-        method: isEditing ? "PATCH" : "POST",
+        method: isEditing ? 'PATCH' : 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-          isEditing
-            ? buildUpdateProjectPayload(formValues)
-            : buildCreateProjectPayload(formValues),
+          isEditing ? buildUpdateProjectPayload(formValues) : buildCreateProjectPayload(formValues)
         ),
-      },
+      }
     );
 
     if (!response.ok) {
@@ -371,7 +343,7 @@ export function AdminProjectEditorScreen({
       const nextFieldErrors = getBackendFieldErrors(errorBody);
       const slugConflictMessage = getProjectSlugConflictMessage(
         errorBody,
-        copy.validation.slugInUse,
+        copy.validation.slugInUse
       );
 
       if (slugConflictMessage) {
@@ -380,27 +352,20 @@ export function AdminProjectEditorScreen({
 
       if (Object.keys(nextFieldErrors).length > 0) {
         setFieldErrors(nextFieldErrors as ProjectFieldErrors);
-        const firstInvalidLocale = getFirstInvalidLocale(
-          nextFieldErrors as ProjectFieldErrors,
-        );
+        const firstInvalidLocale = getFirstInvalidLocale(nextFieldErrors as ProjectFieldErrors);
 
         if (firstInvalidLocale) {
           setActiveLocale(firstInvalidLocale);
         }
       }
 
-      setPageError(
-        slugConflictMessage ??
-          getBackendErrorMessage(errorBody, copy.saveProjectError),
-      );
+      setPageError(slugConflictMessage ?? getBackendErrorMessage(errorBody, copy.saveProjectError));
       setSaving(false);
       return;
     }
 
     const savedProject = (await response.json()) as AdminProject;
-    toast.success(
-      isEditing ? copy.projectUpdatedSuccess : copy.projectCreatedSuccess,
-    );
+    toast.success(isEditing ? copy.projectUpdatedSuccess : copy.projectCreatedSuccess);
 
     if (isEditing) {
       applyProject(savedProject);
@@ -419,14 +384,12 @@ export function AdminProjectEditorScreen({
     setUploading(true);
 
     const response = await authFetch(`/admin/projects/${projectId}/image`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
-      toast.error(
-        getBackendErrorMessage(errorBody, copy.removeImageError),
-      );
+      toast.error(getBackendErrorMessage(errorBody, copy.removeImageError));
       setUploading(false);
       return;
     }
@@ -446,10 +409,7 @@ export function AdminProjectEditorScreen({
 
     if (
       !window.confirm(
-        copy.deleteConfirm.replace(
-          "{title}",
-          localizedProject?.title ?? project.slug,
-        ),
+        copy.deleteConfirm.replace('{title}', localizedProject?.title ?? project.slug)
       )
     ) {
       return;
@@ -458,20 +418,18 @@ export function AdminProjectEditorScreen({
     setDeleting(true);
 
     const response = await authFetch(`/admin/projects/${projectId}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
-      toast.error(
-        getBackendErrorMessage(errorBody, copy.deleteProjectError),
-      );
+      toast.error(getBackendErrorMessage(errorBody, copy.deleteProjectError));
       setDeleting(false);
       return;
     }
 
     toast.success(copy.deleteProjectSuccess);
-    router.replace(localizeHref(lang, "/admin/projects"));
+    router.replace(localizeHref(lang, '/admin/projects'));
   }
 
   if (loading) {
@@ -497,9 +455,7 @@ export function AdminProjectEditorScreen({
         description={copy.notFoundDescription}
         action={
           <Button asChild size="lg">
-            <Link href={localizeHref(lang, "/admin/projects")}>
-              {copy.backToProjects}
-            </Link>
+            <Link href={localizeHref(lang, '/admin/projects')}>{copy.backToProjects}</Link>
           </Button>
         }
       />
@@ -532,7 +488,7 @@ export function AdminProjectEditorScreen({
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
             {isEditing
-              ? localizedProject?.title ?? project?.slug ?? copy.fallbackTitle
+              ? (localizedProject?.title ?? project?.slug ?? copy.fallbackTitle)
               : copy.newTitle}
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
@@ -541,7 +497,7 @@ export function AdminProjectEditorScreen({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin/projects")}>
+            <Link href={localizeHref(lang, '/admin/projects')}>
               <ArrowLeft className="size-4" />
               {copy.backToProjects}
             </Link>
@@ -592,7 +548,7 @@ export function AdminProjectEditorScreen({
                         value={locale}
                         className={cn(
                           localeHasErrors(fieldErrors, locale) &&
-                            "text-destructive data-[state=active]:text-destructive",
+                            'text-destructive data-[state=active]:text-destructive'
                         )}
                       >
                         {dictionary.localeNames[locale]}
@@ -601,20 +557,12 @@ export function AdminProjectEditorScreen({
                   </TabsList>
 
                   {appLocales.map((locale) => {
-                    const titleError = getLocalizedFieldError(
-                      fieldErrors,
-                      locale,
-                      "title",
-                    );
-                    const summaryError = getLocalizedFieldError(
-                      fieldErrors,
-                      locale,
-                      "summary",
-                    );
+                    const titleError = getLocalizedFieldError(fieldErrors, locale, 'title');
+                    const summaryError = getLocalizedFieldError(fieldErrors, locale, 'summary');
                     const descriptionError = getLocalizedFieldError(
                       fieldErrors,
                       locale,
-                      "description",
+                      'description'
                     );
 
                     return (
@@ -629,11 +577,7 @@ export function AdminProjectEditorScreen({
                               <Input
                                 value={formValues.translations[locale].title}
                                 onChange={(event) =>
-                                  updateLocalizedField(
-                                    locale,
-                                    "title",
-                                    event.target.value,
-                                  )
+                                  updateLocalizedField(locale, 'title', event.target.value)
                                 }
                                 placeholder={copy.titleFieldPlaceholder}
                                 aria-invalid={Boolean(titleError)}
@@ -646,9 +590,7 @@ export function AdminProjectEditorScreen({
                             >
                               <Input
                                 value={formValues.slug}
-                                onChange={(event) =>
-                                  updateField("slug", event.target.value)
-                                }
+                                onChange={(event) => updateField('slug', event.target.value)}
                                 placeholder={copy.slugFieldPlaceholder}
                                 aria-invalid={Boolean(fieldErrors.slug)}
                               />
@@ -663,11 +605,7 @@ export function AdminProjectEditorScreen({
                             <Textarea
                               value={formValues.translations[locale].summary}
                               onChange={(event) =>
-                                updateLocalizedField(
-                                  locale,
-                                  "summary",
-                                  event.target.value,
-                                )
+                                updateLocalizedField(locale, 'summary', event.target.value)
                               }
                               placeholder={copy.summaryFieldPlaceholder}
                               className="min-h-28"
@@ -683,11 +621,7 @@ export function AdminProjectEditorScreen({
                             <Textarea
                               value={formValues.translations[locale].description}
                               onChange={(event) =>
-                                updateLocalizedField(
-                                  locale,
-                                  "description",
-                                  event.target.value,
-                                )
+                                updateLocalizedField(locale, 'description', event.target.value)
                               }
                               placeholder={copy.descriptionFieldPlaceholder}
                               className="min-h-44"
@@ -719,9 +653,7 @@ export function AdminProjectEditorScreen({
                     <Input
                       type="date"
                       value={formValues.projectDate}
-                      onChange={(event) =>
-                        updateField("projectDate", event.target.value)
-                      }
+                      onChange={(event) => updateField('projectDate', event.target.value)}
                       aria-invalid={Boolean(fieldErrors.projectDate)}
                     />
                   </Field>
@@ -732,9 +664,7 @@ export function AdminProjectEditorScreen({
                   >
                     <Input
                       value={formValues.liveUrl}
-                      onChange={(event) =>
-                        updateField("liveUrl", event.target.value)
-                      }
+                      onChange={(event) => updateField('liveUrl', event.target.value)}
                       placeholder={copy.liveUrlFieldPlaceholder}
                       aria-invalid={Boolean(fieldErrors.liveUrl)}
                     />
@@ -747,9 +677,7 @@ export function AdminProjectEditorScreen({
                 >
                   <Input
                     value={formValues.repositoryUrl}
-                    onChange={(event) =>
-                      updateField("repositoryUrl", event.target.value)
-                    }
+                    onChange={(event) => updateField('repositoryUrl', event.target.value)}
                     placeholder={copy.repositoryUrlFieldPlaceholder}
                     aria-invalid={Boolean(fieldErrors.repositoryUrl)}
                   />
@@ -774,17 +702,11 @@ export function AdminProjectEditorScreen({
                     <div className="flex gap-2">
                       <Input
                         value={technologyInput}
-                        onChange={(event) =>
-                          setTechnologyInput(event.target.value)
-                        }
+                        onChange={(event) => setTechnologyInput(event.target.value)}
                         onKeyDown={handleTechnologyKeyDown}
                         placeholder={copy.technologyInputPlaceholder}
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={addTechnology}
-                      >
+                      <Button type="button" variant="outline" onClick={addTechnology}>
                         {copy.addTechnologyAction}
                       </Button>
                     </div>
@@ -802,9 +724,7 @@ export function AdminProjectEditorScreen({
                           </button>
                         ))
                       ) : (
-                        <p className="text-sm text-muted-foreground">
-                          {copy.noTechnologiesAdded}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{copy.noTechnologiesAdded}</p>
                       )}
                     </div>
                   </div>
@@ -825,17 +745,13 @@ export function AdminProjectEditorScreen({
                     label={copy.publishedFieldLabel}
                     description={copy.publishedFieldDescription}
                     checked={formValues.published}
-                    onCheckedChange={(checked) =>
-                      updateField("published", checked)
-                    }
+                    onCheckedChange={(checked) => updateField('published', checked)}
                   />
                   <ToggleField
                     label={copy.featuredFieldLabel}
                     description={copy.featuredFieldDescription}
                     checked={formValues.featured}
-                    onCheckedChange={(checked) =>
-                      updateField("featured", checked)
-                    }
+                    onCheckedChange={(checked) => updateField('featured', checked)}
                   />
                 </div>
                 <Field
@@ -845,9 +761,7 @@ export function AdminProjectEditorScreen({
                 >
                   <Input
                     value={formValues.displayOrder}
-                    onChange={(event) =>
-                      updateField("displayOrder", event.target.value)
-                    }
+                    onChange={(event) => updateField('displayOrder', event.target.value)}
                     inputMode="numeric"
                     placeholder={copy.displayOrderFieldPlaceholder}
                     aria-invalid={Boolean(fieldErrors.displayOrder)}
@@ -856,9 +770,7 @@ export function AdminProjectEditorScreen({
               </section>
 
               <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-8">
-                <p className="text-sm leading-6 text-muted-foreground">
-                  {copy.payloadHint}
-                </p>
+                <p className="text-sm leading-6 text-muted-foreground">{copy.payloadHint}</p>
                 <Button type="submit" size="lg" disabled={saving || uploading}>
                   {saving
                     ? isEditing
@@ -877,9 +789,7 @@ export function AdminProjectEditorScreen({
           <Card variant="solid" className="overflow-hidden">
             <CardHeader>
               <CardTitle>{copy.imageTitle}</CardTitle>
-              <CardDescription>
-                {copy.imageDescription}
-              </CardDescription>
+              <CardDescription>{copy.imageDescription}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
@@ -921,10 +831,10 @@ export function AdminProjectEditorScreen({
               >
                 <label
                   className={cn(
-                    "flex items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-4 text-sm font-medium transition-colors",
+                    'flex items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-4 text-sm font-medium transition-colors',
                     isEditing
-                      ? "cursor-pointer bg-secondary text-foreground hover:bg-muted"
-                      : "cursor-not-allowed bg-secondary/70 text-muted-foreground",
+                      ? 'cursor-pointer bg-secondary text-foreground hover:bg-muted'
+                      : 'cursor-not-allowed bg-secondary/70 text-muted-foreground'
                   )}
                 >
                   <ImagePlus className="size-4" />
@@ -950,9 +860,7 @@ export function AdminProjectEditorScreen({
                     disabled={!selectedFile || uploading}
                     onClick={() => void handleUploadImage()}
                   >
-                    {uploading
-                      ? copy.uploadingImageAction
-                      : copy.uploadImageAction}
+                    {uploading ? copy.uploadingImageAction : copy.uploadImageAction}
                   </Button>
                   {selectedFile ? (
                     <Button
@@ -969,9 +877,7 @@ export function AdminProjectEditorScreen({
                   ) : null}
                 </div>
               ) : (
-                <p className="text-sm leading-6 text-muted-foreground">
-                  {copy.createFirstHint}
-                </p>
+                <p className="text-sm leading-6 text-muted-foreground">{copy.createFirstHint}</p>
               )}
 
               {usesUploadedImage && projectId ? (
@@ -987,11 +893,7 @@ export function AdminProjectEditorScreen({
 
               {formValues.liveUrl ? (
                 <Button asChild variant="ghost" size="sm">
-                  <Link
-                  href={formValues.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                  <Link href={formValues.liveUrl} target="_blank" rel="noreferrer">
                     {copy.openLiveUrlAction}
                     <ArrowUpRight className="size-4" />
                   </Link>
@@ -1020,12 +922,7 @@ function Field({
     <div className="grid gap-1.5">
       <Label className="text-sm font-medium text-foreground">{label}</Label>
       {children}
-      <p
-        className={cn(
-          "text-xs leading-5 text-muted-foreground",
-          error && "text-destructive",
-        )}
-      >
+      <p className={cn('text-xs leading-5 text-muted-foreground', error && 'text-destructive')}>
         {error ?? description}
       </p>
     </div>
@@ -1052,12 +949,8 @@ function ToggleField({
         onChange={(event) => onCheckedChange(event.target.checked)}
       />
       <span>
-        <span className="block text-sm font-medium text-foreground">
-          {label}
-        </span>
-        <span className="mt-1 block text-sm leading-6 text-muted-foreground">
-          {description}
-        </span>
+        <span className="block text-sm font-medium text-foreground">{label}</span>
+        <span className="mt-1 block text-sm leading-6 text-muted-foreground">{description}</span>
       </span>
     </label>
   );

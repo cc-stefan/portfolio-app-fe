@@ -61,6 +61,8 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 The app also accepts `NEXT_PUBLIC_PORTFOLIO_API_BASE_URL` if you want the backend URL exposed explicitly to the browser-side runtime.
 
+Do not export `NODE_ENV` globally from your shell profile for this project. Keep the frontend scripts plain and let Next.js decide the correct mode per command. If your terminal has `NODE_ENV=development` exported globally, unset it before running `pnpm build` or `pnpm start`.
+
 ### 3. Start the backend from the sibling repo
 
 From `portfolio-app-be`:
@@ -94,6 +96,7 @@ pnpm dev
 pnpm lint
 pnpm build
 pnpm start
+pnpm typecheck
 ```
 
 ## Route surface

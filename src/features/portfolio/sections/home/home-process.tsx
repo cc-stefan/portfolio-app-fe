@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { SectionIntro } from "../../components/section-intro";
-import type { PortfolioDictionary } from "../../i18n/types";
+import { Card, CardContent } from '@/components/ui/card';
+import { SectionIntro } from '../../components/section-intro';
+import type { PortfolioDictionary } from '../../i18n/types';
 
 interface HomeProcessProps {
-  copy: PortfolioDictionary["home"];
+  copy: PortfolioDictionary['home'];
 }
 
 export function HomeProcess({ copy }: HomeProcessProps) {
@@ -27,14 +27,10 @@ export function HomeProcess({ copy }: HomeProcessProps) {
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                         {copy.processStepLabel}
                       </p>
-                      <p className="mt-3 text-3xl font-semibold text-foreground">
-                        0{index + 1}
-                      </p>
+                      <p className="mt-3 text-3xl font-semibold text-foreground">0{index + 1}</p>
                     </div>
                     <div className="p-5 sm:p-6">
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {card.title}
-                      </h3>
+                      <h3 className="text-xl font-semibold text-foreground">{card.title}</h3>
                       <p className="mt-3 text-sm leading-7 text-muted-foreground">
                         {card.description}
                       </p>

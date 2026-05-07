@@ -1,7 +1,7 @@
-import { z } from "zod/v4";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
+import { z } from 'zod/v4';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
 
-type AdminLoginCopy = PortfolioDictionary["admin"];
+type AdminLoginCopy = PortfolioDictionary['admin'];
 
 export function createAdminLoginFormSchema(copy: AdminLoginCopy) {
   return z.object({
@@ -10,6 +10,4 @@ export function createAdminLoginFormSchema(copy: AdminLoginCopy) {
   });
 }
 
-export type AdminLoginFormValues = z.infer<
-  ReturnType<typeof createAdminLoginFormSchema>
->;
+export type AdminLoginFormValues = z.infer<ReturnType<typeof createAdminLoginFormSchema>>;

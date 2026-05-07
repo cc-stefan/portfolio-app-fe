@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { AdminDashboardScreen } from "@/features/admin/components/admin-dashboard-screen";
-import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
-import { isAppLocale } from "@/features/portfolio/i18n/routing";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { AdminDashboardScreen } from '@/features/admin/components/admin-dashboard-screen';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { isAppLocale } from '@/features/portfolio/i18n/routing';
 
 interface AdminDashboardPageProps {
   params: Promise<{ lang: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: AdminDashboardPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: AdminDashboardPageProps): Promise<Metadata> {
   const { lang } = await params;
 
   if (!isAppLocale(lang)) {
@@ -25,9 +23,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function AdminDashboardPage({
-  params,
-}: AdminDashboardPageProps) {
+export default async function AdminDashboardPage({ params }: AdminDashboardPageProps) {
   const { lang } = await params;
 
   if (!isAppLocale(lang)) {

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   createContext,
@@ -8,19 +8,12 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { buildBackendApiUrl } from "@/lib/backend";
-import type { AdminUser, AuthResponse } from "../model/types";
-import {
-  getBackendErrorMessage,
-  readBackendError,
-} from "../lib/backend-errors";
+} from 'react';
+import { buildBackendApiUrl } from '@/lib/backend';
+import type { AdminUser, AuthResponse } from '../model/types';
+import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
 
-type AdminAuthStatus =
-  | "loading"
-  | "authenticated"
-  | "unauthenticated"
-  | "access-denied";
+type AdminAuthStatus = 'loading' | 'authenticated' | 'unauthenticated' | 'access-denied';
 
 interface StoredTokens {
   accessToken: string | null;
@@ -41,18 +34,14 @@ interface AdminAuthContextValue {
   status: AdminAuthStatus;
   user: AdminUser | null;
   accessToken: string | null;
-  login: (
-    email: string,
-    password: string,
-    messages: LoginMessages,
-  ) => Promise<LoginResult>;
+  login: (email: string, password: string, messages: LoginMessages) => Promise<LoginResult>;
   logout: () => Promise<void>;
   clearAccessDenied: () => void;
   authFetch: (path: string, init?: RequestInit) => Promise<Response>;
 }
 
-const ACCESS_TOKEN_STORAGE_KEY = "portfolio-admin-access-token";
-const REFRESH_TOKEN_STORAGE_KEY = "portfolio-admin-refresh-token";
+const ACCESS_TOKEN_STORAGE_KEY = 'portfolio-admin-access-token';
+const REFRESH_TOKEN_STORAGE_KEY = 'portfolio-admin-refresh-token';
 
 const AdminAuthContext = createContext<AdminAuthContextValue | null>(null);
 
@@ -68,7 +57,7 @@ interface AdminAuthState {
 }
 
 function getStoredTokens(): StoredTokens {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return {
       accessToken: null,
       refreshToken: null,
@@ -82,7 +71,7 @@ function getStoredTokens(): StoredTokens {
 }
 
 function storeTokens(tokens: StoredTokens) {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 
@@ -99,14 +88,11 @@ function storeTokens(tokens: StoredTokens) {
   }
 }
 
-function buildAuthenticatedHeaders(
-  accessToken: string | null,
-  headers?: HeadersInit,
-) {
+function buildAuthenticatedHeaders(accessToken: string | null, headers?: HeadersInit) {
   const nextHeaders = new Headers(headers);
 
   if (accessToken) {
-    nextHeaders.set("Authorization", `Bearer ${accessToken}`);
+    nextHeaders.set('Authorization', `Bearer ${accessToken}`);
   }
 
   return nextHeaders;
@@ -114,7 +100,7 @@ function buildAuthenticatedHeaders(
 
 export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
   const [state, setState] = useState<AdminAuthState>({
-    status: "loading",
+    status: 'loading',
     accessToken: null,
     refreshToken: null,
     user: null,
@@ -122,7 +108,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
   const refreshPromiseRef = useRef<Promise<AuthResponse | null> | null>(null);
 
   const clearAuthState = useCallback(
-    (status: Exclude<AdminAuthStatus, "authenticated">, user: AdminUser | null = null) => {
+    (status: Exclude<AdminAuthStatus, 'authenticated'>, user: AdminUser | null = null) => {
       storeTokens({
         accessToken: null,
         refreshToken: null,
@@ -134,7 +120,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
         user,
       });
     },
-    [],
+    []
   );
 
   const applyAuthenticatedSession = useCallback((session: AuthResponse) => {
@@ -143,7 +129,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       refreshToken: session.refreshToken,
     });
     setState({
-      status: "authenticated",
+      status: 'authenticated',
       accessToken: session.accessToken,
       refreshToken: session.refreshToken,
       user: session.user,
@@ -153,7 +139,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
   const refreshSession = useCallback(
     async (refreshToken: string | null) => {
       if (!refreshToken) {
-        clearAuthState("unauthenticated");
+        clearAuthState('unauthenticated');
         return null;
       }
 
@@ -162,23 +148,23 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       }
 
       const promise = (async () => {
-        const response = await fetch(buildBackendApiUrl("/auth/refresh"), {
-          method: "POST",
+        const response = await fetch(buildBackendApiUrl('/auth/refresh'), {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ refreshToken }),
         });
 
         if (!response.ok) {
-          clearAuthState("unauthenticated");
+          clearAuthState('unauthenticated');
           return null;
         }
 
         const session = (await response.json()) as AuthResponse;
 
-        if (session.user.role !== "ADMIN") {
-          clearAuthState("access-denied", session.user);
+        if (session.user.role !== 'ADMIN') {
+          clearAuthState('access-denied', session.user);
           return null;
         }
 
@@ -191,14 +177,14 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       refreshPromiseRef.current = promise;
       return promise;
     },
-    [applyAuthenticatedSession, clearAuthState],
+    [applyAuthenticatedSession, clearAuthState]
   );
 
   const bootstrapSession = useCallback(async () => {
     const storedTokens = getStoredTokens();
 
     if (!storedTokens.refreshToken && !storedTokens.accessToken) {
-      clearAuthState("unauthenticated");
+      clearAuthState('unauthenticated');
       return;
     }
 
@@ -207,7 +193,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       return;
     }
 
-    const response = await fetch(buildBackendApiUrl("/auth/me"), {
+    const response = await fetch(buildBackendApiUrl('/auth/me'), {
       headers: buildAuthenticatedHeaders(storedTokens.accessToken),
     });
 
@@ -217,19 +203,19 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
     }
 
     if (!response.ok) {
-      clearAuthState("unauthenticated");
+      clearAuthState('unauthenticated');
       return;
     }
 
     const user = (await response.json()) as AdminUser;
 
-    if (user.role !== "ADMIN") {
-      clearAuthState("access-denied", user);
+    if (user.role !== 'ADMIN') {
+      clearAuthState('access-denied', user);
       return;
     }
 
     setState({
-      status: "authenticated",
+      status: 'authenticated',
       accessToken: storedTokens.accessToken,
       refreshToken: storedTokens.refreshToken,
       user,
@@ -245,15 +231,11 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
   }, [bootstrapSession]);
 
   const login = useCallback(
-    async (
-      email: string,
-      password: string,
-      messages: LoginMessages,
-    ): Promise<LoginResult> => {
-      const response = await fetch(buildBackendApiUrl("/auth/login"), {
-        method: "POST",
+    async (email: string, password: string, messages: LoginMessages): Promise<LoginResult> => {
+      const response = await fetch(buildBackendApiUrl('/auth/login'), {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: email.trim(),
@@ -266,17 +248,14 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
 
         return {
           ok: false,
-          error: getBackendErrorMessage(
-            errorBody,
-            messages.invalidCredentials,
-          ),
+          error: getBackendErrorMessage(errorBody, messages.invalidCredentials),
         };
       }
 
       const session = (await response.json()) as AuthResponse;
 
-      if (session.user.role !== "ADMIN") {
-        clearAuthState("access-denied", session.user);
+      if (session.user.role !== 'ADMIN') {
+        clearAuthState('access-denied', session.user);
         return {
           ok: false,
           error: messages.accessDenied,
@@ -286,7 +265,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       applyAuthenticatedSession(session);
       return { ok: true };
     },
-    [applyAuthenticatedSession, clearAuthState],
+    [applyAuthenticatedSession, clearAuthState]
   );
 
   const logout = useCallback(async () => {
@@ -294,13 +273,13 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
 
     try {
       if (accessToken) {
-        await fetch(buildBackendApiUrl("/auth/logout"), {
-          method: "POST",
+        await fetch(buildBackendApiUrl('/auth/logout'), {
+          method: 'POST',
           headers: buildAuthenticatedHeaders(accessToken),
         });
       }
     } finally {
-      clearAuthState("unauthenticated");
+      clearAuthState('unauthenticated');
     }
   }, [clearAuthState, state.accessToken]);
 
@@ -330,17 +309,17 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       if (response.status === 403) {
         setState((currentState) => ({
           ...currentState,
-          status: "access-denied",
+          status: 'access-denied',
         }));
       }
 
       return response;
     },
-    [refreshSession, state.accessToken, state.refreshToken],
+    [refreshSession, state.accessToken, state.refreshToken]
   );
 
   const clearAccessDenied = useCallback(() => {
-    clearAuthState("unauthenticated");
+    clearAuthState('unauthenticated');
   }, [clearAuthState]);
 
   const value = useMemo<AdminAuthContextValue>(
@@ -353,29 +332,17 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
       clearAccessDenied,
       authFetch,
     }),
-    [
-      authFetch,
-      clearAccessDenied,
-      login,
-      logout,
-      state.accessToken,
-      state.status,
-      state.user,
-    ],
+    [authFetch, clearAccessDenied, login, logout, state.accessToken, state.status, state.user]
   );
 
-  return (
-    <AdminAuthContext.Provider value={value}>
-      {children}
-    </AdminAuthContext.Provider>
-  );
+  return <AdminAuthContext.Provider value={value}>{children}</AdminAuthContext.Provider>;
 }
 
 export function useAdminAuth() {
   const context = useContext(AdminAuthContext);
 
   if (!context) {
-    throw new Error("useAdminAuth must be used within AdminAuthProvider");
+    throw new Error('useAdminAuth must be used within AdminAuthProvider');
   }
 
   return context;

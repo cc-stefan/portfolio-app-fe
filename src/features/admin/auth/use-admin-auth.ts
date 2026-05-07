@@ -1,1 +1,1 @@
-export { useAdminAuth } from "./admin-auth-provider";
+export { useAdminAuth } from './admin-auth-provider';

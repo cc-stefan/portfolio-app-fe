@@ -1,9 +1,9 @@
-import "server-only";
-import type { AppLocale } from "./routing";
+import 'server-only';
+import type { AppLocale } from './routing';
 
 const dictionaries = {
-  en: () => import("./messages/en").then((module) => module.dictionary),
-  ro: () => import("./messages/ro").then((module) => module.dictionary),
+  en: () => import('./messages/en').then((module) => module.dictionary),
+  ro: () => import('./messages/ro').then((module) => module.dictionary),
 };
 
 export type PortfolioDictionary = Awaited<

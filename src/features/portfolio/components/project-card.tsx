@@ -1,14 +1,14 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight, Code2, Globe } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { localizeHref, type AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import type { PortfolioProject } from "../model/types";
-import { formatProjectMonth } from "../lib/portfolio-formatters";
-import { resolvePortfolioAssetUrl } from "../lib/resolve-portfolio-asset-url";
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowUpRight, Code2, Globe } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { localizeHref, type AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import type { PortfolioProject } from '../model/types';
+import { formatProjectMonth } from '../lib/portfolio-formatters';
+import { resolvePortfolioAssetUrl } from '../lib/resolve-portfolio-asset-url';
 
 interface ProjectCardProps {
   project: PortfolioProject;
@@ -47,9 +47,7 @@ export function ProjectCard({
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--surface-muted),var(--card))] px-8 text-center">
-              <p className="text-sm font-medium text-muted-foreground">
-                {project.title}
-              </p>
+              <p className="text-sm font-medium text-muted-foreground">{project.title}</p>
             </div>
           )}
           <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
@@ -57,9 +55,7 @@ export function ProjectCard({
               {showPriorityBadge && project.featured ? (
                 <Badge variant="accent">{dictionary.common.featured}</Badge>
               ) : null}
-              {projectMonth ? (
-                <Badge variant="neutral">{projectMonth}</Badge>
-              ) : null}
+              {projectMonth ? <Badge variant="neutral">{projectMonth}</Badge> : null}
             </div>
             <span className="inline-flex size-9 items-center justify-center rounded-lg border border-white/40 bg-white/82 text-slate-950 shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:border-white/10 dark:bg-slate-950/70 dark:text-white">
               <ArrowUpRight className="size-4" />

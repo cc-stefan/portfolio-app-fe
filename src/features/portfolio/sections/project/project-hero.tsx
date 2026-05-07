@@ -1,13 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { localizeHref, type AppLocale } from "../../i18n/routing";
-import type { PortfolioDictionary } from "../../i18n/types";
-import type { PortfolioProject } from "../../model/types";
-import { resolvePortfolioAssetUrl } from "../../lib/resolve-portfolio-asset-url";
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { localizeHref, type AppLocale } from '../../i18n/routing';
+import type { PortfolioDictionary } from '../../i18n/types';
+import type { PortfolioProject } from '../../model/types';
+import { resolvePortfolioAssetUrl } from '../../lib/resolve-portfolio-asset-url';
 
 interface ProjectHeroProps {
   locale: AppLocale;
@@ -16,27 +16,20 @@ interface ProjectHeroProps {
   apiOrigin: string;
 }
 
-export function ProjectHero({
-  locale,
-  dictionary,
-  project,
-  apiOrigin,
-}: ProjectHeroProps) {
+export function ProjectHero({ locale, dictionary, project, apiOrigin }: ProjectHeroProps) {
   const imageUrl = resolvePortfolioAssetUrl(project.imageUrl, apiOrigin);
 
   return (
     <section className="grid gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <Button asChild variant="ghost" className="-ml-3">
-          <Link href={localizeHref(locale, "/")}>
+          <Link href={localizeHref(locale, '/')}>
             <ArrowLeft className="size-4" />
             {dictionary.project.backToHome}
           </Link>
         </Button>
 
-        {project.featured ? (
-          <Badge variant="accent">{dictionary.common.featured}</Badge>
-        ) : null}
+        {project.featured ? <Badge variant="accent">{dictionary.common.featured}</Badge> : null}
       </div>
 
       <div className="max-w-4xl">

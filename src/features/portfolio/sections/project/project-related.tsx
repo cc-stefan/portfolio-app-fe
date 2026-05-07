@@ -1,8 +1,8 @@
-import { SectionIntro } from "../../components/section-intro";
-import { ProjectCard } from "../../components/project-card";
-import type { AppLocale } from "../../i18n/routing";
-import type { PortfolioDictionary } from "../../i18n/types";
-import type { PortfolioProject } from "../../model/types";
+import { SectionIntro } from '../../components/section-intro';
+import { ProjectCard } from '../../components/project-card';
+import type { AppLocale } from '../../i18n/routing';
+import type { PortfolioDictionary } from '../../i18n/types';
+import type { PortfolioProject } from '../../model/types';
 
 interface ProjectRelatedProps {
   locale: AppLocale;

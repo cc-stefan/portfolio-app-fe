@@ -1,21 +1,21 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-import { localizeHref, type AppLocale } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import { AdminPanelButton } from "./admin-panel-button";
-import { LocaleSwitcher } from "./locale-switcher";
-import { MobileNavSheet } from "./mobile-nav-sheet";
-import { ScrollTopLink } from "./scroll-top-link";
-import { SectionScrollLink } from "./section-scroll-link";
-import { ThemeToggle } from "./theme-toggle";
+} from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
+import { localizeHref, type AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import { AdminPanelButton } from './admin-panel-button';
+import { LocaleSwitcher } from './locale-switcher';
+import { MobileNavSheet } from './mobile-nav-sheet';
+import { ScrollTopLink } from './scroll-top-link';
+import { SectionScrollLink } from './section-scroll-link';
+import { ThemeToggle } from './theme-toggle';
 
 interface HeaderAction {
   href: string;
@@ -47,13 +47,13 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        "surface-card sticky top-3 z-40 rounded-2xl px-3 py-3 sm:top-5 sm:px-4",
-        className,
+        'surface-card sticky top-3 z-40 rounded-2xl px-3 py-3 sm:top-5 sm:px-4',
+        className
       )}
     >
       <div className="flex items-center gap-3">
         <ScrollTopLink
-          href={localizeHref(locale, "/")}
+          href={localizeHref(locale, '/')}
           className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
         >
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:scale-95">
@@ -87,25 +87,12 @@ export function SiteHeader({
         </NavigationMenu>
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
-          {statusSlot ?? (
-            <AdminPanelButton
-              locale={locale}
-              label={dictionary.actions.adminPanel}
-            />
-          )}
+          {statusSlot ?? <AdminPanelButton locale={locale} label={dictionary.actions.adminPanel} />}
           {secondaryAction ? (
-            <HeaderButton
-              action={secondaryAction}
-              locale={locale}
-              variant="outline"
-            />
+            <HeaderButton action={secondaryAction} locale={locale} variant="outline" />
           ) : null}
           {primaryAction ? (
-            <HeaderButton
-              action={primaryAction}
-              locale={locale}
-              variant="primary"
-            />
+            <HeaderButton action={primaryAction} locale={locale} variant="primary" />
           ) : null}
           <LocaleSwitcher
             locale={locale}
@@ -139,7 +126,7 @@ export function SiteHeader({
 interface HeaderButtonProps {
   action: HeaderAction;
   locale: AppLocale;
-  variant: "primary" | "outline";
+  variant: 'primary' | 'outline';
 }
 
 function HeaderButton({ action, locale, variant }: HeaderButtonProps) {
@@ -153,9 +140,7 @@ function HeaderButton({ action, locale, variant }: HeaderButtonProps) {
           <ArrowUpRight className="size-4" />
         </Link>
       ) : (
-        <SectionScrollLink href={href}>
-          {action.label}
-        </SectionScrollLink>
+        <SectionScrollLink href={href}>{action.label}</SectionScrollLink>
       )}
     </Button>
   );

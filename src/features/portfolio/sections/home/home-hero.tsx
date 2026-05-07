@@ -1,21 +1,18 @@
-import { ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import type { AppLocale } from "../../i18n/routing";
-import { localizeHref } from "../../i18n/routing";
-import type { PortfolioDictionary } from "../../i18n/types";
-import { SectionScrollLink } from "../../components/section-scroll-link";
+import { ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import type { AppLocale } from '../../i18n/routing';
+import { localizeHref } from '../../i18n/routing';
+import type { PortfolioDictionary } from '../../i18n/types';
+import { SectionScrollLink } from '../../components/section-scroll-link';
 
 interface HomeHeroProps {
   locale: AppLocale;
-  copy: PortfolioDictionary["home"];
+  copy: PortfolioDictionary['home'];
 }
 
-export function HomeHero({
-  locale,
-  copy,
-}: HomeHeroProps) {
+export function HomeHero({ locale, copy }: HomeHeroProps) {
   return (
     <section
       id="home"
@@ -25,19 +22,17 @@ export function HomeHero({
         <h1 className="max-w-5xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
           {copy.title}
         </h1>
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
-          {copy.description}
-        </p>
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">{copy.description}</p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <SectionScrollLink href={localizeHref(locale, "/#projects")}>
+            <SectionScrollLink href={localizeHref(locale, '/#projects')}>
               {copy.primaryCta}
               <ArrowRight className="size-4" />
             </SectionScrollLink>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <SectionScrollLink href={localizeHref(locale, "/#contact")}>
+            <SectionScrollLink href={localizeHref(locale, '/#contact')}>
               {copy.secondaryCta}
             </SectionScrollLink>
           </Button>
@@ -67,18 +62,12 @@ export function HomeHero({
               <p className="text-sm font-medium text-muted-foreground">
                 {copy.profileSummaryLabel}
               </p>
-              <p className="mt-3 text-sm leading-7 text-foreground">
-                {copy.profileSummary}
-              </p>
+              <p className="mt-3 text-sm leading-7 text-foreground">{copy.profileSummary}</p>
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {copy.profilePanels.map((panel) => (
-                <MiniPanel
-                  key={panel.label}
-                  label={panel.label}
-                  value={panel.value}
-                />
+                <MiniPanel key={panel.label} label={panel.label} value={panel.value} />
               ))}
             </div>
 

@@ -1,4 +1,4 @@
-const PENDING_SECTION_SCROLL_STORAGE_KEY = "portfolio-pending-section-scroll";
+const PENDING_SECTION_SCROLL_STORAGE_KEY = 'portfolio-pending-section-scroll';
 
 interface PendingSectionScrollTarget {
   id: string;
@@ -6,26 +6,26 @@ interface PendingSectionScrollTarget {
 }
 
 export function normalizeSectionPathname(pathname: string) {
-  const [pathWithoutHash] = pathname.split("#");
-  const [pathWithoutSearch] = (pathWithoutHash || "/").split("?");
-  const normalizedPath = pathWithoutSearch || "/";
+  const [pathWithoutHash] = pathname.split('#');
+  const [pathWithoutSearch] = (pathWithoutHash || '/').split('?');
+  const normalizedPath = pathWithoutSearch || '/';
 
-  if (normalizedPath === "/") {
+  if (normalizedPath === '/') {
     return normalizedPath;
   }
 
-  return normalizedPath.replace(/\/+$/, "");
+  return normalizedPath.replace(/\/+$/, '');
 }
 
 export function parseSectionHref(
   href: string,
-  currentPathname: string,
+  currentPathname: string
 ): PendingSectionScrollTarget | null {
-  if (!href.includes("#")) {
+  if (!href.includes('#')) {
     return null;
   }
 
-  const [rawPathname, rawId] = href.split("#");
+  const [rawPathname, rawId] = href.split('#');
   const id = rawId?.trim();
 
   if (!id) {
@@ -42,27 +42,20 @@ export function parseSectionHref(
   };
 }
 
-export function setPendingSectionScrollTarget(
-  target: PendingSectionScrollTarget,
-) {
-  if (typeof window === "undefined") {
+export function setPendingSectionScrollTarget(target: PendingSectionScrollTarget) {
+  if (typeof window === 'undefined') {
     return;
   }
 
-  window.sessionStorage.setItem(
-    PENDING_SECTION_SCROLL_STORAGE_KEY,
-    JSON.stringify(target),
-  );
+  window.sessionStorage.setItem(PENDING_SECTION_SCROLL_STORAGE_KEY, JSON.stringify(target));
 }
 
 export function getPendingSectionScrollTarget() {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return null;
   }
 
-  const value = window.sessionStorage.getItem(
-    PENDING_SECTION_SCROLL_STORAGE_KEY,
-  );
+  const value = window.sessionStorage.getItem(PENDING_SECTION_SCROLL_STORAGE_KEY);
 
   if (!value) {
     return null;
@@ -77,7 +70,7 @@ export function getPendingSectionScrollTarget() {
 }
 
 export function clearPendingSectionScrollTarget() {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 
@@ -85,16 +78,16 @@ export function clearPendingSectionScrollTarget() {
 }
 
 export function clearHashFromUrl() {
-  if (typeof window === "undefined" || !window.location.hash) {
+  if (typeof window === 'undefined' || !window.location.hash) {
     return;
   }
 
   const nextUrl = `${window.location.pathname}${window.location.search}`;
-  window.history.replaceState(window.history.state, "", nextUrl);
+  window.history.replaceState(window.history.state, '', nextUrl);
 }
 
 export function scrollToSection(id: string) {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return false;
   }
 
@@ -105,8 +98,8 @@ export function scrollToSection(id: string) {
   }
 
   element.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
+    behavior: 'smooth',
+    block: 'start',
   });
 
   return true;

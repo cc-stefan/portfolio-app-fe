@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import {
   clearHashFromUrl,
   clearPendingSectionScrollTarget,
   getPendingSectionScrollTarget,
   normalizeSectionPathname,
   scrollToSection,
-} from "../lib/section-scroll";
+} from '../lib/section-scroll';
 
 export function SectionScrollRestorer() {
   const pathname = usePathname();

@@ -1,14 +1,14 @@
-import "server-only";
-import type { Metadata } from "next";
-import type { PortfolioDictionary } from "../i18n/types";
-import type { AppLocale } from "../i18n/routing";
-import { getPortfolioApiOrigin, getProjectBySlug } from "./portfolio-api";
-import { resolvePortfolioAssetUrl } from "../lib/resolve-portfolio-asset-url";
+import 'server-only';
+import type { Metadata } from 'next';
+import type { PortfolioDictionary } from '../i18n/types';
+import type { AppLocale } from '../i18n/routing';
+import { getPortfolioApiOrigin, getProjectBySlug } from './portfolio-api';
+import { resolvePortfolioAssetUrl } from '../lib/resolve-portfolio-asset-url';
 
 export async function getPortfolioProjectMetadata(
   slug: string,
   locale: AppLocale,
-  dictionary: PortfolioDictionary,
+  dictionary: PortfolioDictionary
 ): Promise<Metadata> {
   const projectResult = await getProjectBySlug(slug, locale);
 
@@ -19,10 +19,7 @@ export async function getPortfolioProjectMetadata(
     };
   }
 
-  const imageUrl = resolvePortfolioAssetUrl(
-    projectResult.data.imageUrl,
-    getPortfolioApiOrigin(),
-  );
+  const imageUrl = resolvePortfolioAssetUrl(projectResult.data.imageUrl, getPortfolioApiOrigin());
 
   return {
     title: projectResult.data.title,

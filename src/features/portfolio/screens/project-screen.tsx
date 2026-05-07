@@ -1,18 +1,18 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { getPortfolioApiOrigin } from "../api/portfolio-api";
-import { getPortfolioProjectPageData } from "../api/portfolio-page-data";
-import { SiteHeader } from "../components/site-header";
-import { SiteShell } from "../components/site-shell";
-import { StateCard } from "../components/state-card";
-import type { AppLocale } from "../i18n/routing";
-import { localizeHref } from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
-import { getPortfolioHomeSectionLinks } from "../lib/portfolio-navigation";
-import { ProjectContent } from "../sections/project/project-content";
-import { ProjectHero } from "../sections/project/project-hero";
-import { ProjectRelated } from "../sections/project/project-related";
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { getPortfolioApiOrigin } from '../api/portfolio-api';
+import { getPortfolioProjectPageData } from '../api/portfolio-page-data';
+import { SiteHeader } from '../components/site-header';
+import { SiteShell } from '../components/site-shell';
+import { StateCard } from '../components/state-card';
+import type { AppLocale } from '../i18n/routing';
+import { localizeHref } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
+import { getPortfolioHomeSectionLinks } from '../lib/portfolio-navigation';
+import { ProjectContent } from '../sections/project/project-content';
+import { ProjectHero } from '../sections/project/project-hero';
+import { ProjectRelated } from '../sections/project/project-related';
 
 interface PortfolioProjectScreenProps {
   slug: string;
@@ -25,8 +25,10 @@ export async function PortfolioProjectScreen({
   locale,
   dictionary,
 }: PortfolioProjectScreenProps) {
-  const { projectResult, project, relatedProjects } =
-    await getPortfolioProjectPageData(slug, locale);
+  const { projectResult, project, relatedProjects } = await getPortfolioProjectPageData(
+    slug,
+    locale
+  );
   const hasProjectLinks = Boolean(project?.liveUrl || project?.repositoryUrl);
 
   if (projectResult.status === 404) {
@@ -37,24 +39,18 @@ export async function PortfolioProjectScreen({
   const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   return (
-    <SiteShell
-      locale={locale}
-      dictionary={dictionary}
-      footerNavItems={footerNavItems}
-    >
+    <SiteShell locale={locale} dictionary={dictionary} footerNavItems={footerNavItems}>
       <SiteHeader
         locale={locale}
         dictionary={dictionary}
         navItems={[
-          { href: "/#projects", label: dictionary.header.navWork },
-          { href: "#overview", label: dictionary.project.overviewTitle },
-          ...(hasProjectLinks
-            ? [{ href: "#links", label: dictionary.project.linksTitle }]
-            : []),
-          { href: "#timeline", label: dictionary.project.timelineTitle },
+          { href: '/#projects', label: dictionary.header.navWork },
+          { href: '#overview', label: dictionary.project.overviewTitle },
+          ...(hasProjectLinks ? [{ href: '#links', label: dictionary.project.linksTitle }] : []),
+          { href: '#timeline', label: dictionary.project.timelineTitle },
         ]}
         primaryAction={{
-          href: "/#contact",
+          href: '/#contact',
           label: dictionary.actions.startProject,
         }}
         className="page-enter"
@@ -70,9 +66,7 @@ export async function PortfolioProjectScreen({
               tone="warning"
               action={
                 <Button asChild size="lg">
-                  <Link href={localizeHref(locale, "/")}>
-                    {dictionary.project.backToHome}
-                  </Link>
+                  <Link href={localizeHref(locale, '/')}>{dictionary.project.backToHome}</Link>
                 </Button>
               }
             />
@@ -92,11 +86,7 @@ export async function PortfolioProjectScreen({
             </div>
 
             <div className="page-enter">
-              <ProjectContent
-                locale={locale}
-                dictionary={dictionary}
-                project={project}
-              />
+              <ProjectContent locale={locale} dictionary={dictionary} project={project} />
             </div>
 
             <div className="page-enter">

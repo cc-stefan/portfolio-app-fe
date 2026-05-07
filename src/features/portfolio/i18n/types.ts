@@ -1,4 +1,4 @@
-import type { AppLocale } from "./routing";
+import type { AppLocale } from './routing';
 
 export interface PortfolioDictionary {
   meta: {

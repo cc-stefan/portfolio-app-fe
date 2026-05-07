@@ -1,63 +1,60 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useForm, type Resolver } from "react-hook-form";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LocaleSwitcher } from "@/features/portfolio/components/locale-switcher";
-import { SiteFooter } from "@/features/portfolio/components/site-footer";
-import { ThemeToggle } from "@/features/portfolio/components/theme-toggle";
-import { localizeHref, type AppLocale } from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import { getPortfolioHomeSectionLinks } from "@/features/portfolio/lib/portfolio-navigation";
-import { cn } from "@/lib/utils";
-import { useAdminAuth } from "../auth/use-admin-auth";
+import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm, type Resolver } from 'react-hook-form';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { LocaleSwitcher } from '@/features/portfolio/components/locale-switcher';
+import { SiteFooter } from '@/features/portfolio/components/site-footer';
+import { ThemeToggle } from '@/features/portfolio/components/theme-toggle';
+import { localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { getPortfolioHomeSectionLinks } from '@/features/portfolio/lib/portfolio-navigation';
+import { cn } from '@/lib/utils';
+import { useAdminAuth } from '../auth/use-admin-auth';
 import {
   createAdminLoginFormSchema,
   type AdminLoginFormValues,
-} from "../forms/admin-login-form-schema";
+} from '../forms/admin-login-form-schema';
 
 interface AdminLoginScreenProps {
   lang: AppLocale;
   dictionary: PortfolioDictionary;
 }
 
-export function AdminLoginScreen({
-  lang,
-  dictionary,
-}: AdminLoginScreenProps) {
+export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { clearAccessDenied, login, status } = useAdminAuth();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const resolver = useMemo(
     () =>
-      zodResolver(createAdminLoginFormSchema(dictionary.admin) as never) as Resolver<AdminLoginFormValues>,
-    [dictionary.admin],
+      zodResolver(
+        createAdminLoginFormSchema(dictionary.admin) as never
+      ) as Resolver<AdminLoginFormValues>,
+    [dictionary.admin]
   );
   const form = useForm<AdminLoginFormValues>({
     resolver,
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
-  const nextParam = searchParams.get("next");
+  const nextParam = searchParams.get('next');
   const nextHref =
-    nextParam && nextParam.startsWith("/")
-      ? nextParam
-      : localizeHref(lang, "/admin");
+    nextParam && nextParam.startsWith('/') ? nextParam : localizeHref(lang, '/admin');
   const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       router.replace(nextHref);
     }
   }, [nextHref, router, status]);
@@ -74,7 +71,7 @@ export function AdminLoginScreen({
     if (!result.ok) {
       const message = result.error ?? dictionary.admin.unableToSignIn;
       setSubmissionError(message);
-      form.setError("root", { message });
+      form.setError('root', { message });
       return;
     }
 
@@ -90,9 +87,7 @@ export function AdminLoginScreen({
         <div className="flex items-center justify-between gap-3">
           <div>
             <Button asChild variant="ghost" size="sm">
-              <Link href={localizeHref(lang, "/")}>
-                {dictionary.admin.backToPortfolio}
-              </Link>
+              <Link href={localizeHref(lang, '/')}>{dictionary.admin.backToPortfolio}</Link>
             </Button>
           </div>
           <div className="flex items-center gap-2">
@@ -139,11 +134,8 @@ export function AdminLoginScreen({
                     autoComplete="email"
                     placeholder={dictionary.admin.emailPlaceholder}
                     aria-invalid={Boolean(errors.email)}
-                    aria-describedby={getFieldDescribedBy(
-                      "admin-email",
-                      errors.email?.message,
-                    )}
-                    {...form.register("email")}
+                    aria-describedby={getFieldDescribedBy('admin-email', errors.email?.message)}
+                    {...form.register('email')}
                   />
                 </Field>
 
@@ -160,17 +152,17 @@ export function AdminLoginScreen({
                     placeholder={dictionary.admin.passwordPlaceholder}
                     aria-invalid={Boolean(errors.password)}
                     aria-describedby={getFieldDescribedBy(
-                      "admin-password",
-                      errors.password?.message,
+                      'admin-password',
+                      errors.password?.message
                     )}
-                    {...form.register("password")}
+                    {...form.register('password')}
                   />
                 </Field>
 
                 <Button
                   type="submit"
                   size="lg"
-                  disabled={form.formState.isSubmitting || status === "loading"}
+                  disabled={form.formState.isSubmitting || status === 'loading'}
                 >
                   {form.formState.isSubmitting
                     ? dictionary.admin.signingIn
@@ -182,20 +174,14 @@ export function AdminLoginScreen({
           </Card>
         </div>
 
-        <SiteFooter
-          locale={lang}
-          dictionary={dictionary}
-          navItems={footerNavItems}
-        />
+        <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
       </div>
     </div>
   );
 }
 
 function getFieldDescribedBy(htmlFor: string, error?: string) {
-  return error
-    ? `${htmlFor}-description ${htmlFor}-error`
-    : `${htmlFor}-description`;
+  return error ? `${htmlFor}-description ${htmlFor}-error` : `${htmlFor}-description`;
 }
 
 interface FieldProps {
@@ -218,7 +204,7 @@ function Field({ label, description, error, htmlFor, children }: FieldProps) {
         <p
           id={`${htmlFor}-error`}
           aria-live="polite"
-          className={cn("text-xs leading-4 text-destructive")}
+          className={cn('text-xs leading-4 text-destructive')}
         >
           {error}
         </p>

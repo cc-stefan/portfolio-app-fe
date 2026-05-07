@@ -1,4 +1,4 @@
-import type { AppLocale } from "../i18n/routing";
+import type { AppLocale } from '../i18n/routing';
 
 export interface PortfolioHealth {
   service: string;

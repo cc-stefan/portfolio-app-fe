@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useSyncExternalStore } from "react";
-import {MoonStar, SunMedium} from "lucide-react";
-import {useTheme} from "next-themes";
-import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
+import { useSyncExternalStore } from 'react';
+import { MoonStar, SunMedium } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ThemeToggleProps {
   label: string;
@@ -17,8 +17,12 @@ function subscribe() {
 
 export function ThemeToggle({ label, className }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme();
-  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
-  const isDark = mounted && resolvedTheme === "dark";
+  const mounted = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false
+  );
+  const isDark = mounted && resolvedTheme === 'dark';
 
   return (
     <Button
@@ -29,13 +33,9 @@ export function ThemeToggle({ label, className }: ThemeToggleProps) {
       aria-label={label}
       aria-pressed={isDark}
       disabled={!mounted}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
-      {isDark ? (
-        <SunMedium className="size-4" />
-      ) : (
-        <MoonStar className="size-4" />
-      )}
+      {isDark ? <SunMedium className="size-4" /> : <MoonStar className="size-4" />}
     </Button>
   );
 }

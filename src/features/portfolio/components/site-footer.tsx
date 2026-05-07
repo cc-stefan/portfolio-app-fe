@@ -1,6 +1,6 @@
-import type {PortfolioSectionLink} from "../lib/portfolio-navigation";
-import {type AppLocale} from "../i18n/routing";
-import type {PortfolioDictionary} from "../i18n/types";
+import type { PortfolioSectionLink } from '../lib/portfolio-navigation';
+import { type AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
 
 interface SiteFooterProps {
   locale: AppLocale;
@@ -8,7 +8,7 @@ interface SiteFooterProps {
   navItems: PortfolioSectionLink[];
 }
 
-export function SiteFooter({dictionary}: SiteFooterProps) {
+export function SiteFooter({ dictionary }: SiteFooterProps) {
   const currentYear = new Date().getUTCFullYear();
 
   return (

@@ -1,43 +1,23 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, Mail, RefreshCcw, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
-import { StateCard } from "@/features/portfolio/components/state-card";
-import {
-  localeTags,
-  localizeHref,
-  type AppLocale,
-} from "@/features/portfolio/i18n/routing";
-import type { PortfolioDictionary } from "@/features/portfolio/i18n/types";
-import {
-  getBackendErrorMessage,
-  readBackendError,
-} from "../lib/backend-errors";
-import { dispatchAdminInquiriesUpdated } from "../lib/inquiry-events";
-import {
-  formatInquiryStatus,
-  getInquiryBadgeVariant,
-} from "../lib/inquiry-status";
-import type {
-  AdminInquiry,
-  InquiryMutationPayload,
-  InquiryStatus,
-} from "../model/types";
-import { useAdminAuth } from "../auth/use-admin-auth";
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, Mail, RefreshCcw, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Textarea } from '@/components/ui/textarea';
+import { StateCard } from '@/features/portfolio/components/state-card';
+import { localeTags, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
+import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
+import { dispatchAdminInquiriesUpdated } from '../lib/inquiry-events';
+import { formatInquiryStatus, getInquiryBadgeVariant } from '../lib/inquiry-status';
+import type { AdminInquiry, InquiryMutationPayload, InquiryStatus } from '../model/types';
+import { useAdminAuth } from '../auth/use-admin-auth';
 
 interface AdminInquiryDetailScreenProps {
   lang: AppLocale;
@@ -45,12 +25,7 @@ interface AdminInquiryDetailScreenProps {
   dictionary: PortfolioDictionary;
 }
 
-const statusOptions: InquiryStatus[] = [
-  "NEW",
-  "IN_REVIEW",
-  "RESOLVED",
-  "ARCHIVED",
-];
+const statusOptions: InquiryStatus[] = ['NEW', 'IN_REVIEW', 'RESOLVED', 'ARCHIVED'];
 
 export function AdminInquiryDetailScreen({
   lang,
@@ -66,23 +41,23 @@ export function AdminInquiryDetailScreen({
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [readToggling, setReadToggling] = useState(false);
-  const [statusValue, setStatusValue] = useState<InquiryStatus>("NEW");
-  const [notesValue, setNotesValue] = useState("");
+  const [statusValue, setStatusValue] = useState<InquiryStatus>('NEW');
+  const [notesValue, setNotesValue] = useState('');
 
   const formatDate = useMemo(
     () => (value: string) =>
       new Intl.DateTimeFormat(localeTags[lang], {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       }).format(new Date(value)),
-    [lang],
+    [lang]
   );
 
   const applyInquiry = useCallback((payload: AdminInquiry) => {
     setInquiry(payload);
     setStatusValue(payload.status);
-    setNotesValue(payload.adminNotes ?? "");
+    setNotesValue(payload.adminNotes ?? '');
   }, []);
 
   const loadInquiry = useCallback(async () => {
@@ -102,10 +77,7 @@ export function AdminInquiryDetailScreen({
       if (response.status !== 401 && response.status !== 403) {
         const errorBody = await readBackendError(response);
         setError(
-          getBackendErrorMessage(
-            errorBody,
-            dictionary.admin.inquiryDetailPage.loadErrorFallback,
-          ),
+          getBackendErrorMessage(errorBody, dictionary.admin.inquiryDetailPage.loadErrorFallback)
         );
       }
 
@@ -116,15 +88,10 @@ export function AdminInquiryDetailScreen({
     const payload = (await response.json()) as AdminInquiry;
     applyInquiry(payload);
     setLoading(false);
-  }, [
-    applyInquiry,
-    authFetch,
-    dictionary.admin.inquiryDetailPage.loadErrorFallback,
-    inquiryId,
-  ]);
+  }, [applyInquiry, authFetch, dictionary.admin.inquiryDetailPage.loadErrorFallback, inquiryId]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -144,9 +111,9 @@ export function AdminInquiryDetailScreen({
     };
 
     const response = await authFetch(`/admin/inquiries/${inquiryId}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -154,10 +121,7 @@ export function AdminInquiryDetailScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.inquiryDetailPage.updateErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.inquiryDetailPage.updateErrorFallback)
       );
       setSaving(false);
       return;
@@ -178,9 +142,9 @@ export function AdminInquiryDetailScreen({
     setReadToggling(true);
 
     const response = await authFetch(`/admin/inquiries/${inquiryId}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         isRead: !inquiry.isRead,
@@ -190,10 +154,7 @@ export function AdminInquiryDetailScreen({
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.inquiryDetailPage.updateErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.inquiryDetailPage.updateErrorFallback)
       );
       setReadToggling(false);
       return;
@@ -205,7 +166,7 @@ export function AdminInquiryDetailScreen({
     toast.success(
       updatedInquiry.isRead
         ? dictionary.admin.inquiryDetailPage.markReadSuccess
-        : dictionary.admin.inquiryDetailPage.markUnreadSuccess,
+        : dictionary.admin.inquiryDetailPage.markUnreadSuccess
     );
     setReadToggling(false);
   }
@@ -217,10 +178,7 @@ export function AdminInquiryDetailScreen({
 
     if (
       !window.confirm(
-        dictionary.admin.inquiryDetailPage.deleteConfirm.replace(
-          "{name}",
-          inquiry.name,
-        ),
+        dictionary.admin.inquiryDetailPage.deleteConfirm.replace('{name}', inquiry.name)
       )
     ) {
       return;
@@ -229,16 +187,13 @@ export function AdminInquiryDetailScreen({
     setDeleting(true);
 
     const response = await authFetch(`/admin/inquiries/${inquiryId}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     if (!response.ok) {
       const errorBody = await readBackendError(response);
       toast.error(
-        getBackendErrorMessage(
-          errorBody,
-          dictionary.admin.inquiryDetailPage.deleteErrorFallback,
-        ),
+        getBackendErrorMessage(errorBody, dictionary.admin.inquiryDetailPage.deleteErrorFallback)
       );
       setDeleting(false);
       return;
@@ -246,7 +201,7 @@ export function AdminInquiryDetailScreen({
 
     toast.success(dictionary.admin.inquiryDetailPage.deleteSuccess);
     dispatchAdminInquiriesUpdated();
-    router.replace(localizeHref(lang, "/admin/inquiries"));
+    router.replace(localizeHref(lang, '/admin/inquiries'));
   }
 
   if (loading) {
@@ -272,7 +227,7 @@ export function AdminInquiryDetailScreen({
         description={dictionary.admin.inquiryDetailPage.notFoundDescription}
         action={
           <Button asChild size="lg">
-            <Link href={localizeHref(lang, "/admin/inquiries")}>
+            <Link href={localizeHref(lang, '/admin/inquiries')}>
               {dictionary.admin.inquiryDetailPage.backToInquiries}
             </Link>
           </Button>
@@ -286,9 +241,7 @@ export function AdminInquiryDetailScreen({
       <StateCard
         eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
         title={dictionary.admin.inquiryDetailPage.loadErrorTitle}
-        description={
-          error ?? dictionary.admin.inquiryDetailPage.loadErrorFallback
-        }
+        description={error ?? dictionary.admin.inquiryDetailPage.loadErrorFallback}
         tone="warning"
         action={
           <Button type="button" size="lg" onClick={() => void loadInquiry()}>
@@ -316,7 +269,7 @@ export function AdminInquiryDetailScreen({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild variant="outline" size="sm">
-            <Link href={localizeHref(lang, "/admin/inquiries")}>
+            <Link href={localizeHref(lang, '/admin/inquiries')}>
               <ArrowLeft className="size-4" />
               {dictionary.admin.inquiryDetailPage.backToInquiries}
             </Link>
@@ -357,18 +310,12 @@ export function AdminInquiryDetailScreen({
             <div className="grid gap-3 rounded-xl border border-border bg-background/70 p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-lg font-semibold text-foreground">
-                    {inquiry.name}
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {inquiry.email}
-                  </p>
+                  <p className="text-lg font-semibold text-foreground">{inquiry.name}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{inquiry.email}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant={inquiry.isRead ? "outline" : "accent"}>
-                    {inquiry.isRead
-                      ? dictionary.admin.read
-                      : dictionary.admin.unread}
+                  <Badge variant={inquiry.isRead ? 'outline' : 'accent'}>
+                    {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
                   </Badge>
                   <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
                     {formatInquiryStatus(inquiry.status, dictionary.admin)}
@@ -434,8 +381,8 @@ export function AdminInquiryDetailScreen({
                     type="button"
                     className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45 ${
                       isActive
-                        ? "border-primary/20 bg-primary/10 text-foreground"
-                        : "border-border bg-background/70 text-foreground hover:bg-secondary"
+                        ? 'border-primary/20 bg-primary/10 text-foreground'
+                        : 'border-border bg-background/70 text-foreground hover:bg-secondary'
                     }`}
                     onClick={() => setStatusValue(option)}
                   >
@@ -484,21 +431,13 @@ export function AdminInquiryDetailScreen({
   );
 }
 
-function Fact({
-  label,
-  value,
-  mono = false,
-}: {
-  label: string;
-  value: string;
-  mono?: boolean;
-}) {
+function Fact({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-border pb-4 last:border-b-0 last:pb-0">
       <p className="text-sm text-muted-foreground">{label}</p>
       <p
         className={`text-right text-sm font-semibold text-foreground ${
-          mono ? "break-all font-mono text-xs" : ""
+          mono ? 'break-all font-mono text-xs' : ''
         }`}
       >
         {value}

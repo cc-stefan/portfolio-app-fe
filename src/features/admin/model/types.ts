@@ -1,7 +1,7 @@
-import type { AppLocale } from "@/features/portfolio/i18n/routing";
-import type { ProjectTranslation } from "@/features/portfolio/model/types";
+import type { AppLocale } from '@/features/portfolio/i18n/routing';
+import type { ProjectTranslation } from '@/features/portfolio/model/types';
 
-export type UserRole = "USER" | "ADMIN";
+export type UserRole = 'USER' | 'ADMIN';
 
 export interface AdminUser {
   id: string;
@@ -35,7 +35,7 @@ export interface AuthResponse {
   user: AdminUser;
 }
 
-export type InquiryStatus = "NEW" | "IN_REVIEW" | "RESOLVED" | "ARCHIVED";
+export type InquiryStatus = 'NEW' | 'IN_REVIEW' | 'RESOLVED' | 'ARCHIVED';
 
 export interface AdminInquiry {
   id: string;
@@ -72,14 +72,14 @@ export interface AdminDashboardResponse {
   recentProjects: Array<
     Pick<
       AdminProject,
-      | "id"
-      | "slug"
-      | "translations"
-      | "published"
-      | "featured"
-      | "imageUrl"
-      | "createdAt"
-      | "updatedAt"
+      | 'id'
+      | 'slug'
+      | 'translations'
+      | 'published'
+      | 'featured'
+      | 'imageUrl'
+      | 'createdAt'
+      | 'updatedAt'
     >
   >;
 }
@@ -125,11 +125,11 @@ export type ProjectLocalizedFieldName = keyof ProjectTranslationFormValues;
 
 export type ProjectFieldName =
   | `translations.${AppLocale}.${ProjectLocalizedFieldName}`
-  | "slug"
-  | "liveUrl"
-  | "repositoryUrl"
-  | "projectDate"
-  | "technologies"
-  | "displayOrder";
+  | 'slug'
+  | 'liveUrl'
+  | 'repositoryUrl'
+  | 'projectDate'
+  | 'technologies'
+  | 'displayOrder';
 
 export type ProjectFieldErrors = Partial<Record<ProjectFieldName, string>>;

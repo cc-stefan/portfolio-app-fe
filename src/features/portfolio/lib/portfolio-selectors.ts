@@ -1,4 +1,4 @@
-import type { PortfolioProject } from "../model/types";
+import type { PortfolioProject } from '../model/types';
 
 export function collectTechnologies(projects: PortfolioProject[]) {
   const technologies = new Map<string, string>();
@@ -19,9 +19,7 @@ export function collectTechnologies(projects: PortfolioProject[]) {
     }
   }
 
-  return [...technologies.values()].sort((left, right) =>
-    left.localeCompare(right),
-  );
+  return [...technologies.values()].sort((left, right) => left.localeCompare(right));
 }
 
 export function getFeaturedProjects(projects: PortfolioProject[]) {
@@ -29,18 +27,12 @@ export function getFeaturedProjects(projects: PortfolioProject[]) {
 }
 
 export function getProjectDescriptionParagraphs(description: string | null) {
-  return (description?.trim() ?? "")
+  return (description?.trim() ?? '')
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
 }
 
-export function getRelatedProjects(
-  projects: PortfolioProject[],
-  currentSlug: string,
-  limit = 3,
-) {
-  return projects
-    .filter((project) => project.slug !== currentSlug)
-    .slice(0, limit);
+export function getRelatedProjects(projects: PortfolioProject[], currentSlug: string, limit = 3) {
+  return projects.filter((project) => project.slug !== currentSlug).slice(0, limit);
 }

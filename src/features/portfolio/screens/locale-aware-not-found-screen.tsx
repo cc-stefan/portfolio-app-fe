@@ -1,26 +1,19 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { StateCard } from "../components/state-card";
-import {
-  defaultLocale,
-  isAppLocale,
-  localizeHref,
-  type AppLocale,
-} from "../i18n/routing";
-import type { PortfolioDictionary } from "../i18n/types";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { StateCard } from '../components/state-card';
+import { defaultLocale, isAppLocale, localizeHref, type AppLocale } from '../i18n/routing';
+import type { PortfolioDictionary } from '../i18n/types';
 
 interface LocaleAwareNotFoundScreenProps {
   dictionaries: Record<AppLocale, PortfolioDictionary>;
 }
 
-export function LocaleAwareNotFoundScreen({
-  dictionaries,
-}: LocaleAwareNotFoundScreenProps) {
+export function LocaleAwareNotFoundScreen({ dictionaries }: LocaleAwareNotFoundScreenProps) {
   const pathname = usePathname();
-  const localeSegment = pathname.split("/")[1] ?? defaultLocale;
+  const localeSegment = pathname.split('/')[1] ?? defaultLocale;
   const locale = isAppLocale(localeSegment) ? localeSegment : defaultLocale;
   const dictionary = dictionaries[locale];
 
@@ -32,9 +25,7 @@ export function LocaleAwareNotFoundScreen({
         description={dictionary.meta.notFoundDescription}
         action={
           <Button asChild size="lg">
-            <Link href={localizeHref(locale, "/")}>
-              {dictionary.actions.browseProjects}
-            </Link>
+            <Link href={localizeHref(locale, '/')}>{dictionary.actions.browseProjects}</Link>
           </Button>
         }
       />

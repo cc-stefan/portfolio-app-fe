@@ -1,13 +1,9 @@
-import Link from "next/link";
-import { getLocale } from "next-intl/server";
-import { Button } from "@/components/ui/button";
-import { StateCard } from "@/features/portfolio/components/state-card";
-import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
-import {
-  defaultLocale,
-  isAppLocale,
-  localizeHref,
-} from "@/features/portfolio/i18n/routing";
+import Link from 'next/link';
+import { getLocale } from 'next-intl/server';
+import { Button } from '@/components/ui/button';
+import { StateCard } from '@/features/portfolio/components/state-card';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { defaultLocale, isAppLocale, localizeHref } from '@/features/portfolio/i18n/routing';
 
 export default async function LocaleNotFound() {
   const requestedLocale = await getLocale();
@@ -22,9 +18,7 @@ export default async function LocaleNotFound() {
         description={dictionary.meta.notFoundDescription}
         action={
           <Button asChild size="lg">
-            <Link href={localizeHref(locale, "/")}>
-              {dictionary.actions.browseProjects}
-            </Link>
+            <Link href={localizeHref(locale, '/')}>{dictionary.actions.browseProjects}</Link>
           </Button>
         }
       />

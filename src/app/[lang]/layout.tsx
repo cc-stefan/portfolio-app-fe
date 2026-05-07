@@ -1,40 +1,40 @@
-import type {Metadata} from "next";
-import localFont from "next/font/local";
-import {hasLocale, NextIntlClientProvider} from "next-intl";
-import {setRequestLocale} from "next-intl/server";
-import {notFound} from "next/navigation";
-import {ThemeProvider} from "@/components/providers/theme-provider";
-import {Toaster} from "@/components/ui/sonner";
-import {AdminAuthProvider} from "@/features/admin/auth/admin-auth-provider";
-import {getDictionary} from "@/features/portfolio/i18n/dictionaries";
-import {appLocales, localeTags} from "@/features/portfolio/i18n/routing";
-import {routing} from "@/i18n/routing";
-import "../globals.css";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { setRequestLocale } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
+import { AdminAuthProvider } from '@/features/admin/auth/admin-auth-provider';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { appLocales, localeTags } from '@/features/portfolio/i18n/routing';
+import { routing } from '@/i18n/routing';
+import '../globals.css';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
 }
 
-const geistSans = localFont({
-  src: "../../../node_modules/next/dist/next-devtools/server/font/geist-latin.woff2",
-  variable: "--font-geist-sans",
-  display: "swap",
+const geistSans = Geist({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-geist-sans',
+  display: 'swap',
 });
 
-const geistMono = localFont({
-  src: "../../../node_modules/next/dist/next-devtools/server/font/geist-mono-latin.woff2",
-  variable: "--font-geist-mono",
-  display: "swap",
+const geistMono = Geist_Mono({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-geist-mono',
+  display: 'swap',
 });
 
 const metadataBase = (() => {
   try {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');
   } catch {
-    return new URL("http://localhost:3000");
+    return new URL('http://localhost:3000');
   }
 })();
 
@@ -42,9 +42,7 @@ export async function generateStaticParams() {
   return appLocales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: LocaleLayoutProps): Promise<Metadata> {
+export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
   const { lang } = await params;
 
   if (!hasLocale(routing.locales, lang)) {
@@ -64,21 +62,18 @@ export async function generateMetadata({
     openGraph: {
       title: dictionary.meta.siteName,
       description: dictionary.meta.description,
-      type: "website",
+      type: 'website',
       locale: localeTags[lang],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: dictionary.meta.siteName,
       description: dictionary.meta.description,
     },
   };
 }
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { lang } = await params;
 
   if (!hasLocale(routing.locales, lang)) {

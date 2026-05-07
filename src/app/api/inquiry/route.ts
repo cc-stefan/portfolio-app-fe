@@ -1,12 +1,8 @@
-import { NextResponse } from "next/server";
-import { buildBackendApiUrl } from "@/lib/backend";
-import { createInquiryFormSchema } from "@/features/portfolio/forms/inquiry-form-schema";
-import { getDictionary } from "@/features/portfolio/i18n/dictionaries";
-import {
-  defaultLocale,
-  isAppLocale,
-  type AppLocale,
-} from "@/features/portfolio/i18n/routing";
+import { NextResponse } from 'next/server';
+import { buildBackendApiUrl } from '@/lib/backend';
+import { createInquiryFormSchema } from '@/features/portfolio/forms/inquiry-form-schema';
+import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
+import { defaultLocale, isAppLocale, type AppLocale } from '@/features/portfolio/i18n/routing';
 
 interface BackendErrorBody {
   errors?: Array<{ path?: string[]; message?: string }>;
@@ -14,10 +10,7 @@ interface BackendErrorBody {
   error?: string;
 }
 
-function getBackendErrorMessage(
-  body: BackendErrorBody | null,
-  fallback: string,
-) {
+function getBackendErrorMessage(body: BackendErrorBody | null, fallback: string) {
   if (!body) {
     return fallback;
   }
@@ -26,11 +19,11 @@ function getBackendErrorMessage(
     return body.message[0] ?? fallback;
   }
 
-  if (typeof body.message === "string" && body.message.trim()) {
+  if (typeof body.message === 'string' && body.message.trim()) {
     return body.message;
   }
 
-  if (typeof body.error === "string" && body.error.trim()) {
+  if (typeof body.error === 'string' && body.error.trim()) {
     return body.error;
   }
 
@@ -38,7 +31,7 @@ function getBackendErrorMessage(
 }
 
 function resolveRequestLocale(request: Request): AppLocale {
-  const localeHeader = request.headers.get("x-app-locale");
+  const localeHeader = request.headers.get('x-app-locale');
 
   if (localeHeader && isAppLocale(localeHeader)) {
     return localeHeader;
@@ -64,18 +57,18 @@ export async function POST(request: Request) {
           message: issue.message,
         })),
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
   try {
-    const response = await fetch(buildBackendApiUrl("/inquiries"), {
-      method: "POST",
+    const response = await fetch(buildBackendApiUrl('/inquiries'), {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(result.data),
-      cache: "no-store",
+      cache: 'no-store',
     });
 
     const responseBody = (await response.json().catch(() => null)) as
@@ -83,8 +76,7 @@ export async function POST(request: Request) {
       | null;
 
     if (!response.ok) {
-      const status =
-        response.status === 404 || response.status === 405 ? 503 : response.status;
+      const status = response.status === 404 || response.status === 405 ? 503 : response.status;
 
       return NextResponse.json(
         {
@@ -93,12 +85,9 @@ export async function POST(request: Request) {
           message:
             status === 503
               ? dictionary.inquiryForm.endpointUnavailableError
-              : getBackendErrorMessage(
-                  responseBody,
-                  dictionary.inquiryForm.submitUnavailableError,
-                ),
+              : getBackendErrorMessage(responseBody, dictionary.inquiryForm.submitUnavailableError),
         },
-        { status },
+        { status }
       );
     }
 
@@ -106,12 +95,9 @@ export async function POST(request: Request) {
       {
         ok: true,
         id: responseBody?.id,
-        receivedAt:
-          responseBody?.receivedAt ??
-          responseBody?.createdAt ??
-          new Date().toISOString(),
+        receivedAt: responseBody?.receivedAt ?? responseBody?.createdAt ?? new Date().toISOString(),
       },
-      { status: 201 },
+      { status: 201 }
     );
   } catch {
     return NextResponse.json(
@@ -119,7 +105,7 @@ export async function POST(request: Request) {
         ok: false,
         message: dictionary.inquiryForm.backendUnavailableError,
       },
-      { status: 503 },
+      { status: 503 }
     );
   }
 }

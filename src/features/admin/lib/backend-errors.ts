@@ -13,7 +13,7 @@ export function getBackendFieldErrors(body: BackendErrorBody | null) {
   }
 
   for (const error of body.errors) {
-    const field = error.path?.join(".");
+    const field = error.path?.join('.');
 
     if (field && error.message) {
       fieldErrors[field] = error.message;
@@ -23,9 +23,7 @@ export function getBackendFieldErrors(body: BackendErrorBody | null) {
   return fieldErrors;
 }
 
-export async function readBackendError(
-  response: Response,
-): Promise<BackendErrorBody | null> {
+export async function readBackendError(response: Response): Promise<BackendErrorBody | null> {
   try {
     return (await response.json()) as BackendErrorBody;
   } catch {
@@ -33,10 +31,7 @@ export async function readBackendError(
   }
 }
 
-export function getBackendErrorMessage(
-  body: BackendErrorBody | null,
-  fallback: string,
-) {
+export function getBackendErrorMessage(body: BackendErrorBody | null, fallback: string) {
   if (!body) {
     return fallback;
   }
@@ -45,11 +40,11 @@ export function getBackendErrorMessage(
     return body.message[0] ?? fallback;
   }
 
-  if (typeof body.message === "string" && body.message.trim()) {
+  if (typeof body.message === 'string' && body.message.trim()) {
     return body.message;
   }
 
-  if (typeof body.error === "string" && body.error.trim()) {
+  if (typeof body.error === 'string' && body.error.trim()) {
     return body.error;
   }
 
@@ -60,22 +55,12 @@ function isConflictMessage(message: string, pattern: RegExp) {
   return pattern.test(message) && /already|unique|exists|use/i.test(message);
 }
 
-export function getProjectSlugConflictMessage(
-  body: BackendErrorBody | null,
-  fallback: string,
-) {
-  const message = getBackendErrorMessage(body, "");
-  return isConflictMessage(message, /slug/i)
-    ? fallback
-    : null;
+export function getProjectSlugConflictMessage(body: BackendErrorBody | null, fallback: string) {
+  const message = getBackendErrorMessage(body, '');
+  return isConflictMessage(message, /slug/i) ? fallback : null;
 }
 
-export function getEmailConflictMessage(
-  body: BackendErrorBody | null,
-  fallback: string,
-) {
-  const message = getBackendErrorMessage(body, "");
-  return isConflictMessage(message, /email/i)
-    ? fallback
-    : null;
+export function getEmailConflictMessage(body: BackendErrorBody | null, fallback: string) {
+  const message = getBackendErrorMessage(body, '');
+  return isConflictMessage(message, /email/i) ? fallback : null;
 }
