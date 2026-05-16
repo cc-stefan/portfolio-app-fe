@@ -48,10 +48,14 @@
 
 :root {
   color-scheme: light;
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
   --header-offset: 0.75rem;
   --header-height: 4rem;
   --section-scroll-offset: calc(
-    var(--header-offset) + var(--header-height)
+    var(--safe-area-inset-top) + var(--header-offset) + var(--header-height)
   );
   --background: oklch(0.985 0.003 248);
   --foreground: oklch(0.205 0.018 255);
@@ -156,6 +160,11 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
     min-height: 100dvh;
+    padding:
+      var(--safe-area-inset-top)
+      var(--safe-area-inset-right)
+      var(--safe-area-inset-bottom)
+      var(--safe-area-inset-left);
     overflow-x: hidden;
     position: relative;
     font-feature-settings: "cv02" 1, "cv03" 1, "cv11" 1;

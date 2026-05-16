@@ -35,7 +35,7 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
         className="page-enter"
       />
 
-      <main className="flex flex-1 flex-col gap-18 pb-4 pt-10 sm:gap-24 sm:pt-14">
+      <main className="flex flex-1 flex-col gap-18 pb-4 pt-[calc(var(--header-height)+2.5rem)] sm:gap-24 sm:pt-[calc(var(--header-height)+3.5rem)]">
         <div className="page-enter">
           <HomeHero locale={locale} copy={dictionary.home} />
         </div>

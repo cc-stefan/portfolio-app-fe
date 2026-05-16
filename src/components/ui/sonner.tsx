@@ -10,6 +10,13 @@ function subscribe() {
   return () => undefined;
 }
 
+const safeAreaToastOffset = {
+  top: 'calc(var(--safe-area-inset-top) + 0.75rem)',
+  right: 'calc(var(--safe-area-inset-right) + 0.75rem)',
+  bottom: 'calc(var(--safe-area-inset-bottom) + 0.75rem)',
+  left: 'calc(var(--safe-area-inset-left) + 0.75rem)',
+} as const;
+
 export function Toaster(props: ToasterProps) {
   const { theme = 'system' } = useTheme();
   const mounted = useSyncExternalStore(
@@ -21,6 +28,8 @@ export function Toaster(props: ToasterProps) {
   return (
     <Sonner
       theme={(mounted ? theme : 'light') as ToasterProps['theme']}
+      offset={safeAreaToastOffset}
+      mobileOffset={safeAreaToastOffset}
       icons={{
         success: <CircleCheckBig className="size-4" />,
         info: <Info className="size-4" />,

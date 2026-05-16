@@ -45,81 +45,90 @@ export function SiteHeader({
   className,
 }: SiteHeaderProps) {
   return (
-    <header
-      className={cn(
-        'surface-card sticky top-3 z-40 rounded-2xl px-3 py-3 sm:top-5 sm:px-4',
-        className
-      )}
+    <div
+      className="pointer-events-none fixed inset-x-0 z-40"
+      style={{ top: 'calc(var(--safe-area-inset-top) + var(--header-offset))' }}
     >
-      <div className="flex items-center gap-3">
-        <ScrollTopLink
-          href={localizeHref(locale, '/')}
-          className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+      <div className="container-page">
+        <header
+          className={cn(
+            'pointer-events-auto surface-card rounded-2xl px-3 py-3 shadow-[var(--surface-shadow-lg)] sm:px-4',
+            className
+          )}
         >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:scale-95">
-            {dictionary.header.avatarInitials}
-          </span>
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold text-foreground">
-              {dictionary.header.brand}
-            </span>
-            <span className="block truncate text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              {eyebrow ?? dictionary.header.tagline}
-            </span>
-          </span>
-        </ScrollTopLink>
+          <div className="flex items-center gap-3">
+            <ScrollTopLink
+              href={localizeHref(locale, '/')}
+              className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:scale-95">
+                {dictionary.header.avatarInitials}
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-semibold text-foreground">
+                  {dictionary.header.brand}
+                </span>
+                <span className="block truncate text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  {eyebrow ?? dictionary.header.tagline}
+                </span>
+              </span>
+            </ScrollTopLink>
 
-        <NavigationMenu
-          className="ml-4 hidden lg:flex"
-          aria-label={dictionary.header.navigationLabel}
-        >
-          <NavigationMenuList>
-            {navItems.map((item) => (
-              <NavigationMenuItem key={item.href}>
-                <NavigationMenuLink asChild>
-                  <SectionScrollLink href={localizeHref(locale, item.href)}>
-                    {item.label}
-                  </SectionScrollLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+            <NavigationMenu
+              className="ml-4 hidden lg:flex"
+              aria-label={dictionary.header.navigationLabel}
+            >
+              <NavigationMenuList>
+                {navItems.map((item) => (
+                  <NavigationMenuItem key={item.href}>
+                    <NavigationMenuLink asChild>
+                      <SectionScrollLink href={localizeHref(locale, item.href)}>
+                        {item.label}
+                      </SectionScrollLink>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
 
-        <div className="ml-auto hidden items-center gap-2 md:flex">
-          {statusSlot ?? <AdminPanelButton locale={locale} label={dictionary.actions.adminPanel} />}
-          {secondaryAction ? (
-            <HeaderButton action={secondaryAction} locale={locale} variant="outline" />
-          ) : null}
-          {primaryAction ? (
-            <HeaderButton action={primaryAction} locale={locale} variant="primary" />
-          ) : null}
-          <LocaleSwitcher
-            locale={locale}
-            localeNames={dictionary.localeNames}
-            label={dictionary.header.languageLabel}
-          />
-          <ThemeToggle label={dictionary.header.themeLabel} />
-        </div>
+            <div className="ml-auto hidden items-center gap-2 md:flex">
+              {statusSlot ?? (
+                <AdminPanelButton locale={locale} label={dictionary.actions.adminPanel} />
+              )}
+              {secondaryAction ? (
+                <HeaderButton action={secondaryAction} locale={locale} variant="outline" />
+              ) : null}
+              {primaryAction ? (
+                <HeaderButton action={primaryAction} locale={locale} variant="primary" />
+              ) : null}
+              <LocaleSwitcher
+                locale={locale}
+                localeNames={dictionary.localeNames}
+                label={dictionary.header.languageLabel}
+              />
+              <ThemeToggle label={dictionary.header.themeLabel} />
+            </div>
 
-        <div className="ml-auto flex items-center gap-2 md:hidden">
-          <MobileNavSheet
-            locale={locale}
-            localeNames={dictionary.localeNames}
-            menuLabel={dictionary.header.openMenu}
-            closeLabel={dictionary.header.closeMenu}
-            themeLabel={dictionary.header.themeLabel}
-            languageLabel={dictionary.header.languageLabel}
-            adminPanelLabel={dictionary.actions.adminPanel}
-            title={dictionary.header.brand}
-            description={dictionary.meta.description}
-            navItems={navItems}
-            primaryAction={primaryAction}
-            secondaryAction={secondaryAction}
-          />
-        </div>
+            <div className="ml-auto flex items-center gap-2 md:hidden">
+              <MobileNavSheet
+                locale={locale}
+                localeNames={dictionary.localeNames}
+                menuLabel={dictionary.header.openMenu}
+                closeLabel={dictionary.header.closeMenu}
+                themeLabel={dictionary.header.themeLabel}
+                languageLabel={dictionary.header.languageLabel}
+                adminPanelLabel={dictionary.actions.adminPanel}
+                title={dictionary.header.brand}
+                description={dictionary.meta.description}
+                navItems={navItems}
+                primaryAction={primaryAction}
+                secondaryAction={secondaryAction}
+              />
+            </div>
+          </div>
+        </header>
       </div>
-    </header>
+    </div>
   );
 }
 
