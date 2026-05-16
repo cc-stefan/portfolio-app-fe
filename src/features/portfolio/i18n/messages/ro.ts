@@ -5,10 +5,10 @@ export const dictionary: PortfolioDictionary = {
     siteName: 'Claudiu Ștefan',
     defaultTitle: 'Claudiu Ștefan',
     description:
-      'Dezvoltator frontend care livrează interfețe rapide, scalabile și orientate spre produs, cu React, Next.js, Angular și TypeScript.',
-    homeTitle: 'Dezvoltator frontend',
+      'Inginer frontend care construiește interfețe scalabile și gata de producție, cu claritate de produs, arhitectură mentenabilă și gândire pe termen lung.',
+    homeTitle: 'Inginer frontend',
     homeDescription:
-      'Portofoliul lui Claudiu Ștefan, dezvoltator frontend concentrat pe interfețe gata de producție, arhitectură scalabilă și claritate de produs.',
+      'Portofoliul lui Claudiu Ștefan, inginer frontend concentrat pe sisteme UI scalabile, arhitectură mentenabilă și claritate de produs.',
     projectUnavailableTitle: 'Proiect indisponibil',
     projectUnavailableDescription: 'Backend-ul nu a putut livra conținutul pentru acest proiect.',
     notFoundTitle: 'Pagină negăsită',
@@ -26,7 +26,7 @@ export const dictionary: PortfolioDictionary = {
   header: {
     brand: 'Claudiu Ștefan',
     avatarInitials: 'CCS',
-    tagline: 'Dezvoltator frontend',
+    tagline: 'Inginer frontend',
     navigationLabel: 'Navigație principală',
     navHome: 'Acasă',
     navAbout: 'Despre',
@@ -41,14 +41,14 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      'Dezvoltator frontend concentrat pe interfețe de produs clare, arhitectură React scalabilă și livrare gata de producție.',
+      'Inginer frontend concentrat pe sisteme UI scalabile, arhitectură mentenabilă și execuție gata de producție.',
     quickLinksLabel: 'Linkuri rapide',
     copyrightLabel: 'Toate drepturile rezervate.',
   },
   home: {
-    title: 'Interfețe de produs rapide, scalabile, clare și construite să reziste.',
+    title: 'Sisteme frontend scalabile, concepute pentru produse reale și utilizatori reali.',
     description:
-      'Construiesc interfețe gata de producție cu React, Next.js, Angular și TypeScript, combinând o arhitectură frontend solidă cu UX clar și gândire de produs.',
+      'Construiesc interfețe pentru echipe care dezvoltă produse software complexe, combinând implementare solidă, decizii UX bine gândite și o execuție care rămâne fiabilă în condiții reale.',
     primaryCta: 'Vezi proiectele',
     secondaryCta: 'Contactează-mă',
     metrics: {
@@ -57,33 +57,32 @@ export const dictionary: PortfolioDictionary = {
     },
     metricCards: [
       {
-        label: 'Proiecte publicate',
-        value: '4 live',
-        detail: 'Site-uri de marketing, aplicații de produs și interfețe cu fluxuri complexe.',
+        label: 'Mediu',
+        value: 'Enterprise & Startup',
+        detail: 'Experiență în platforme complexe și produse aflate în dezvoltare.',
       },
       {
-        label: 'Stack frontend',
-        value: 'React + Angular',
-        detail: 'Arhitectură UI bazată pe TypeScript, construită din componente reutilizabile.',
+        label: 'Focus',
+        value: 'Interfețe Complexe',
+        detail: 'Focus pe fluxuri operaționale, state management și tooling intern.',
       },
       {
-        label: 'Focus de livrare',
-        value: 'UX rapid',
-        detail: 'Performanță, stări responsive și fluxuri clare pentru utilizatori.',
+        label: 'Stil de dezvoltare',
+        value: 'TypeScript First',
+        detail: 'Arhitectură component-based construită în jurul clarității și consistenței.',
       },
       {
-        label: 'Stil de lucru',
-        value: 'Orientare spre produs',
-        detail:
-          'Livrare fiabilă, cod ușor de întreținut și decizii aliniate cu obiectivele de business.',
+        label: 'Colaborare',
+        value: 'Cross-Functional',
+        detail: 'Colaborare strânsă cu product, design, backend și QA pe parcursul livrării.',
       },
     ],
-    profileSnapshotLabel: 'Profil rapid',
-    profileSnapshotTitle: 'Transform idei în produse gata de lansare',
+    profileSnapshotLabel: 'Pe scurt',
+    profileSnapshotTitle: 'Interfețe gata de producție',
     profileSnapshotBadge: 'Disponibil pentru colaborări',
-    profileSummaryLabel: 'De ce lucrează echipele cu mine',
+    profileSummaryLabel: 'Unde aduc valoare',
     profileSummary:
-      'Aduc mai mult decât viteză de implementare. Transform cerințele de produs în interfețe clare, mentenabile și gata de lansare.',
+      'Sunt potrivit pentru produse care au nevoie de structură frontend clară, implementare durabilă și interfețe care rămân ușor de întreținut pe măsură ce cerințele evoluează.',
     profilePanels: [
       {
         label: 'Experiență',
@@ -91,23 +90,10 @@ export const dictionary: PortfolioDictionary = {
       },
       {
         label: 'Focus principal',
-        value: 'React · Next.js · Angular',
+        value: 'Inginerie UI',
       },
     ],
-    skillHighlights: [
-      'React',
-      'Next.js',
-      'Angular',
-      'TypeScript',
-      'React Query',
-      'Redux Toolkit',
-      'Styled Components',
-      'Material UI',
-      'REST',
-      'GraphQL',
-      'Storybook',
-      'Sentry',
-    ],
+    skillHighlights: ['React', 'Next.js', 'Angular', 'TypeScript'],
     showcaseLabel: 'Proiecte',
     showcaseCountLabel: 'proiecte publicate',
     showcaseTitle:

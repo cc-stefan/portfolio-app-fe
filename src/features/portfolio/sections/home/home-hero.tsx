@@ -42,7 +42,7 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
       <Card variant="solid" className="overflow-hidden">
         <CardContent className="p-0">
           <div className="border-b border-border bg-secondary px-5 py-4">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   {copy.profileSnapshotLabel}
@@ -51,8 +51,12 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
                   {copy.profileSnapshotTitle}
                 </p>
               </div>
-              <Badge variant="success" className="justify-center text-center">
-                {copy.profileSnapshotBadge}
+              <Badge
+                variant="success"
+                className="hero-availability-badge justify-center self-start px-3.5 py-1.5 text-center font-semibold tracking-[0.16em] sm:self-auto"
+              >
+                <span className="hero-availability-dot" aria-hidden="true" />
+                <span>{copy.profileSnapshotBadge}</span>
               </Badge>
             </div>
           </div>
@@ -76,7 +80,7 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
                 {copy.metrics.technologies}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {copy.skillHighlights.slice(0, 8).map((technology) => (
+                {copy.skillHighlights.map((technology) => (
                   <Badge key={technology} variant="outline">
                     {technology}
                   </Badge>

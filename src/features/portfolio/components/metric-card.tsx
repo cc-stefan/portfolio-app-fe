@@ -9,13 +9,13 @@ interface MetricCardProps {
 export function MetricCard({ label, value, detail }: MetricCardProps) {
   return (
     <Card variant="solid" className="h-full overflow-hidden">
-      <CardContent className="flex min-h-[13.5rem] flex-col p-5 sm:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        </div>
-        <p className="mt-7 text-3xl font-semibold leading-tight text-foreground">{value}</p>
+      <CardContent className="h-full flex flex-col justify-between p-5 sm:p-6">
+        <p className="text-sm font-medium text-muted-foreground">{label}</p>
+        <p className="mt-5 text-balance text-[1.75rem] font-semibold leading-[1.12] text-foreground sm:text-3xl">
+          {value}
+        </p>
         {detail ? (
-          <p className="mt-auto pt-4 text-pretty text-sm leading-6 text-muted-foreground">
+          <p className="mt-5 text-pretty text-sm leading-6 text-muted-foreground">
             {detail}
           </p>
         ) : null}

@@ -5,10 +5,10 @@ export const dictionary: PortfolioDictionary = {
     siteName: 'Claudiu Stefan',
     defaultTitle: 'Claudiu Stefan',
     description:
-      'Frontend developer building fast, scalable, and product-focused interfaces with React, Next.js, Angular, and TypeScript.',
-    homeTitle: 'Frontend Developer',
+      'Frontend engineer building scalable, production-ready interfaces with product clarity, maintainable architecture, and long-term thinking.',
+    homeTitle: 'Frontend Engineer',
     homeDescription:
-      'Portfolio for Claudiu Stefan, a frontend developer focused on production-ready interfaces, scalable architecture, and product clarity.',
+      'Portfolio for Claudiu Stefan, a frontend engineer focused on scalable interface systems, maintainable architecture, and product clarity.',
     projectUnavailableTitle: 'Project unavailable',
     projectUnavailableDescription: 'The backend could not return the content for this project.',
     notFoundTitle: 'Page not found',
@@ -26,7 +26,7 @@ export const dictionary: PortfolioDictionary = {
   header: {
     brand: 'Claudiu Stefan',
     avatarInitials: 'CCS',
-    tagline: 'Frontend Developer',
+    tagline: 'Frontend Engineer',
     navigationLabel: 'Primary navigation',
     navHome: 'Home',
     navAbout: 'About',
@@ -41,14 +41,14 @@ export const dictionary: PortfolioDictionary = {
   },
   footer: {
     description:
-      'Frontend developer focused on clear product UI, scalable React architecture, and production-ready delivery.',
+      'Frontend engineer focused on scalable interface systems, maintainable architecture, and production-ready delivery.',
     quickLinksLabel: 'Quick links',
     copyrightLabel: 'All rights reserved.',
   },
   home: {
-    title: 'Fast, scalable product interfaces that are clear to use and built to last.',
+    title: 'Scalable frontend systems designed for real products and real users.',
     description:
-      'I build production-ready interfaces with React, Next.js, Angular, and TypeScript, combining strong frontend architecture with clear UX and product judgment.',
+      'I build interfaces for teams shipping complex software, combining dependable implementation, thoughtful UX, and delivery that holds up under real constraints.',
     primaryCta: 'View projects',
     secondaryCta: 'Get in touch',
     metrics: {
@@ -57,32 +57,33 @@ export const dictionary: PortfolioDictionary = {
     },
     metricCards: [
       {
-        label: 'Published work',
-        value: '4 live',
-        detail: 'Marketing sites, product apps, and workflow-heavy interfaces.',
+        label: 'Environment',
+        value: 'Enterprise & Startup',
+        detail: 'Experience across large-scale platforms and early-stage product development.',
       },
       {
-        label: 'Frontend stack',
-        value: 'React + Angular',
-        detail: 'TypeScript-first UI architecture with reusable components.',
+        label: 'Focus',
+        value: 'Complex Interfaces',
+        detail: 'Focused on operational flows, advanced state management, and internal tooling.',
       },
       {
-        label: 'Delivery focus',
-        value: 'Fast UX',
-        detail: 'Performance, responsive states, and clear user flows.',
+        label: 'Development Style',
+        value: 'TypeScript First',
+        detail:
+          'Component-driven architecture built around clarity, consistency, and maintainability.',
       },
       {
-        label: 'Working style',
-        value: 'Product focus',
-        detail: 'Reliable delivery, maintainable code, and business-aware decisions.',
+        label: 'Collaboration',
+        value: 'Cross-Functional',
+        detail: 'Worked closely with product, design, backend, and QA across delivery cycles.',
       },
     ],
-    profileSnapshotLabel: 'Quick profile',
-    profileSnapshotTitle: 'Turning ideas into launch-ready products',
-    profileSnapshotBadge: 'Open to collaborations',
-    profileSummaryLabel: 'Why teams hire me',
+    profileSnapshotLabel: 'At a glance',
+    profileSnapshotTitle: 'Production-Ready Interfaces',
+    profileSnapshotBadge: 'Available for Collaboration',
+    profileSummaryLabel: 'Where I add value',
     profileSummary:
-      'I bring more than implementation speed. I turn product requirements into interfaces that are clear, maintainable, and ready for production.',
+      'Strong fit for products that need clear frontend structure, durable implementation, and interfaces that stay maintainable as requirements evolve.',
     profilePanels: [
       {
         label: 'Experience',
@@ -90,23 +91,10 @@ export const dictionary: PortfolioDictionary = {
       },
       {
         label: 'Primary focus',
-        value: 'React · Next.js · Angular',
+        value: 'UI Engineering',
       },
     ],
-    skillHighlights: [
-      'React',
-      'Next.js',
-      'Angular',
-      'TypeScript',
-      'React Query',
-      'Redux Toolkit',
-      'Styled Components',
-      'Material UI',
-      'REST',
-      'GraphQL',
-      'Storybook',
-      'Sentry',
-    ],
+    skillHighlights: ['React', 'Next.js', 'Angular', 'TypeScript'],
     showcaseLabel: 'Projects',
     showcaseCountLabel: 'published projects',
     showcaseTitle: 'Selected frontend projects across product sites and application interfaces.',
