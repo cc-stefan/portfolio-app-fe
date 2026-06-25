@@ -84,7 +84,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
   return (
     <div className="page-shell">
       <div className="container-page flex min-h-screen flex-col py-4 sm:py-6">
-        <div className="flex items-center justify-between gap-3">
+        <div className="page-enter flex items-center justify-between gap-3">
           <div>
             <Button asChild variant="ghost" size="sm">
               <Link href={localizeHref(lang, '/')}>{dictionary.admin.backToPortfolio}</Link>
@@ -101,7 +101,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
         </div>
 
         <div className="flex flex-1 items-center justify-center py-10 sm:py-12">
-          <Card variant="solid" className="w-full max-w-md">
+          <Card variant="solid" className="page-enter w-full max-w-md">
             <CardContent className="grid gap-6 p-6 sm:p-8">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
@@ -116,7 +116,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
               </div>
 
               {rootError ? (
-                <div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                <div className="fade-enter rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                   {rootError}
                 </div>
               ) : null}

@@ -20,6 +20,7 @@ import {
 } from '../lib/inquiry-status';
 import type { AdminInquiry, InquiryStatus } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminInquiriesScreenProps {
   lang: AppLocale;
@@ -120,19 +121,45 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-10 w-52" />
-          <Skeleton className="h-5 w-96" />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="space-y-8">
+        <AdminLoadingHeader className="page-enter" />
+        <div className="page-enter grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="h-28" />
+            <AdminLoadingPanel key={index} className="space-y-5">
+              <Skeleton className="h-7 w-28 rounded-full" />
+              <Skeleton className="h-10 w-16" />
+            </AdminLoadingPanel>
           ))}
         </div>
-        <div className="grid gap-4">
+        <div className="stagger-list grid gap-4">
           {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton key={index} className="h-40" />
+            <AdminLoadingPanel key={index} padded={false}>
+              <div className="grid gap-4 p-5 sm:p-6 xl:grid-cols-[minmax(0,1fr)_15rem]">
+                <div className="min-w-0 space-y-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <Skeleton className="h-6 w-40" />
+                      <Skeleton className="h-4 w-48" />
+                    </div>
+                    <div className="flex gap-2">
+                      <Skeleton className="h-7 w-16 rounded-full" />
+                      <Skeleton className="h-7 w-20 rounded-full" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-14 w-full" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-7 w-28 rounded-full" />
+                    <Skeleton className="h-7 w-24 rounded-full" />
+                  </div>
+                </div>
+                <div className="grid gap-2 rounded-xl border border-border bg-background/45 p-4">
+                  <Skeleton className="h-3.5 w-24 rounded-full" />
+                  <Skeleton className="h-9 w-full" />
+                  <Skeleton className="h-9 w-full" />
+                  <Skeleton className="h-9 w-full" />
+                </div>
+              </div>
+            </AdminLoadingPanel>
           ))}
         </div>
       </div>
@@ -141,24 +168,26 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
 
   if (error) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.inquiriesPage.eyebrow}
-        title={dictionary.admin.inquiriesPage.loadErrorTitle}
-        description={error}
-        tone="warning"
-        action={
-          <Button type="button" size="lg" onClick={() => void loadInquiries()}>
-            <RefreshCcw className="size-4" />
-            {dictionary.admin.retry}
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.inquiriesPage.eyebrow}
+          title={dictionary.admin.inquiriesPage.loadErrorTitle}
+          description={error}
+          tone="warning"
+          action={
+            <Button type="button" size="lg" onClick={() => void loadInquiries()}>
+              <RefreshCcw className="size-4" />
+              {dictionary.admin.retry}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <section className="page-enter flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
             {dictionary.admin.inquiriesPage.eyebrow}
@@ -179,7 +208,7 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="page-enter grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label={dictionary.admin.statTotalInquiries} value={stats.total} tone="neutral" />
         <StatCard
           label={dictionary.admin.statUnreadInquiries}
@@ -199,13 +228,15 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
       </section>
 
       {inquiries.length === 0 ? (
-        <StateCard
-          eyebrow={dictionary.admin.inquiriesPage.eyebrow}
-          title={dictionary.admin.inquiriesPage.emptyTitle}
-          description={dictionary.admin.inquiriesPage.emptyDescription}
-        />
+        <div className="page-enter">
+          <StateCard
+            eyebrow={dictionary.admin.inquiriesPage.eyebrow}
+            title={dictionary.admin.inquiriesPage.emptyTitle}
+            description={dictionary.admin.inquiriesPage.emptyDescription}
+          />
+        </div>
       ) : (
-        <section className="grid gap-4">
+        <section className="stagger-list grid gap-4">
           {inquiries
             .slice()
             .sort(

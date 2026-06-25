@@ -18,6 +18,7 @@ import { dispatchAdminInquiriesUpdated } from '../lib/inquiry-events';
 import { formatInquiryStatus, getInquiryBadgeVariant } from '../lib/inquiry-status';
 import type { AdminInquiry, InquiryMutationPayload, InquiryStatus } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminInquiryDetailScreenProps {
   lang: AppLocale;
@@ -206,14 +207,37 @@ export function AdminInquiryDetailScreen({
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-10 w-56" />
-          <Skeleton className="h-5 w-96" />
-        </div>
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-          <Skeleton className="h-[34rem]" />
-          <Skeleton className="h-[22rem]" />
+      <div className="space-y-8">
+        <AdminLoadingHeader className="page-enter" titleWidth="w-56" />
+        <div className="page-enter grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
+          <AdminLoadingPanel>
+            <div className="space-y-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-3">
+                  <Skeleton className="h-6 w-40" />
+                  <Skeleton className="h-4 w-52" />
+                </div>
+                <div className="flex gap-2">
+                  <Skeleton className="h-7 w-16 rounded-full" />
+                  <Skeleton className="h-7 w-20 rounded-full" />
+                </div>
+              </div>
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-10 w-44" />
+              <Skeleton className="h-40 w-full rounded-2xl" />
+            </div>
+          </AdminLoadingPanel>
+          <AdminLoadingPanel>
+            <div className="space-y-4">
+              <Skeleton className="h-6 w-28" />
+              <Skeleton className="h-4 w-3/4" />
+              <div className="space-y-3">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <Skeleton key={index} className="h-12 w-full rounded-xl" />
+                ))}
+              </div>
+            </div>
+          </AdminLoadingPanel>
         </div>
       </div>
     );
@@ -221,41 +245,45 @@ export function AdminInquiryDetailScreen({
 
   if (notFound) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
-        title={dictionary.admin.inquiryDetailPage.notFoundTitle}
-        description={dictionary.admin.inquiryDetailPage.notFoundDescription}
-        action={
-          <Button asChild size="lg">
-            <Link href={localizeHref(lang, '/admin/inquiries')}>
-              {dictionary.admin.inquiryDetailPage.backToInquiries}
-            </Link>
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
+          title={dictionary.admin.inquiryDetailPage.notFoundTitle}
+          description={dictionary.admin.inquiryDetailPage.notFoundDescription}
+          action={
+            <Button asChild size="lg">
+              <Link href={localizeHref(lang, '/admin/inquiries')}>
+                {dictionary.admin.inquiryDetailPage.backToInquiries}
+              </Link>
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   if (error || !inquiry) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
-        title={dictionary.admin.inquiryDetailPage.loadErrorTitle}
-        description={error ?? dictionary.admin.inquiryDetailPage.loadErrorFallback}
-        tone="warning"
-        action={
-          <Button type="button" size="lg" onClick={() => void loadInquiry()}>
-            <RefreshCcw className="size-4" />
-            {dictionary.admin.retry}
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.inquiryDetailPage.eyebrow}
+          title={dictionary.admin.inquiryDetailPage.loadErrorTitle}
+          description={error ?? dictionary.admin.inquiryDetailPage.loadErrorFallback}
+          tone="warning"
+          action={
+            <Button type="button" size="lg" onClick={() => void loadInquiry()}>
+              <RefreshCcw className="size-4" />
+              {dictionary.admin.retry}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <section className="page-enter flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
             {dictionary.admin.inquiryDetailPage.eyebrow}
@@ -299,7 +327,7 @@ export function AdminInquiryDetailScreen({
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <Card variant="solid">
+        <Card variant="solid" className="page-enter">
           <CardHeader>
             <CardTitle>{dictionary.admin.inquiryDetailPage.messageTitle}</CardTitle>
             <CardDescription>
@@ -363,7 +391,7 @@ export function AdminInquiryDetailScreen({
           </CardContent>
         </Card>
 
-        <div className="grid gap-6">
+        <div className="page-enter grid gap-6">
           <Card variant="solid">
             <CardHeader>
               <CardTitle>{dictionary.admin.inquiryDetailPage.statusTitle}</CardTitle>

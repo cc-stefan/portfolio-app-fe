@@ -24,6 +24,7 @@ import { resolveProjectImageUrl } from '../lib/project-form';
 import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
 import type { AdminDashboardResponse, AdminInquiry } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminDashboardScreenProps {
   lang: AppLocale;
@@ -116,19 +117,65 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-10 w-52" />
-          <Skeleton className="h-5 w-96" />
-        </div>
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1.05fr)_minmax(0,0.9fr)]">
+      <div className="space-y-8">
+        <AdminLoadingHeader className="page-enter" />
+        <div className="page-enter grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1.05fr)_minmax(0,0.9fr)]">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className="h-80" />
+            <AdminLoadingPanel key={index}>
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-2">
+                  <Skeleton className="h-6 w-36" />
+                  <Skeleton className="h-4 w-4/5" />
+                </div>
+                <Skeleton className="size-11 rounded-xl" />
+              </div>
+              <div className="mt-6 rounded-2xl border border-border bg-background/45 p-5">
+                <Skeleton className="h-3.5 w-28 rounded-full" />
+                <Skeleton className="mt-4 h-10 w-20" />
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                {Array.from({ length: 3 }).map((__, rowIndex) => (
+                  <div
+                    key={rowIndex}
+                    className="flex items-center justify-between gap-4 rounded-xl border border-border bg-background/40 px-4 py-3"
+                  >
+                    <Skeleton className="h-7 w-32 rounded-full" />
+                    <Skeleton className="h-7 w-10" />
+                  </div>
+                ))}
+              </div>
+            </AdminLoadingPanel>
           ))}
         </div>
-        <div className="grid gap-6 xl:grid-cols-2">
-          <Skeleton className="h-96" />
-          <Skeleton className="h-96" />
+        <div className="page-enter grid gap-6 xl:grid-cols-2">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <AdminLoadingPanel key={index}>
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-40" />
+                <Skeleton className="h-4 w-4/5" />
+              </div>
+              <div className="mt-6 grid gap-4">
+                {Array.from({ length: 4 }).map((__, rowIndex) => (
+                  <div
+                    key={rowIndex}
+                    className="rounded-xl border border-border bg-background/45 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1 space-y-3">
+                        <Skeleton className="h-5 w-36" />
+                        <Skeleton className="h-4 w-28" />
+                      </div>
+                      <div className="flex gap-2">
+                        <Skeleton className="h-7 w-20 rounded-full" />
+                        <Skeleton className="h-7 w-20 rounded-full" />
+                      </div>
+                    </div>
+                    <Skeleton className="mt-4 h-12 w-full" />
+                  </div>
+                ))}
+              </div>
+            </AdminLoadingPanel>
+          ))}
         </div>
       </div>
     );
@@ -136,18 +183,20 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
 
   if (error || !dashboard) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.dashboardLabel}
-        title={dictionary.admin.dashboardLoadErrorTitle}
-        description={error ?? dictionary.admin.dashboardLoadErrorDescription}
-        tone="warning"
-        action={
-          <Button type="button" size="lg" onClick={() => void loadDashboard()}>
-            <RefreshCcw className="size-4" />
-            {dictionary.admin.retry}
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.dashboardLabel}
+          title={dictionary.admin.dashboardLoadErrorTitle}
+          description={error ?? dictionary.admin.dashboardLoadErrorDescription}
+          tone="warning"
+          action={
+            <Button type="button" size="lg" onClick={() => void loadDashboard()}>
+              <RefreshCcw className="size-4" />
+              {dictionary.admin.retry}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
@@ -205,7 +254,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <section className="page-enter flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
             {dictionary.admin.dashboardLabel}
@@ -222,7 +271,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-3">
+      <section className="page-enter grid gap-4 xl:grid-cols-3">
         <SummaryPanel
           icon={FolderKanban}
           title={dictionary.admin.dashboardGroups.projectsTitle}
@@ -249,7 +298,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
         />
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-2">
+      <section className="page-enter grid gap-6 xl:grid-cols-2">
         <Card variant="solid">
           <CardHeader>
             <CardTitle>{dictionary.admin.recentProjectsTitle}</CardTitle>

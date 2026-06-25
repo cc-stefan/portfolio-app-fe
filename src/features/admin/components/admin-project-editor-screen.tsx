@@ -49,6 +49,7 @@ import type {
   ProjectFormValues,
   ProjectLocalizedFieldName,
 } from '../model/types';
+import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminProjectEditorScreenProps {
   lang: AppLocale;
@@ -434,14 +435,37 @@ export function AdminProjectEditorScreen({
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-10 w-56" />
-          <Skeleton className="h-5 w-80" />
-        </div>
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-          <Skeleton className="h-[44rem]" />
-          <Skeleton className="h-[28rem]" />
+      <div className="space-y-8">
+        <AdminLoadingHeader className="page-enter" titleWidth="w-56" descriptionWidth="w-80" />
+        <div className="page-enter grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
+          <AdminLoadingPanel>
+            <div className="space-y-5">
+              <Skeleton className="h-10 w-44" />
+              <div className="space-y-4 rounded-2xl border border-border bg-background/45 p-4">
+                <Skeleton className="h-11 w-full" />
+                <Skeleton className="h-32 w-full rounded-2xl" />
+                <Skeleton className="h-11 w-full" />
+              </div>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <Skeleton className="h-28 w-full rounded-2xl" />
+                <Skeleton className="h-28 w-full rounded-2xl" />
+              </div>
+              <Skeleton className="h-48 w-full rounded-2xl" />
+            </div>
+          </AdminLoadingPanel>
+          <AdminLoadingPanel>
+            <div className="space-y-4">
+              <Skeleton className="h-6 w-32" />
+              <Skeleton className="aspect-[4/3] w-full rounded-2xl" />
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-7 w-20 rounded-full" />
+                <Skeleton className="h-7 w-20 rounded-full" />
+                <Skeleton className="h-7 w-24 rounded-full" />
+              </div>
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </AdminLoadingPanel>
         </div>
       </div>
     );
@@ -449,39 +473,43 @@ export function AdminProjectEditorScreen({
 
   if (notFound) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.navProjects}
-        title={copy.notFoundTitle}
-        description={copy.notFoundDescription}
-        action={
-          <Button asChild size="lg">
-            <Link href={localizeHref(lang, '/admin/projects')}>{copy.backToProjects}</Link>
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.navProjects}
+          title={copy.notFoundTitle}
+          description={copy.notFoundDescription}
+          action={
+            <Button asChild size="lg">
+              <Link href={localizeHref(lang, '/admin/projects')}>{copy.backToProjects}</Link>
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   if (pageError && isEditing && !project) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.navProjects}
-        title={copy.loadErrorTitle}
-        description={pageError}
-        tone="warning"
-        action={
-          <Button type="button" size="lg" onClick={() => void loadProject()}>
-            <RefreshCcw className="size-4" />
-            {dictionary.admin.retry}
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.navProjects}
+          title={copy.loadErrorTitle}
+          description={pageError}
+          tone="warning"
+          action={
+            <Button type="button" size="lg" onClick={() => void loadProject()}>
+              <RefreshCcw className="size-4" />
+              {dictionary.admin.retry}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <section className="page-enter flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
             {isEditing ? copy.editEyebrow : copy.createEyebrow}
@@ -518,13 +546,13 @@ export function AdminProjectEditorScreen({
       </section>
 
       {pageError ? (
-        <div className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        <div className="fade-enter rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {pageError}
         </div>
       ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <Card variant="solid">
+        <Card variant="solid" className="page-enter">
           <CardContent className="p-5 sm:p-6 lg:p-8">
             <form className="grid gap-8" onSubmit={handleSubmit} noValidate>
               <section className="grid gap-5">
@@ -785,7 +813,7 @@ export function AdminProjectEditorScreen({
           </CardContent>
         </Card>
 
-        <div className="grid gap-6">
+        <div className="page-enter grid gap-6">
           <Card variant="solid" className="overflow-hidden">
             <CardHeader>
               <CardTitle>{copy.imageTitle}</CardTitle>

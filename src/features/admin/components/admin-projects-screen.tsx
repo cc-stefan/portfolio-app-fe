@@ -18,6 +18,7 @@ import { resolveProjectImageUrl } from '../lib/project-form';
 import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
 import type { AdminProject, ProjectMutationPayload } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminProjectsScreenProps {
   lang: AppLocale;
@@ -145,14 +146,44 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Skeleton className="h-10 w-52" />
-          <Skeleton className="h-5 w-96" />
-        </div>
-        <div className="grid gap-4">
+      <div className="space-y-8">
+        <AdminLoadingHeader className="page-enter" />
+        <div className="stagger-list grid gap-4">
           {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton key={index} className="h-44" />
+            <AdminLoadingPanel key={index} padded={false}>
+              <div className="grid gap-5 p-5 sm:p-6 xl:grid-cols-[7rem_minmax(0,1fr)_18rem]">
+                <Skeleton className="aspect-[4/3] w-full rounded-xl" />
+                <div className="min-w-0 space-y-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <Skeleton className="h-6 w-48" />
+                      <Skeleton className="h-4 w-28" />
+                    </div>
+                    <div className="flex gap-2">
+                      <Skeleton className="h-7 w-20 rounded-full" />
+                      <Skeleton className="h-7 w-20 rounded-full" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-16 w-full" />
+                  <div className="flex flex-wrap gap-2">
+                    <Skeleton className="h-7 w-16 rounded-full" />
+                    <Skeleton className="h-7 w-20 rounded-full" />
+                    <Skeleton className="h-7 w-24 rounded-full" />
+                  </div>
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <div className="grid gap-4 rounded-xl border border-border bg-background/45 p-4">
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                    <Skeleton className="h-9 w-full" />
+                    <Skeleton className="h-9 w-full" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Skeleton className="h-3.5 w-24 rounded-full" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                </div>
+              </div>
+            </AdminLoadingPanel>
           ))}
         </div>
       </div>
@@ -161,24 +192,26 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
 
   if (error) {
     return (
-      <StateCard
-        eyebrow={dictionary.admin.projectsPage.eyebrow}
-        title={dictionary.admin.projectsPage.loadErrorTitle}
-        description={error}
-        tone="warning"
-        action={
-          <Button type="button" size="lg" onClick={() => void loadProjects()}>
-            <RefreshCcw className="size-4" />
-            {dictionary.admin.retry}
-          </Button>
-        }
-      />
+      <div className="page-enter">
+        <StateCard
+          eyebrow={dictionary.admin.projectsPage.eyebrow}
+          title={dictionary.admin.projectsPage.loadErrorTitle}
+          description={error}
+          tone="warning"
+          action={
+            <Button type="button" size="lg" onClick={() => void loadProjects()}>
+              <RefreshCcw className="size-4" />
+              {dictionary.admin.retry}
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <section className="page-enter flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
             {dictionary.admin.projectsPage.eyebrow}
@@ -205,20 +238,22 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
       </section>
 
       {projects.length === 0 ? (
-        <StateCard
-          eyebrow={dictionary.admin.projectsPage.eyebrow}
-          title={dictionary.admin.projectsPage.emptyTitle}
-          description={dictionary.admin.projectsPage.emptyDescription}
-          action={
-            <Button asChild size="lg">
-              <Link href={localizeHref(lang, '/admin/projects/new')}>
-                {dictionary.admin.projectsPage.createProject}
-              </Link>
-            </Button>
-          }
-        />
+        <div className="page-enter">
+          <StateCard
+            eyebrow={dictionary.admin.projectsPage.eyebrow}
+            title={dictionary.admin.projectsPage.emptyTitle}
+            description={dictionary.admin.projectsPage.emptyDescription}
+            action={
+              <Button asChild size="lg">
+                <Link href={localizeHref(lang, '/admin/projects/new')}>
+                  {dictionary.admin.projectsPage.createProject}
+                </Link>
+              </Button>
+            }
+          />
+        </div>
       ) : (
-        <section className="grid gap-4">
+        <section className="stagger-list grid gap-4">
           {projects.map((project) => {
             const imageUrl = resolveProjectImageUrl(project.imageUrl);
             const isPending = pendingProjectId === project.id;
