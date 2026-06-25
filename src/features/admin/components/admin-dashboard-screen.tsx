@@ -165,7 +165,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
     {
       label: dictionary.admin.statFeaturedProjects,
       value: dashboard.stats.featuredProjects,
-      tone: 'accent',
+      tone: 'featured',
     },
     {
       label: dictionary.admin.statProjectsWithImages,
@@ -177,7 +177,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
     {
       label: dictionary.admin.statUnreadInquiries,
       value: inquiryStats.unread,
-      tone: 'accent',
+      tone: 'info',
     },
     {
       label: dictionary.admin.statInReviewInquiries,
@@ -301,7 +301,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
                           {project.published ? dictionary.admin.published : dictionary.admin.draft}
                         </Badge>
                         {project.featured ? (
-                          <Badge variant="accent">{dictionary.admin.featured}</Badge>
+                          <Badge variant="featured">{dictionary.admin.featured}</Badge>
                         ) : null}
                         <Badge variant="outline">
                           {dictionary.admin.updated} {formatDate(project.updatedAt)}
@@ -375,7 +375,7 @@ function RecentInquiryRow({
           <p className="mt-1 text-sm text-muted-foreground">{inquiry.email}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge variant={inquiry.isRead ? 'outline' : 'accent'}>
+          <Badge variant={inquiry.isRead ? 'outline' : 'info'}>
             {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
           </Badge>
           <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
@@ -412,7 +412,7 @@ function SummaryPanel({
   rows: ReadonlyArray<{
     label: string;
     value: number;
-    tone: 'neutral' | 'accent' | 'warning' | 'success';
+    tone: 'neutral' | 'accent' | 'featured' | 'info' | 'warning' | 'success';
   }>;
 }) {
   return (

@@ -154,7 +154,7 @@ export function AdminShell({ lang, dictionary, children }: AdminShellProps) {
                             <Icon className="size-4" />
                             {item.label}
                             {showInquiryBadge ? (
-                              <Badge variant="accent" className="ml-1">
+                              <Badge variant="info" className="ml-1">
                                 {unreadInquiryCount}
                               </Badge>
                             ) : null}

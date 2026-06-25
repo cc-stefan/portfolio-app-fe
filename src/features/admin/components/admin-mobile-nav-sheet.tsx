@@ -80,7 +80,7 @@ export function AdminMobileNavSheet({
                     {item.label}
                   </span>
                   {item.href === '/admin/inquiries' ? (
-                    <Badge variant={unreadInquiryCount > 0 ? 'accent' : 'outline'}>
+                    <Badge variant={unreadInquiryCount > 0 ? 'info' : 'outline'}>
                       {unreadInquiryCount}
                     </Badge>
                   ) : null}

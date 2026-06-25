@@ -184,7 +184,7 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
         <StatCard
           label={dictionary.admin.statUnreadInquiries}
           value={stats.unreadCount}
-          tone="accent"
+          tone="info"
         />
         <StatCard
           label={dictionary.admin.statInReviewInquiries}
@@ -231,7 +231,7 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
                         <p className="mt-1 text-sm text-muted-foreground">{inquiry.email}</p>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant={inquiry.isRead ? 'outline' : 'accent'}>
+                        <Badge variant={inquiry.isRead ? 'outline' : 'info'}>
                           {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
                         </Badge>
                         <Badge variant={getInquiryBadgeVariant(inquiry.status)}>
@@ -305,16 +305,20 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  tone?: 'neutral' | 'accent' | 'warning' | 'success';
+  tone?: 'neutral' | 'accent' | 'featured' | 'info' | 'warning' | 'success';
 }) {
   const badgeVariant =
     tone === 'accent'
       ? 'accent'
-      : tone === 'success'
-        ? 'success'
-        : tone === 'warning'
-          ? 'warning'
-          : 'neutral';
+      : tone === 'featured'
+        ? 'featured'
+        : tone === 'info'
+          ? 'info'
+          : tone === 'success'
+            ? 'success'
+            : tone === 'warning'
+              ? 'warning'
+              : 'neutral';
 
   return (
     <Card variant="solid">

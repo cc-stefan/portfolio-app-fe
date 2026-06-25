@@ -260,7 +260,7 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
                           {project.published ? dictionary.admin.published : dictionary.admin.draft}
                         </Badge>
                         {project.featured ? (
-                          <Badge variant="accent">{dictionary.admin.featured}</Badge>
+                          <Badge variant="featured">{dictionary.admin.featured}</Badge>
                         ) : null}
                       </div>
                     </div>

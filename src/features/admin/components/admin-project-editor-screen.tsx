@@ -815,7 +815,7 @@ export function AdminProjectEditorScreen({
                   <Badge variant="warning">{dictionary.admin.draft}</Badge>
                 )}
                 {formValues.featured ? (
-                  <Badge variant="accent">{dictionary.admin.featured}</Badge>
+                  <Badge variant="featured">{dictionary.admin.featured}</Badge>
                 ) : null}
                 {selectedFile ? (
                   <Badge variant="outline">{copy.pendingUploadBadge}</Badge>

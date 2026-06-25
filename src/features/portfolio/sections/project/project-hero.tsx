@@ -29,7 +29,7 @@ export function ProjectHero({ locale, dictionary, project, apiOrigin }: ProjectH
           </Link>
         </Button>
 
-        {project.featured ? <Badge variant="accent">{dictionary.common.featured}</Badge> : null}
+        {project.featured ? <Badge variant="featured">{dictionary.common.featured}</Badge> : null}
       </div>
 
       <div className="max-w-4xl">

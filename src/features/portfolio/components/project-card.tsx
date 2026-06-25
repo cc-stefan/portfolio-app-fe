@@ -53,7 +53,7 @@ export function ProjectCard({
           <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               {showPriorityBadge && project.featured ? (
-                <Badge variant="accent">{dictionary.common.featured}</Badge>
+                <Badge variant="featured">{dictionary.common.featured}</Badge>
               ) : null}
               {projectMonth ? <Badge variant="neutral">{projectMonth}</Badge> : null}
             </div>

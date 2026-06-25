@@ -314,7 +314,7 @@ export function AdminInquiryDetailScreen({
                   <p className="mt-1 text-sm text-muted-foreground">{inquiry.email}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant={inquiry.isRead ? 'outline' : 'accent'}>
+                  <Badge variant={inquiry.isRead ? 'outline' : 'info'}>
                     {inquiry.isRead ? dictionary.admin.read : dictionary.admin.unread}
                   </Badge>
                   <Badge variant={getInquiryBadgeVariant(inquiry.status)}>

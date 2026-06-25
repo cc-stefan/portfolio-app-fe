@@ -9,7 +9,7 @@ export function getInquiryBadgeVariant(status: InquiryStatus) {
   }
 
   if (status === 'NEW') {
-    return 'accent';
+    return 'new';
   }
 
   if (status === 'IN_REVIEW') {
