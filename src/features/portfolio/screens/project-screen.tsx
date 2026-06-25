@@ -56,7 +56,7 @@ export async function PortfolioProjectScreen({
         className="page-enter"
       />
 
-      <main className="flex flex-1 flex-col gap-16 pb-4 pt-[calc(var(--header-height)+2.5rem)] sm:pt-[calc(var(--header-height)+3.5rem)]">
+      <main className="flex min-w-0 w-full flex-1 flex-col gap-16 overflow-x-hidden pb-4 pt-[var(--main-content-offset)]">
         {!project ? (
           <div className="page-enter">
             <StateCard

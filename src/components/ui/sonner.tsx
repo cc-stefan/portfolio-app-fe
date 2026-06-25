@@ -40,7 +40,7 @@ export function Toaster(props: ToasterProps) {
       toastOptions={{
         classNames: {
           toast:
-            'rounded-xl border border-border bg-popover text-popover-foreground shadow-[var(--surface-shadow-lg)]',
+            'rounded-lg border border-border bg-popover text-popover-foreground shadow-[var(--surface-shadow-lg)]',
           title: 'text-sm font-semibold',
           description: 'text-sm',
           actionButton: 'rounded-lg bg-primary px-4 text-primary-foreground hover:brightness-105',

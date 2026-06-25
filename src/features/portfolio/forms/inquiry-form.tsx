@@ -93,7 +93,7 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
   return (
     <form className="grid gap-4" onSubmit={onSubmit} noValidate>
       {submittedAt ? (
-        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">
+        <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">
           <div className="flex gap-3">
             <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
             <div>
@@ -105,7 +105,7 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
       ) : null}
 
       {submissionError ? (
-        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
+        <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
           <p className="font-semibold">{copy.errorTitle}</p>
           <p className="mt-1 leading-6">{submissionError}</p>
         </div>

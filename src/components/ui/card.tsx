@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const cardVariants = cva(
-  'flex flex-col rounded-2xl text-card-foreground transition-[transform,box-shadow,border-color,background-color] duration-300',
+  'flex flex-col rounded-lg text-card-foreground transition-[transform,box-shadow,border-color,background-color] duration-300',
   {
     variants: {
       variant: {
@@ -12,7 +12,7 @@ const cardVariants = cva(
         muted: 'surface-muted shadow-none',
         ghost: 'border border-transparent bg-transparent shadow-none',
         interactive:
-          'surface-card hover:-translate-y-1 hover:border-primary/24 hover:shadow-[var(--surface-shadow-hover)]',
+          'surface-card hover:-translate-y-0.5 hover:border-primary/26 hover:shadow-[var(--surface-shadow-hover)]',
       },
     },
     defaultVariants: {

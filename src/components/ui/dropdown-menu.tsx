@@ -23,7 +23,7 @@ function DropdownMenuContent({
         sideOffset={sideOffset}
         className={cn(
           [
-            'z-50 min-w-48 overflow-hidden rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-[var(--surface-shadow-lg)]',
+            'z-50 min-w-48 overflow-hidden rounded-lg border border-border bg-popover p-1.5 text-popover-foreground shadow-[var(--surface-shadow-lg)]',
             'data-[state=closed]:animate-out data-[state=open]:animate-in',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',

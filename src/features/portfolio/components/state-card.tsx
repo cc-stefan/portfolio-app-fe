@@ -34,7 +34,7 @@ export function StateCard({
   return (
     <Card variant="solid" className="overflow-hidden">
       <CardHeader className="p-6 pb-0 sm:p-8 sm:pb-0">
-        <div className="flex size-11 items-center justify-center rounded-xl border border-border bg-secondary">
+        <div className="flex size-11 items-center justify-center rounded-lg border border-border bg-secondary/80">
           <CircleAlert className={`size-5 ${iconClass}`} />
         </div>
         <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
@@ -42,7 +42,7 @@ export function StateCard({
         </p>
         <CardTitle className="mt-2 max-w-2xl text-balance text-3xl sm:text-4xl">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="p-6 pb-0 sm:p-8 sm:pb-0">
+      <CardContent className="p-6 sm:p-8">
         <CardDescription className="max-w-2xl text-base leading-8">{description}</CardDescription>
       </CardContent>
       {action ? <CardFooter className="p-6 pt-8 sm:p-8 sm:pt-8">{action}</CardFooter> : null}

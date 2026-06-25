@@ -36,7 +36,7 @@ export function SheetContent({
         data-slot="sheet-content"
         className={cn(
           [
-            'surface-card fixed inset-y-3 right-3 z-50 flex w-[min(92vw,25rem)] flex-col rounded-2xl p-5',
+            'safe-sheet surface-card fixed z-50 flex flex-col overflow-y-auto rounded-lg p-5',
             'data-[state=closed]:animate-out data-[state=open]:animate-in',
             'data-[state=closed]:slide-out-to-right-8 data-[state=open]:slide-in-from-right-8',
           ],
@@ -45,7 +45,7 @@ export function SheetContent({
         {...props}
       >
         {children}
-        <Dialog.Close className="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45">
+        <Dialog.Close className="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card/88 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45">
           <X className="size-4" />
           <span className="sr-only">{closeLabel}</span>
         </Dialog.Close>

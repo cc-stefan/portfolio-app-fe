@@ -27,7 +27,7 @@ export function HomeCredentials({ copy }: HomeCredentialsProps) {
               <Card key={group.title} variant="solid" className="h-full">
                 <CardContent className="p-5 sm:p-6">
                   <div className="flex items-center gap-3">
-                    <span className="flex size-10 items-center justify-center rounded-xl border border-border bg-secondary text-primary">
+                    <span className="flex size-10 items-center justify-center rounded-lg border border-primary/18 bg-primary/8 text-primary">
                       <Icon className="size-5" />
                     </span>
                     <h3 className="text-lg font-semibold text-foreground">{group.title}</h3>

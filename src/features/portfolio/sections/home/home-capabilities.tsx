@@ -26,7 +26,7 @@ export function HomeCapabilities({ copy }: HomeCapabilitiesProps) {
             return (
               <Card key={capability.title} variant="interactive">
                 <CardContent className="p-6">
-                  <div className="flex size-11 items-center justify-center rounded-xl border border-border bg-secondary text-primary">
+                  <div className="flex size-11 items-center justify-center rounded-lg border border-primary/18 bg-primary/8 text-primary">
                     <Icon className="size-5" />
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-foreground">{capability.title}</h3>

@@ -35,7 +35,7 @@ export function ProjectCard({
         href={projectHref}
         className="block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
+        <div className="relative aspect-[16/10] overflow-hidden bg-secondary/80">
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -57,7 +57,7 @@ export function ProjectCard({
               ) : null}
               {projectMonth ? <Badge variant="neutral">{projectMonth}</Badge> : null}
             </div>
-            <span className="inline-flex size-9 items-center justify-center rounded-lg border border-white/40 bg-white/82 text-slate-950 shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:border-white/10 dark:bg-slate-950/70 dark:text-white">
+            <span className="inline-flex size-9 items-center justify-center rounded-lg border border-border/70 bg-card/88 text-foreground shadow-sm backdrop-blur-md transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
               <ArrowUpRight className="size-4" />
             </span>
           </div>

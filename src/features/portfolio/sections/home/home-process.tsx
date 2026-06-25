@@ -23,7 +23,7 @@ export function HomeProcess({ copy }: HomeProcessProps) {
               <Card key={card.title} variant="solid" className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="grid gap-0 sm:grid-cols-[8rem_minmax(0,1fr)]">
-                    <div className="border-b border-border bg-secondary p-5 sm:border-b-0 sm:border-r">
+                    <div className="border-b border-border bg-secondary/70 p-5 sm:border-b-0 sm:border-r">
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                         {copy.processStepLabel}
                       </p>

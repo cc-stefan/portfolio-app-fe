@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium',
+    'inline-flex min-w-0 max-w-full items-center justify-center gap-2 whitespace-normal rounded-lg text-center text-sm font-medium sm:whitespace-nowrap',
     'transition-[transform,background-color,border-color,color,box-shadow,opacity] duration-200',
     'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45',
     'disabled:pointer-events-none disabled:opacity-50',
@@ -15,13 +15,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-primary text-primary-foreground shadow-[var(--primary-shadow)] hover:-translate-y-0.5 hover:shadow-[var(--primary-shadow-hover)] active:translate-y-0',
+          'border border-primary/20 bg-primary text-primary-foreground shadow-[var(--primary-shadow)] hover:-translate-y-0.5 hover:bg-primary/92 hover:shadow-[var(--primary-shadow-hover)] active:translate-y-0',
         secondary:
-          'border border-border bg-secondary text-secondary-foreground shadow-sm hover:-translate-y-0.5 hover:bg-muted active:translate-y-0',
+          'border border-border bg-secondary text-secondary-foreground shadow-sm hover:-translate-y-0.5 hover:border-primary/24 hover:bg-muted active:translate-y-0',
         outline:
-          'border border-border bg-background text-foreground shadow-sm hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0',
+          'border border-border bg-card/88 text-foreground shadow-sm hover:-translate-y-0.5 hover:border-primary/24 hover:bg-secondary active:translate-y-0',
         ghost:
-          'border border-transparent text-muted-foreground hover:bg-secondary hover:text-foreground',
+          'border border-transparent text-muted-foreground hover:bg-secondary/80 hover:text-foreground',
         destructive:
           'bg-destructive text-white shadow-sm hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0',
       },

@@ -43,7 +43,7 @@ export function ProjectHero({ locale, dictionary, project, apiOrigin }: ProjectH
 
       <Card variant="solid" className="overflow-hidden">
         <CardContent className="p-0">
-          <div className="relative aspect-[16/9] bg-secondary">
+          <div className="relative aspect-[16/9] bg-secondary/80">
             {imageUrl ? (
               <Image
                 src={imageUrl}

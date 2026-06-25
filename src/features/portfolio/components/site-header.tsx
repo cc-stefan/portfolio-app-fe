@@ -52,23 +52,23 @@ export function SiteHeader({
       <div className="container-page">
         <header
           className={cn(
-            'pointer-events-auto surface-card rounded-2xl px-3 py-3 shadow-[var(--surface-shadow-lg)] sm:px-4',
+            'pointer-events-auto surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4',
             className
           )}
         >
           <div className="flex items-center gap-3">
             <ScrollTopLink
               href={localizeHref(locale, '/')}
-              className="group flex min-w-0 items-center gap-3 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+              className="group flex min-w-0 items-center gap-3 rounded-lg pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:scale-95">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary text-sm font-semibold text-primary-foreground shadow-[var(--primary-shadow)] transition-transform duration-200 group-hover:scale-95">
                 {dictionary.header.avatarInitials}
               </span>
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold text-foreground">
                   {dictionary.header.brand}
                 </span>
-                <span className="block truncate text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="block truncate text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                   {eyebrow ?? dictionary.header.tagline}
                 </span>
               </span>
@@ -91,7 +91,7 @@ export function SiteHeader({
               </NavigationMenuList>
             </NavigationMenu>
 
-            <div className="ml-auto hidden items-center gap-2 md:flex">
+            <div className="ml-auto hidden items-center gap-2 lg:flex">
               {statusSlot ?? (
                 <AdminPanelButton locale={locale} label={dictionary.actions.adminPanel} />
               )}
@@ -109,7 +109,7 @@ export function SiteHeader({
               <ThemeToggle label={dictionary.header.themeLabel} />
             </div>
 
-            <div className="ml-auto flex items-center gap-2 md:hidden">
+            <div className="ml-auto flex items-center gap-2 lg:hidden">
               <MobileNavSheet
                 locale={locale}
                 localeNames={dictionary.localeNames}

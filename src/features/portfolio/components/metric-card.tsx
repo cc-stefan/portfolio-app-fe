@@ -15,9 +15,7 @@ export function MetricCard({ label, value, detail }: MetricCardProps) {
           {value}
         </p>
         {detail ? (
-          <p className="mt-5 text-pretty text-sm leading-6 text-muted-foreground">
-            {detail}
-          </p>
+          <p className="mt-5 text-pretty text-sm leading-6 text-muted-foreground">{detail}</p>
         ) : null}
       </CardContent>
     </Card>

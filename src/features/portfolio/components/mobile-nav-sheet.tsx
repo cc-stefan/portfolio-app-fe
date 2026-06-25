@@ -58,7 +58,7 @@ export function MobileNavSheet({
           type="button"
           variant="outline"
           size="icon"
-          className={cn('md:hidden', triggerClassName)}
+          className={cn('lg:hidden', triggerClassName)}
           aria-label={menuLabel}
         >
           <Menu className="size-4" />
@@ -75,7 +75,7 @@ export function MobileNavSheet({
             <SheetClose key={item.href} asChild>
               <SectionScrollLink
                 href={localizeHref(locale, item.href)}
-                className="rounded-xl border border-border bg-secondary px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+                className="rounded-lg border border-border bg-secondary/80 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/24 hover:bg-muted focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
               >
                 {item.label}
               </SectionScrollLink>
@@ -93,7 +93,7 @@ export function MobileNavSheet({
         </div>
 
         <div className="mt-auto grid gap-3">
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-secondary px-4 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-secondary/80 px-4 py-3">
             <span className="text-sm font-semibold text-foreground">{languageLabel}</span>
             <LocaleSwitcher
               locale={locale}
@@ -103,7 +103,7 @@ export function MobileNavSheet({
             />
           </div>
 
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-secondary px-4 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-secondary/80 px-4 py-3">
             <span className="text-sm font-semibold text-foreground">{themeLabel}</span>
             <ThemeToggle label={themeLabel} className="shrink-0" />
           </div>

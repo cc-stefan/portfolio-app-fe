@@ -16,7 +16,7 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
   return (
     <section
       id="home"
-      className="anchor-target grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(22rem,0.95fr)] lg:items-center"
+      className="anchor-target grid gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(22rem,0.96fr)] lg:items-center"
     >
       <div>
         <h1 className="max-w-5xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
@@ -39,9 +39,10 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
         </div>
       </div>
 
-      <Card variant="solid" className="overflow-hidden">
+      <Card className="relative overflow-hidden">
         <CardContent className="p-0">
-          <div className="border-b border-border bg-secondary px-5 py-4">
+          <div className="accent-rule h-1" />
+          <div className="border-b border-border bg-card/82 px-5 py-4">
             <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -56,13 +57,13 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
                 className="hero-availability-badge justify-center self-start px-3.5 py-1.5 text-center font-semibold tracking-[0.16em] sm:self-auto"
               >
                 <span className="hero-availability-dot" aria-hidden="true" />
-                <span>{copy.profileSnapshotBadge}</span>
+                <span className="min-w-0">{copy.profileSnapshotBadge}</span>
               </Badge>
             </div>
           </div>
 
           <div className="grid gap-4 p-5">
-            <div className="rounded-xl border border-border bg-background p-4">
+            <div className="rounded-lg border border-border bg-secondary/70 p-4">
               <p className="text-sm font-medium text-muted-foreground">
                 {copy.profileSummaryLabel}
               </p>
@@ -96,7 +97,7 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
 
 function MiniPanel({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-secondary p-4">
+    <div className="rounded-lg border border-border bg-card/78 p-4 shadow-sm">
       <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </p>
