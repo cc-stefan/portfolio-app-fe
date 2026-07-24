@@ -45,10 +45,7 @@ export function SiteHeader({
   className,
 }: SiteHeaderProps) {
   return (
-    <div
-      className="pointer-events-none fixed inset-x-0 z-40"
-      style={{ top: 'calc(var(--safe-area-inset-top) + var(--header-offset))' }}
-    >
+    <div className="safe-header-layer pointer-events-none fixed inset-x-0 top-0 z-40">
       <div className="container-page">
         <header
           className={cn(

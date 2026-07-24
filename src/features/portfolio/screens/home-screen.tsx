@@ -22,20 +22,25 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
 
   return (
-    <SiteShell locale={locale} dictionary={dictionary} footerNavItems={sectionLinks}>
-      <SiteHeader
-        locale={locale}
-        dictionary={dictionary}
-        eyebrow={dictionary.header.tagline}
-        navItems={sectionLinks}
-        primaryAction={{
-          href: '/#contact',
-          label: dictionary.actions.startProject,
-        }}
-        className="page-enter"
-      />
-
-      <main className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-hidden pb-4 pt-[var(--main-content-offset)] sm:gap-24">
+    <SiteShell
+      locale={locale}
+      dictionary={dictionary}
+      footerNavItems={sectionLinks}
+      header={
+        <SiteHeader
+          locale={locale}
+          dictionary={dictionary}
+          eyebrow={dictionary.header.tagline}
+          navItems={sectionLinks}
+          primaryAction={{
+            href: '/#contact',
+            label: dictionary.actions.startProject,
+          }}
+          className="page-enter"
+        />
+      }
+    >
+      <main className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-clip pb-4 pt-[var(--main-content-offset)] sm:gap-24">
         <div className="page-enter">
           <HomeHero locale={locale} copy={dictionary.home} />
         </div>

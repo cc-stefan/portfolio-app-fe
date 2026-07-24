@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { defaultLocale, isAppLocale } from '@/features/portfolio/i18n/routing';
 import { dictionary as enDictionary } from '@/features/portfolio/i18n/messages/en';
 import { dictionary as roDictionary } from '@/features/portfolio/i18n/messages/ro';
+import './globals.css';
 
 const dictionaries = {
   en: enDictionary,
@@ -30,8 +31,8 @@ export default function GlobalError({
 
   return (
     <html lang={locale}>
-      <body className="min-h-screen bg-background text-foreground">
-        <div className="container-page flex min-h-screen items-center justify-center py-16">
+      <body className="bg-background text-foreground">
+        <div className="container-page flex min-h-[var(--app-viewport-height)] items-center justify-center py-16">
           <div className="max-w-md space-y-4 text-center">
             <h1 className="text-3xl font-semibold text-foreground">{copy.title}</h1>
             <p className="text-sm leading-7 text-muted-foreground">{copy.description}</p>

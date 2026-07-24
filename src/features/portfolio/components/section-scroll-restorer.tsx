@@ -7,6 +7,7 @@ import {
   clearPendingSectionScrollTarget,
   getPendingSectionScrollTarget,
   normalizeSectionPathname,
+  scrollPageToTop,
   scrollToSection,
 } from '../lib/section-scroll';
 
@@ -32,6 +33,7 @@ export function SectionScrollRestorer() {
     }
 
     if (!window.location.hash) {
+      scrollPageToTop('auto');
       return;
     }
 

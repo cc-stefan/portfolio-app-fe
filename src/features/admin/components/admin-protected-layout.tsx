@@ -36,26 +36,7 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
   if (status === 'loading') {
     return (
       <div className="page-shell">
-        <div
-          className="pointer-events-none fixed inset-x-0 z-40"
-          style={{ top: 'calc(var(--safe-area-inset-top) + var(--header-offset))' }}
-        >
-          <div className="container-page">
-            <div className="pointer-events-auto page-enter surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-3">
-                  <Skeleton className="size-10 rounded-lg" />
-                  <Skeleton className="h-5 w-36" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Skeleton className="hidden h-9 w-24 sm:block" />
-                  <Skeleton className="h-9 w-10" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="container-page flex min-h-[100svh] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
+        <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
           <div className="safe-content-frame flex flex-1 flex-col">
             <main className="flex-1 space-y-6 pb-6 pt-[var(--main-content-offset)] sm:pb-8">
               <AdminLoadingHeader className="page-enter" />
@@ -83,6 +64,22 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
             <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
           </div>
         </div>
+        <div className="safe-header-layer pointer-events-none fixed inset-x-0 top-0 z-40">
+          <div className="container-page">
+            <div className="pointer-events-auto page-enter surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <Skeleton className="size-10 rounded-lg" />
+                  <Skeleton className="h-5 w-36" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="hidden h-9 w-24 sm:block" />
+                  <Skeleton className="h-9 w-10" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -90,7 +87,7 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
   if (status === 'access-denied') {
     return (
       <div className="page-shell">
-        <div className="container-page flex min-h-screen flex-col py-4 sm:py-6">
+        <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col py-4 sm:py-6">
           <div className="flex flex-1 items-center py-16">
             <div className="page-enter">
               <StateCard
@@ -126,7 +123,7 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
   }
 
   if (status !== 'authenticated') {
-    return <div className="min-h-screen" />;
+    return <div className="min-h-[var(--app-viewport-height)]" />;
   }
 
   return (

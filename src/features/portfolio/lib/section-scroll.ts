@@ -86,6 +86,14 @@ export function clearHashFromUrl() {
   window.history.replaceState(window.history.state, '', nextUrl);
 }
 
+export function scrollPageToTop(behavior: ScrollBehavior = 'smooth') {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.scrollTo({ top: 0, behavior });
+}
+
 export function scrollToSection(id: string) {
   if (typeof window === 'undefined') {
     return false;

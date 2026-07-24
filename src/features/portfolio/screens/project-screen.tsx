@@ -39,24 +39,29 @@ export async function PortfolioProjectScreen({
   const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
 
   return (
-    <SiteShell locale={locale} dictionary={dictionary} footerNavItems={footerNavItems}>
-      <SiteHeader
-        locale={locale}
-        dictionary={dictionary}
-        navItems={[
-          { href: '/#projects', label: dictionary.header.navWork },
-          { href: '#overview', label: dictionary.project.overviewTitle },
-          ...(hasProjectLinks ? [{ href: '#links', label: dictionary.project.linksTitle }] : []),
-          { href: '#timeline', label: dictionary.project.timelineTitle },
-        ]}
-        primaryAction={{
-          href: '/#contact',
-          label: dictionary.actions.startProject,
-        }}
-        className="page-enter"
-      />
-
-      <main className="flex min-w-0 w-full flex-1 flex-col gap-16 overflow-x-hidden pb-4 pt-[var(--main-content-offset)]">
+    <SiteShell
+      locale={locale}
+      dictionary={dictionary}
+      footerNavItems={footerNavItems}
+      header={
+        <SiteHeader
+          locale={locale}
+          dictionary={dictionary}
+          navItems={[
+            { href: '/#projects', label: dictionary.header.navWork },
+            { href: '#overview', label: dictionary.project.overviewTitle },
+            ...(hasProjectLinks ? [{ href: '#links', label: dictionary.project.linksTitle }] : []),
+            { href: '#timeline', label: dictionary.project.timelineTitle },
+          ]}
+          primaryAction={{
+            href: '/#contact',
+            label: dictionary.actions.startProject,
+          }}
+          className="page-enter"
+        />
+      }
+    >
+      <main className="flex min-w-0 w-full flex-1 flex-col gap-16 overflow-x-clip pb-4 pt-[var(--main-content-offset)]">
         {!project ? (
           <div className="page-enter">
             <StateCard

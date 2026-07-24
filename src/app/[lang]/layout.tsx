@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -12,10 +12,6 @@ import { routing } from '@/i18n/routing';
 import '../globals.css';
 
 export const dynamic = 'force-dynamic';
-
-export const viewport: Viewport = {
-  viewportFit: 'cover',
-};
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -90,10 +86,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <html
       lang={lang}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-full bg-background text-foreground">
+      <body className="bg-background text-foreground">
         <NextIntlClientProvider>
           <ThemeProvider
             attribute="class"

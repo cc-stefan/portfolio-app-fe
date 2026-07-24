@@ -83,7 +83,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
 
   return (
     <div className="page-shell">
-      <div className="container-page flex min-h-screen flex-col py-4 sm:py-6">
+      <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col py-4 sm:py-6">
         <div className="page-enter flex items-center justify-between gap-3">
           <div>
             <Button asChild variant="ghost" size="sm">

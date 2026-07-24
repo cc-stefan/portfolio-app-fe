@@ -9,10 +9,19 @@ interface PortfolioLoadingShellProps {
 export function PortfolioLoadingShell({ children }: PortfolioLoadingShellProps) {
   return (
     <div className="page-shell">
-      <div
-        className="pointer-events-none fixed inset-x-0 z-40"
-        style={{ top: 'calc(var(--safe-area-inset-top) + var(--header-offset))' }}
-      >
+      <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
+        <div className="safe-content-frame flex flex-1 flex-col">
+          <main className="min-w-0 flex-1 pb-4 pt-[var(--main-content-offset)] sm:pb-6">
+            {children}
+          </main>
+
+          <footer className="mt-10 border-t border-border/80 pt-5">
+            <Skeleton className="h-4 w-56 max-w-full rounded-full" />
+          </footer>
+        </div>
+      </div>
+
+      <div className="safe-header-layer pointer-events-none fixed inset-x-0 top-0 z-40">
         <div className="container-page">
           <header className="pointer-events-auto page-enter surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4">
             <div className="flex items-center gap-3">
@@ -42,18 +51,6 @@ export function PortfolioLoadingShell({ children }: PortfolioLoadingShellProps) 
               </div>
             </div>
           </header>
-        </div>
-      </div>
-
-      <div className="container-page flex min-h-[100svh] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
-        <div className="safe-content-frame flex flex-1 flex-col">
-          <main className="min-w-0 flex-1 pb-4 pt-[var(--main-content-offset)] sm:pb-6">
-            {children}
-          </main>
-
-          <footer className="mt-10 border-t border-border/80 pt-5">
-            <Skeleton className="h-4 w-56 max-w-full rounded-full" />
-          </footer>
         </div>
       </div>
     </div>

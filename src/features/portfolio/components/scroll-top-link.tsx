@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
-import { clearHashFromUrl, normalizeSectionPathname } from '../lib/section-scroll';
+import { clearHashFromUrl, normalizeSectionPathname, scrollPageToTop } from '../lib/section-scroll';
 
 type ScrollTopLinkProps = React.ComponentProps<typeof Link>;
 
@@ -34,10 +34,7 @@ export const ScrollTopLink = React.forwardRef<HTMLAnchorElement, ScrollTopLinkPr
 
       event.preventDefault();
       clearHashFromUrl();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      scrollPageToTop();
     }
 
     return <Link ref={ref} href={href} onClick={handleClick} {...props} />;

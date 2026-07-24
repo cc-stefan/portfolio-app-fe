@@ -18,7 +18,7 @@ export function LocaleAwareNotFoundScreen({ dictionaries }: LocaleAwareNotFoundS
   const dictionary = dictionaries[locale];
 
   return (
-    <div className="container-page flex min-h-[70vh] items-center py-16">
+    <div className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
       <StateCard
         eyebrow="404"
         title={dictionary.meta.notFoundTitle}
