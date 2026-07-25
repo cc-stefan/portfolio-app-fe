@@ -29,10 +29,6 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
       locale={locale}
       dictionary={dictionary}
       footerNavItems={sectionLinks}
-      footerProjectLinks={projects.map((project) => ({
-        href: `/projects/${project.slug}`,
-        label: project.title,
-      }))}
       header={
         <SiteHeader
           locale={locale}

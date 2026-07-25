@@ -28,18 +28,28 @@ export function ProjectGridTabs({ locale, copy, projects, apiOrigin }: ProjectGr
   const hasFeaturedProjects = featuredProjects.length > 0;
 
   return (
-    <Tabs defaultValue={hasFeaturedProjects ? 'featured' : 'all'} className="mt-8">
+    <Tabs defaultValue="all" className="mt-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
           {projects.length} {copy.countLabel}
         </p>
         <TabsList>
+          <TabsTrigger value="all">{copy.allTab}</TabsTrigger>
           {hasFeaturedProjects ? (
             <TabsTrigger value="featured">{copy.featuredTab}</TabsTrigger>
           ) : null}
-          <TabsTrigger value="all">{copy.allTab}</TabsTrigger>
         </TabsList>
       </div>
+
+      <TabsContent value="all" className="mt-6">
+        <ProjectGrid
+          projects={projects}
+          locale={locale}
+          copy={copy}
+          apiOrigin={apiOrigin}
+          showPriorityBadge
+        />
+      </TabsContent>
 
       {hasFeaturedProjects ? (
         <TabsContent value="featured" className="mt-6">
@@ -52,16 +62,6 @@ export function ProjectGridTabs({ locale, copy, projects, apiOrigin }: ProjectGr
           />
         </TabsContent>
       ) : null}
-
-      <TabsContent value="all" className="mt-6">
-        <ProjectGrid
-          projects={projects}
-          locale={locale}
-          copy={copy}
-          apiOrigin={apiOrigin}
-          showPriorityBadge
-        />
-      </TabsContent>
     </Tabs>
   );
 }

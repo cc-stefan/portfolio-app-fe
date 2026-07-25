@@ -2,6 +2,7 @@
   "name": "portfolio-app-fe",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=20.9 <23"
+    "node": "24.x"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -35,7 +36,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

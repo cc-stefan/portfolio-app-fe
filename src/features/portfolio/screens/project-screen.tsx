@@ -46,8 +46,6 @@ export async function PortfolioProjectScreen({
       locale={locale}
       dictionary={dictionary}
       footerNavItems={footerNavItems}
-      footerPathname={`/projects/${slug}`}
-      footerLocales={project?.availableLocales ?? [locale]}
       header={
         <SiteHeader
           locale={locale}

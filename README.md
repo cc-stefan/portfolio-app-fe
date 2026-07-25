@@ -43,6 +43,13 @@ Project content is not translated in the frontend at runtime. The frontend reque
 
 ## Local setup
 
+Requirements:
+
+- Node.js 24.x
+- pnpm 10.34.5
+
+Run `nvm use` from this directory if you use nvm.
+
 ### 1. Install dependencies
 
 ```bash
@@ -203,6 +210,7 @@ If you seeded the backend with `scripts/seed.sql`, you can log in with:
 - All published translated project routes are included in the sitemap and exposed through normal HTML links.
 - Admin routes are blocked in `robots.txt` and emit `noindex` metadata. Authentication remains the security boundary.
 - Project image optimization remains disabled because the production image host is deployment-specific. Configure a stable public image origin and matching Next.js `images.remotePatterns` before enabling the optimizer.
+- Local development, CI, Docker, and Vercel use Node.js 24.x. Vercel reads the authoritative version from `package.json`.
 - Enforce HTTPS and choose either `www` or non-`www` at the hosting/CDN layer, with permanent redirects to the `NEXT_PUBLIC_SITE_URL` origin.
 - When the backend is unavailable, the public pages render graceful degraded states instead of crashing.
 - The current development setup works end to end against the sibling backend repo.
