@@ -172,6 +172,7 @@
     overflow-x: clip;
     max-width: 100vw;
     position: relative;
+    isolation: isolate;
     background: linear-gradient(
       180deg,
       var(--background) 0%,
