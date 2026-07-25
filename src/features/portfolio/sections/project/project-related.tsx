@@ -34,7 +34,13 @@ export function ProjectRelated({
             key={project.id}
             project={project}
             locale={locale}
-            dictionary={dictionary}
+            copy={{
+              featured: dictionary.common.featured,
+              noTechnologies: dictionary.common.noTechnologies,
+              viewProject: dictionary.actions.viewProject,
+              live: dictionary.actions.live,
+              code: dictionary.actions.code,
+            }}
             apiOrigin={apiOrigin}
           />
         ))}

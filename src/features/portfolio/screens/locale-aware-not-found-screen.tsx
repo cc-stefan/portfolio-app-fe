@@ -18,17 +18,18 @@ export function LocaleAwareNotFoundScreen({ dictionaries }: LocaleAwareNotFoundS
   const dictionary = dictionaries[locale];
 
   return (
-    <div className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
+    <main className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
       <StateCard
         eyebrow="404"
         title={dictionary.meta.notFoundTitle}
         description={dictionary.meta.notFoundDescription}
+        titleAs="h1"
         action={
           <Button asChild size="lg">
             <Link href={localizeHref(locale, '/')}>{dictionary.actions.browseProjects}</Link>
           </Button>
         }
       />
-    </div>
+    </main>
   );
 }

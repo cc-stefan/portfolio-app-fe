@@ -133,7 +133,7 @@ function ActionLink({ action, locale, variant }: ActionLinkProps) {
     <SheetClose asChild>
       <Button asChild variant={variant} size="lg" className="w-full">
         {action.external ? (
-          <Link href={href} target="_blank" rel="noreferrer">
+          <Link href={href} target="_blank" rel="noopener noreferrer">
             {action.label}
             <ArrowUpRight className="size-4" />
           </Link>

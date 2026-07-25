@@ -921,7 +921,7 @@ export function AdminProjectEditorScreen({
 
               {formValues.liveUrl ? (
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={formValues.liveUrl} target="_blank" rel="noreferrer">
+                  <Link href={formValues.liveUrl} target="_blank" rel="noopener noreferrer">
                     {copy.openLiveUrlAction}
                     <ArrowUpRight className="size-4" />
                   </Link>

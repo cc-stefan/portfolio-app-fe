@@ -33,7 +33,9 @@ export function SectionScrollRestorer() {
     }
 
     if (!window.location.hash) {
-      scrollPageToTop('auto');
+      if (window.scrollY > 0) {
+        scrollPageToTop('auto');
+      }
       return;
     }
 

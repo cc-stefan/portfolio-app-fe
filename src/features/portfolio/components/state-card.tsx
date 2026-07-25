@@ -15,6 +15,7 @@ interface StateCardProps {
   description: string;
   action?: ReactNode;
   tone?: 'neutral' | 'warning' | 'success';
+  titleAs?: 'div' | 'h1' | 'h2' | 'h3';
 }
 
 export function StateCard({
@@ -23,6 +24,7 @@ export function StateCard({
   description,
   action,
   tone = 'neutral',
+  titleAs = 'div',
 }: StateCardProps) {
   const iconClass =
     tone === 'success'
@@ -40,7 +42,9 @@ export function StateCard({
         <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
           {eyebrow}
         </p>
-        <CardTitle className="mt-2 max-w-2xl text-balance text-3xl sm:text-4xl">{title}</CardTitle>
+        <CardTitle as={titleAs} className="mt-2 max-w-2xl text-balance text-3xl sm:text-4xl">
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent className="p-6 sm:p-8">
         <CardDescription className="max-w-2xl text-base leading-8">{description}</CardDescription>

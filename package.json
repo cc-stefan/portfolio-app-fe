@@ -9,6 +9,7 @@
     "lint": "eslint",
     "format": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
     "format:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "seo:check": "node scripts/seo-check.mjs",
     "typecheck": "tsc --noEmit"
   },
   "engines": {

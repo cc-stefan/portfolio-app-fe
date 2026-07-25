@@ -5,16 +5,29 @@ function normalizeBaseUrl(value: string) {
 }
 
 export function getBackendApiBaseUrl() {
+  const publicApiBaseUrl = getPublicBackendApiBaseUrl();
+  const apiBaseUrl =
+    typeof window === 'undefined'
+      ? (process.env.PORTFOLIO_API_BASE_URL ?? publicApiBaseUrl)
+      : publicApiBaseUrl;
+
+  return normalizeBaseUrl(apiBaseUrl);
+}
+
+export function getPublicBackendApiBaseUrl() {
   return normalizeBaseUrl(
     process.env.NEXT_PUBLIC_PORTFOLIO_API_BASE_URL ??
       process.env.NEXT_PUBLIC_API_URL ??
-      process.env.PORTFOLIO_API_BASE_URL ??
       DEFAULT_API_BASE_URL
   );
 }
 
 export function getBackendOrigin() {
   return getBackendApiBaseUrl().replace(/\/api$/, '');
+}
+
+export function getPublicBackendOrigin() {
+  return getPublicBackendApiBaseUrl().replace(/\/api$/, '');
 }
 
 export function getBackendDocsUrl() {

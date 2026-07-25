@@ -38,7 +38,10 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
       <div className="page-shell">
         <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
           <div className="safe-content-frame flex flex-1 flex-col">
-            <main className="flex-1 space-y-6 pb-6 pt-[var(--main-content-offset)] sm:pb-8">
+            <main
+              id="main-content"
+              className="flex-1 space-y-6 pb-6 pt-[var(--main-content-offset)] sm:pb-8"
+            >
               <AdminLoadingHeader className="page-enter" />
               <div className="page-enter grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
                 <AdminLoadingPanel>
@@ -88,12 +91,13 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
     return (
       <div className="page-shell">
         <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col py-4 sm:py-6">
-          <div className="flex flex-1 items-center py-16">
+          <main id="main-content" className="flex flex-1 items-center py-16">
             <div className="page-enter">
               <StateCard
                 eyebrow={dictionary.admin.accessDeniedEyebrow}
                 title={dictionary.admin.accessDeniedTitle}
                 description={dictionary.admin.accessDeniedDescription}
+                titleAs="h1"
                 tone="warning"
                 action={
                   <div className="flex flex-wrap gap-3">
@@ -115,7 +119,7 @@ export function AdminProtectedLayout({ lang, dictionary, children }: AdminProtec
                 }
               />
             </div>
-          </div>
+          </main>
           <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
         </div>
       </div>

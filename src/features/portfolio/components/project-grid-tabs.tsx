@@ -2,39 +2,42 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { AppLocale } from '../i18n/routing';
-import type { PortfolioDictionary } from '../i18n/types';
 import type { PortfolioProject } from '../model/types';
-import { ProjectCard } from './project-card';
+import { ProjectCard, type ProjectCardCopy } from './project-card';
 import { StateCard } from './state-card';
+
+export interface ProjectGridTabsCopy {
+  countLabel: string;
+  featuredTab: string;
+  allTab: string;
+  emptyEyebrow: string;
+  emptyTitle: string;
+  emptyDescription: string;
+  projectCard: ProjectCardCopy;
+}
 
 interface ProjectGridTabsProps {
   locale: AppLocale;
-  dictionary: PortfolioDictionary;
-  featuredProjects: PortfolioProject[];
+  copy: ProjectGridTabsCopy;
   projects: PortfolioProject[];
   apiOrigin: string;
 }
 
-export function ProjectGridTabs({
-  locale,
-  dictionary,
-  featuredProjects,
-  projects,
-  apiOrigin,
-}: ProjectGridTabsProps) {
+export function ProjectGridTabs({ locale, copy, projects, apiOrigin }: ProjectGridTabsProps) {
+  const featuredProjects = projects.filter((project) => project.featured);
   const hasFeaturedProjects = featuredProjects.length > 0;
 
   return (
     <Tabs defaultValue={hasFeaturedProjects ? 'featured' : 'all'} className="mt-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
-          {projects.length} {dictionary.home.showcaseCountLabel}
+          {projects.length} {copy.countLabel}
         </p>
         <TabsList>
           {hasFeaturedProjects ? (
-            <TabsTrigger value="featured">{dictionary.home.featuredTab}</TabsTrigger>
+            <TabsTrigger value="featured">{copy.featuredTab}</TabsTrigger>
           ) : null}
-          <TabsTrigger value="all">{dictionary.home.allTab}</TabsTrigger>
+          <TabsTrigger value="all">{copy.allTab}</TabsTrigger>
         </TabsList>
       </div>
 
@@ -43,7 +46,7 @@ export function ProjectGridTabs({
           <ProjectGrid
             projects={featuredProjects}
             locale={locale}
-            dictionary={dictionary}
+            copy={copy}
             apiOrigin={apiOrigin}
             showPriorityBadge={false}
           />
@@ -54,7 +57,7 @@ export function ProjectGridTabs({
         <ProjectGrid
           projects={projects}
           locale={locale}
-          dictionary={dictionary}
+          copy={copy}
           apiOrigin={apiOrigin}
           showPriorityBadge
         />
@@ -66,24 +69,18 @@ export function ProjectGridTabs({
 interface ProjectGridProps {
   projects: PortfolioProject[];
   locale: AppLocale;
-  dictionary: PortfolioDictionary;
+  copy: ProjectGridTabsCopy;
   apiOrigin: string;
   showPriorityBadge: boolean;
 }
 
-function ProjectGrid({
-  projects,
-  locale,
-  dictionary,
-  apiOrigin,
-  showPriorityBadge,
-}: ProjectGridProps) {
+function ProjectGrid({ projects, locale, copy, apiOrigin, showPriorityBadge }: ProjectGridProps) {
   if (projects.length === 0) {
     return (
       <StateCard
-        eyebrow={dictionary.home.showcaseLabel}
-        title={dictionary.home.emptyTitle}
-        description={dictionary.home.emptyDescription}
+        eyebrow={copy.emptyEyebrow}
+        title={copy.emptyTitle}
+        description={copy.emptyDescription}
       />
     );
   }
@@ -95,7 +92,7 @@ function ProjectGrid({
           key={project.id}
           project={project}
           locale={locale}
-          dictionary={dictionary}
+          copy={copy.projectCard}
           apiOrigin={apiOrigin}
           showPriorityBadge={showPriorityBadge}
         />

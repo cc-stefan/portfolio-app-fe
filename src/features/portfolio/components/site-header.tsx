@@ -141,7 +141,7 @@ function HeaderButton({ action, locale, variant }: HeaderButtonProps) {
   return (
     <Button asChild variant={variant} size="sm">
       {action.external ? (
-        <Link href={href} target="_blank" rel="noreferrer">
+        <Link href={href} target="_blank" rel="noopener noreferrer">
           {action.label}
           <ArrowUpRight className="size-4" />
         </Link>

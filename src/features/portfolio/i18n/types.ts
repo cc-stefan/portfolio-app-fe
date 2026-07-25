@@ -114,6 +114,7 @@ export interface PortfolioDictionary {
   };
   project: {
     backToHome: string;
+    breadcrumbLabel: string;
     label: string;
     summaryTitle: string;
     overviewTitle: string;
@@ -449,5 +450,6 @@ export interface PortfolioDictionary {
     lastUpdated: string;
     technologies: string;
     noTechnologies: string;
+    skipToContent: string;
   };
 }

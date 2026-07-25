@@ -11,11 +11,12 @@ export default async function RootNotFoundPage() {
   return (
     <html lang={defaultLocale}>
       <body className="bg-background text-foreground">
-        <div className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
+        <main className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
           <StateCard
             eyebrow="404"
             title={dictionary.meta.notFoundTitle}
             description={dictionary.meta.notFoundDescription}
+            titleAs="h1"
             action={
               <Button asChild size="lg">
                 <Link href={localizeHref(defaultLocale, '/')}>
@@ -24,7 +25,7 @@ export default async function RootNotFoundPage() {
               </Button>
             }
           />
-        </div>
+        </main>
       </body>
     </html>
   );

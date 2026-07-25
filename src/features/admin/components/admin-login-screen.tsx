@@ -100,7 +100,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
           </div>
         </div>
 
-        <div className="flex flex-1 items-center justify-center py-10 sm:py-12">
+        <main id="main-content" className="flex flex-1 items-center justify-center py-10 sm:py-12">
           <Card variant="solid" className="page-enter w-full max-w-md">
             <CardContent className="grid gap-6 p-6 sm:p-8">
               <div>
@@ -172,7 +172,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
               </form>
             </CardContent>
           </Card>
-        </div>
+        </main>
 
         <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
       </div>

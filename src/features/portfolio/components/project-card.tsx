@@ -5,15 +5,22 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { localizeHref, type AppLocale } from '../i18n/routing';
-import type { PortfolioDictionary } from '../i18n/types';
 import type { PortfolioProject } from '../model/types';
 import { formatProjectMonth } from '../lib/portfolio-formatters';
 import { resolvePortfolioAssetUrl } from '../lib/resolve-portfolio-asset-url';
 
+export interface ProjectCardCopy {
+  featured: string;
+  noTechnologies: string;
+  viewProject: string;
+  live: string;
+  code: string;
+}
+
 interface ProjectCardProps {
   project: PortfolioProject;
   locale: AppLocale;
-  dictionary: PortfolioDictionary;
+  copy: ProjectCardCopy;
   apiOrigin: string;
   showPriorityBadge?: boolean;
 }
@@ -21,7 +28,7 @@ interface ProjectCardProps {
 export function ProjectCard({
   project,
   locale,
-  dictionary,
+  copy,
   apiOrigin,
   showPriorityBadge = true,
 }: ProjectCardProps) {
@@ -53,7 +60,7 @@ export function ProjectCard({
           <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               {showPriorityBadge && project.featured ? (
-                <Badge variant="featured">{dictionary.common.featured}</Badge>
+                <Badge variant="featured">{copy.featured}</Badge>
               ) : null}
               {projectMonth ? <Badge variant="neutral">{projectMonth}</Badge> : null}
             </div>
@@ -83,28 +90,28 @@ export function ProjectCard({
               </Badge>
             ))
           ) : (
-            <Badge variant="outline">{dictionary.common.noTechnologies}</Badge>
+            <Badge variant="outline">{copy.noTechnologies}</Badge>
           )}
         </div>
       </CardContent>
 
       <CardFooter className="mt-auto flex flex-wrap items-center gap-2 p-5 pt-0">
         <Button asChild variant="secondary" size="sm">
-          <Link href={projectHref}>{dictionary.actions.viewProject}</Link>
+          <Link href={projectHref}>{copy.viewProject}</Link>
         </Button>
         {project.liveUrl ? (
           <Button asChild variant="ghost" size="sm">
-            <Link href={project.liveUrl} target="_blank" rel="noreferrer">
+            <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
               <Globe className="size-4" />
-              {dictionary.actions.live}
+              {copy.live}
             </Link>
           </Button>
         ) : null}
         {project.repositoryUrl ? (
           <Button asChild variant="ghost" size="sm">
-            <Link href={project.repositoryUrl} target="_blank" rel="noreferrer">
+            <Link href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
               <Code2 className="size-4" />
-              {dictionary.actions.code}
+              {copy.code}
             </Link>
           </Button>
         ) : null}

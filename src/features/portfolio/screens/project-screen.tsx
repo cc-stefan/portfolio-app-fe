@@ -13,6 +13,9 @@ import { getPortfolioHomeSectionLinks } from '../lib/portfolio-navigation';
 import { ProjectContent } from '../sections/project/project-content';
 import { ProjectHero } from '../sections/project/project-hero';
 import { ProjectRelated } from '../sections/project/project-related';
+import { resolvePortfolioAssetUrl } from '../lib/resolve-portfolio-asset-url';
+import { JsonLd } from '@/features/seo/components/json-ld';
+import { getProjectStructuredData } from '@/features/seo/lib/structured-data';
 
 interface PortfolioProjectScreenProps {
   slug: string;
@@ -43,6 +46,8 @@ export async function PortfolioProjectScreen({
       locale={locale}
       dictionary={dictionary}
       footerNavItems={footerNavItems}
+      footerPathname={`/projects/${slug}`}
+      footerLocales={project?.availableLocales ?? [locale]}
       header={
         <SiteHeader
           locale={locale}
@@ -61,13 +66,27 @@ export async function PortfolioProjectScreen({
         />
       }
     >
-      <main className="flex min-w-0 w-full flex-1 flex-col gap-16 overflow-x-clip pb-4 pt-[var(--main-content-offset)]">
+      {project ? (
+        <JsonLd
+          data={getProjectStructuredData({
+            locale,
+            dictionary,
+            project,
+            imageUrl: resolvePortfolioAssetUrl(project.imageUrl, apiOrigin),
+          })}
+        />
+      ) : null}
+      <main
+        id="main-content"
+        className="flex min-w-0 w-full flex-1 flex-col gap-16 overflow-x-clip pb-4 pt-[var(--main-content-offset)]"
+      >
         {!project ? (
           <div className="page-enter">
             <StateCard
               eyebrow={dictionary.project.label}
               title={dictionary.project.unavailableTitle}
               description={dictionary.project.unavailableDescription}
+              titleAs="h1"
               tone="warning"
               action={
                 <Button asChild size="lg">

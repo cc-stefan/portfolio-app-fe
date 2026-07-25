@@ -11,6 +11,8 @@ import { HomeProcess } from '../sections/home/home-process';
 import { HomeShowcase } from '../sections/home/home-showcase';
 import { getPortfolioHomePageData } from '../api/portfolio-page-data';
 import { getPortfolioHomeSectionLinks } from '../lib/portfolio-navigation';
+import { JsonLd } from '@/features/seo/components/json-ld';
+import { getHomeStructuredData } from '@/features/seo/lib/structured-data';
 
 interface PortfolioHomeScreenProps {
   locale: AppLocale;
@@ -18,14 +20,19 @@ interface PortfolioHomeScreenProps {
 }
 
 export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeScreenProps) {
-  const { projectsResult, featuredProjects, apiOrigin } = await getPortfolioHomePageData(locale);
+  const { projectsResult, apiOrigin } = await getPortfolioHomePageData(locale);
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
+  const projects = projectsResult.data ?? [];
 
   return (
     <SiteShell
       locale={locale}
       dictionary={dictionary}
       footerNavItems={sectionLinks}
+      footerProjectLinks={projects.map((project) => ({
+        href: `/projects/${project.slug}`,
+        label: project.title,
+      }))}
       header={
         <SiteHeader
           locale={locale}
@@ -40,7 +47,11 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
         />
       }
     >
-      <main className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-clip pb-4 pt-[var(--main-content-offset)] sm:gap-24">
+      <JsonLd data={getHomeStructuredData(locale, dictionary)} />
+      <main
+        id="main-content"
+        className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-clip pb-4 pt-[var(--main-content-offset)] sm:gap-24"
+      >
         <div className="page-enter">
           <HomeHero locale={locale} copy={dictionary.home} />
         </div>
@@ -57,8 +68,7 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
           <HomeShowcase
             locale={locale}
             dictionary={dictionary}
-            featuredProjects={featuredProjects}
-            projects={projectsResult.data ?? []}
+            projects={projects}
             apiOrigin={apiOrigin}
           />
         </div>

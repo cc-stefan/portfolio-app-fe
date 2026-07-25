@@ -50,7 +50,7 @@ export function ProjectContent({ locale, dictionary, project }: ProjectContentPr
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                 {dictionary.project.overviewTitle}
               </p>
-              <CardTitle className="mt-3 text-3xl sm:text-4xl">
+              <CardTitle as="h2" className="mt-3 text-3xl sm:text-4xl">
                 {dictionary.project.summaryTitle}
               </CardTitle>
             </CardHeader>
@@ -61,7 +61,9 @@ export function ProjectContent({ locale, dictionary, project }: ProjectContentPr
 
           <Card variant="solid">
             <CardHeader className="p-6 pb-0 sm:p-8 sm:pb-0">
-              <CardTitle className="text-2xl">{dictionary.project.descriptionTitle}</CardTitle>
+              <CardTitle as="h2" className="text-2xl">
+                {dictionary.project.descriptionTitle}
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-6 sm:p-8">
               {descriptionParagraphs.length > 0 ? (
@@ -167,7 +169,7 @@ function ProjectLinkButton({
 }) {
   return (
     <Button asChild variant="outline" className="w-full justify-between">
-      <Link href={href} target="_blank" rel="noreferrer">
+      <Link href={href} target="_blank" rel="noopener noreferrer">
         <span className="inline-flex items-center gap-2">
           {icon}
           {label}

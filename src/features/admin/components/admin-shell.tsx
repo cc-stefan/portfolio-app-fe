@@ -115,7 +115,10 @@ export function AdminShell({ lang, dictionary, children }: AdminShellProps) {
     <div className="page-shell">
       <div className="container-page flex min-h-[var(--app-viewport-height)] flex-col pb-[calc(1rem_+_var(--safe-area-inset-bottom))] pt-4 sm:pb-[calc(1.5rem_+_var(--safe-area-inset-bottom))] sm:pt-6">
         <div className="safe-content-frame flex flex-1 flex-col">
-          <main className="min-w-0 flex-1 pb-6 pt-[var(--main-content-offset)] sm:pb-8">
+          <main
+            id="main-content"
+            className="min-w-0 flex-1 pb-6 pt-[var(--main-content-offset)] sm:pb-8"
+          >
             {children}
           </main>
 

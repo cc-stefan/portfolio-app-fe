@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import { getProjectBySlug } from '@/features/portfolio/api/portfolio-api';
 import { PortfolioProjectScreen } from '@/features/portfolio/screens/project-screen';
+import { PortfolioProjectLoadingScreen } from '@/features/portfolio/screens/project-loading-screen';
 import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
 import { isAppLocale } from '@/features/portfolio/i18n/routing';
 import { getPortfolioProjectMetadata } from '@/features/portfolio/api/portfolio-metadata';
@@ -29,6 +32,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const dictionary = await getDictionary(lang);
+  const projectResult = await getProjectBySlug(slug, lang);
 
-  return <PortfolioProjectScreen slug={slug} locale={lang} dictionary={dictionary} />;
+  if (projectResult.status === 404) {
+    notFound();
+  }
+
+  return (
+    <Suspense fallback={<PortfolioProjectLoadingScreen />}>
+      <PortfolioProjectScreen slug={slug} locale={lang} dictionary={dictionary} />
+    </Suspense>
+  );
 }

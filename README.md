@@ -8,6 +8,9 @@ Next.js 16 frontend for the portfolio app. The current frontend is a server-rend
 - locale-aware routing with `next-intl`
 - English and Romanian UI support
 - public project pages backed by locale-aware API reads
+- route-specific canonical, hreflang, Open Graph, and Twitter metadata
+- dynamic `robots.txt`, localized XML sitemap, web manifest, and social preview images
+- Schema.org JSON-LD for the portfolio profile and project detail pages
 - admin authentication against the backend JWT API
 - admin dashboard
 - admin project management
@@ -61,6 +64,12 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 The app also accepts `NEXT_PUBLIC_PORTFOLIO_API_BASE_URL` if you want the backend URL exposed explicitly to the browser-side runtime.
 
+`NEXT_PUBLIC_SITE_URL` is required for production builds. Set it to the one
+public origin that search engines should index, for example
+`https://portfolio.example.com`. Do not include a path, query string, or
+fragment. Canonical URLs, hreflang entries, the sitemap, robots file, and social
+metadata are generated from this value.
+
 Do not export `NODE_ENV` globally from your shell profile for this project. Keep the frontend scripts plain and let Next.js decide the correct mode per command. If your terminal has `NODE_ENV=development` exported globally, unset it before running `pnpm build` or `pnpm start`.
 
 ### 3. Start the backend from the sibling repo
@@ -97,7 +106,20 @@ pnpm lint
 pnpm build
 pnpm start
 pnpm typecheck
+pnpm seo:check
 ```
+
+`pnpm seo:check` audits a running production build at
+`http://127.0.0.1:3000` by default. Override the audit target with
+`SEO_BASE_URL` when checking a preview or deployment:
+
+```bash
+SEO_BASE_URL=https://preview.example.com pnpm seo:check
+```
+
+The check validates the sitemap, robots policy, public metadata, canonicals,
+hreflang, JSON-LD syntax, admin `noindex`, 404 behavior, project
+discoverability, and internal links without contacting a search engine.
 
 ## Route surface
 
@@ -129,7 +151,6 @@ Romanian-prefixed admin routes also exist, for example:
 
 The portfolio pages fetch from the backend:
 
-- `GET /api/health`
 - `GET /api/projects?locale=<locale>`
 - `GET /api/projects/:slug?locale=<locale>`
 
@@ -179,6 +200,10 @@ If you seeded the backend with `scripts/seed.sql`, you can log in with:
 ## Notes
 
 - The public portfolio is SSR-first and does not depend on client-side data hydration for core content.
+- All published translated project routes are included in the sitemap and exposed through normal HTML links.
+- Admin routes are blocked in `robots.txt` and emit `noindex` metadata. Authentication remains the security boundary.
+- Project image optimization remains disabled because the production image host is deployment-specific. Configure a stable public image origin and matching Next.js `images.remotePatterns` before enabling the optimizer.
+- Enforce HTTPS and choose either `www` or non-`www` at the hosting/CDN layer, with permanent redirects to the `NEXT_PUBLIC_SITE_URL` origin.
 - When the backend is unavailable, the public pages render graceful degraded states instead of crashing.
 - The current development setup works end to end against the sibling backend repo.
-- There is still a known Next 16 fallback-route prerender issue during `pnpm build` on framework error/not-found pages. `pnpm lint` passes and development mode works normally.
+- `pnpm build` is expected to pass for production builds.

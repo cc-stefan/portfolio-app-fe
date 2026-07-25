@@ -22,12 +22,21 @@ export function ProjectHero({ locale, dictionary, project, apiOrigin }: ProjectH
   return (
     <section className="grid gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <Button asChild variant="ghost" className="-ml-3">
-          <Link href={localizeHref(locale, '/')}>
-            <ArrowLeft className="size-4" />
-            {dictionary.project.backToHome}
-          </Link>
-        </Button>
+        <nav aria-label={dictionary.project.breadcrumbLabel}>
+          <ol>
+            <li>
+              <Button asChild variant="ghost" className="-ml-3">
+                <Link href={localizeHref(locale, '/')}>
+                  <ArrowLeft className="size-4" />
+                  {dictionary.project.backToHome}
+                </Link>
+              </Button>
+            </li>
+            <li className="sr-only" aria-current="page">
+              {project.title}
+            </li>
+          </ol>
+        </nav>
 
         {project.featured ? <Badge variant="featured">{dictionary.common.featured}</Badge> : null}
       </div>
@@ -50,6 +59,7 @@ export function ProjectHero({ locale, dictionary, project, apiOrigin }: ProjectH
                 alt={project.title}
                 fill
                 unoptimized
+                preload
                 sizes="100vw"
                 className="object-cover"
               />

@@ -11,17 +11,21 @@ export default async function LocaleNotFound() {
   const dictionary = await getDictionary(locale);
 
   return (
-    <div className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16">
+    <main
+      id="main-content"
+      className="container-page flex min-h-[var(--app-viewport-height)] items-center py-16"
+    >
       <StateCard
         eyebrow="404"
         title={dictionary.meta.notFoundTitle}
         description={dictionary.meta.notFoundDescription}
+        titleAs="h1"
         action={
           <Button asChild size="lg">
             <Link href={localizeHref(locale, '/')}>{dictionary.actions.browseProjects}</Link>
           </Button>
         }
       />
-    </div>
+    </main>
   );
 }

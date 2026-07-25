@@ -1,5 +1,6 @@
 import 'server-only';
-import { buildBackendApiUrl, getBackendApiBaseUrl, getBackendOrigin } from '@/lib/backend';
+import { cache } from 'react';
+import { buildBackendApiUrl, getBackendApiBaseUrl, getPublicBackendOrigin } from '@/lib/backend';
 import type { AppLocale } from '../i18n/routing';
 import type { ApiResult, PortfolioHealth, PortfolioProject } from '../model/types';
 
@@ -18,7 +19,7 @@ export function getPortfolioApiBaseUrl() {
 }
 
 export function getPortfolioApiOrigin() {
-  return getBackendOrigin();
+  return getPublicBackendOrigin();
 }
 
 function appendLocale(path: string, locale: AppLocale) {
@@ -87,12 +88,12 @@ export function getBackendHealth() {
   return safeRequest<PortfolioHealth>('/health');
 }
 
-export function getPublishedProjects(locale: AppLocale) {
+export const getPublishedProjects = cache(function getPublishedProjects(locale: AppLocale) {
   return safeRequest<PortfolioProject[]>(appendLocale('/projects', locale));
-}
+});
 
-export function getProjectBySlug(slug: string, locale: AppLocale) {
+export const getProjectBySlug = cache(function getProjectBySlug(slug: string, locale: AppLocale) {
   return safeRequest<PortfolioProject>(
     appendLocale(`/projects/${encodeURIComponent(slug)}`, locale)
   );
-}
+});

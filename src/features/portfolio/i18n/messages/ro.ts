@@ -200,6 +200,7 @@ export const dictionary: PortfolioDictionary = {
   },
   project: {
     backToHome: 'Înapoi la portofoliu',
+    breadcrumbLabel: 'Navigație ierarhică proiect',
     label: 'Pagina proiectului',
     summaryTitle: 'Ce am construit',
     overviewTitle: 'Prezentare',
@@ -575,5 +576,6 @@ export const dictionary: PortfolioDictionary = {
     lastUpdated: 'Ultima actualizare',
     technologies: 'Tehnologii',
     noTechnologies: 'Nicio tehnologie listată momentan',
+    skipToContent: 'Sari la conținutul principal',
   },
 };

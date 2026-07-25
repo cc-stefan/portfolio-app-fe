@@ -7,18 +7,11 @@ import type { PortfolioProject } from '../../model/types';
 interface HomeShowcaseProps {
   locale: AppLocale;
   dictionary: PortfolioDictionary;
-  featuredProjects: PortfolioProject[];
   projects: PortfolioProject[];
   apiOrigin: string;
 }
 
-export function HomeShowcase({
-  locale,
-  dictionary,
-  featuredProjects,
-  projects,
-  apiOrigin,
-}: HomeShowcaseProps) {
+export function HomeShowcase({ locale, dictionary, projects, apiOrigin }: HomeShowcaseProps) {
   return (
     <section id="projects" className="anchor-target">
       <div className="section-divider" />
@@ -30,8 +23,21 @@ export function HomeShowcase({
         />
         <ProjectGridTabs
           locale={locale}
-          dictionary={dictionary}
-          featuredProjects={featuredProjects}
+          copy={{
+            countLabel: dictionary.home.showcaseCountLabel,
+            featuredTab: dictionary.home.featuredTab,
+            allTab: dictionary.home.allTab,
+            emptyEyebrow: dictionary.home.showcaseLabel,
+            emptyTitle: dictionary.home.emptyTitle,
+            emptyDescription: dictionary.home.emptyDescription,
+            projectCard: {
+              featured: dictionary.common.featured,
+              noTechnologies: dictionary.common.noTechnologies,
+              viewProject: dictionary.actions.viewProject,
+              live: dictionary.actions.live,
+              code: dictionary.actions.code,
+            },
+          }}
           projects={projects}
           apiOrigin={apiOrigin}
         />

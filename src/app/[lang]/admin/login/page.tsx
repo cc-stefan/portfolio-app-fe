@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { AdminLoginScreen } from '@/features/admin/components/admin-login-screen';
 import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
 import { isAppLocale } from '@/features/portfolio/i18n/routing';
+import { PortfolioHomeLoadingScreen } from '@/features/portfolio/screens/home-loading-screen';
 
 interface AdminLoginPageProps {
   params: Promise<{ lang: string }>;
@@ -32,5 +34,9 @@ export default async function AdminLoginPage({ params }: AdminLoginPageProps) {
 
   const dictionary = await getDictionary(lang);
 
-  return <AdminLoginScreen lang={lang} dictionary={dictionary} />;
+  return (
+    <Suspense fallback={<PortfolioHomeLoadingScreen />}>
+      <AdminLoginScreen lang={lang} dictionary={dictionary} />
+    </Suspense>
+  );
 }

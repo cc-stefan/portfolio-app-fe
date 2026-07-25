@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -8,10 +8,9 @@ import { Toaster } from '@/components/ui/sonner';
 import { AdminAuthProvider } from '@/features/admin/auth/admin-auth-provider';
 import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
 import { appLocales, localeTags } from '@/features/portfolio/i18n/routing';
+import { getSiteUrl } from '@/features/seo/lib/site-url';
 import { routing } from '@/i18n/routing';
 import '../globals.css';
-
-export const dynamic = 'force-dynamic';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -30,13 +29,12 @@ const geistMono = Geist_Mono({
   display: 'swap',
 });
 
-const metadataBase = (() => {
-  try {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');
-  } catch {
-    return new URL('http://localhost:3000');
-  }
-})();
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#151719' },
+  ],
+};
 
 export async function generateStaticParams() {
   return appLocales.map((lang) => ({ lang }));
@@ -46,29 +44,52 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
   const { lang } = await params;
 
   if (!hasLocale(routing.locales, lang)) {
-    return {};
+    return {
+      metadataBase: getSiteUrl(),
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
 
   const dictionary = await getDictionary(lang);
 
   return {
-    metadataBase,
+    metadataBase: getSiteUrl(),
     applicationName: dictionary.meta.siteName,
+    authors: [{ name: dictionary.header.brand }],
+    creator: dictionary.header.brand,
+    publisher: dictionary.header.brand,
     title: {
       default: dictionary.meta.defaultTitle,
       template: `%s | ${dictionary.meta.siteName}`,
     },
     description: dictionary.meta.description,
+    manifest: '/manifest.webmanifest',
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: dictionary.meta.siteName,
       description: dictionary.meta.description,
       type: 'website',
       locale: localeTags[lang],
+      alternateLocale: appLocales
+        .filter((locale) => locale !== lang)
+        .map((locale) => localeTags[locale]),
+      siteName: dictionary.meta.siteName,
     },
     twitter: {
       card: 'summary_large_image',
       title: dictionary.meta.siteName,
       description: dictionary.meta.description,
+    },
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
     },
   };
 }
@@ -81,6 +102,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   setRequestLocale(lang);
+  const dictionary = await getDictionary(lang);
 
   return (
     <html
@@ -99,6 +121,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             disableTransitionOnChange
           >
             <AdminAuthProvider>
+              <a
+                href="#main-content"
+                className="fixed left-4 top-4 z-50 -translate-y-24 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg transition-transform focus:translate-y-0 focus:outline-none focus:ring-4 focus:ring-ring/45"
+              >
+                {dictionary.common.skipToContent}
+              </a>
               <div className="min-h-full">{children}</div>
               <Toaster position="top-right" richColors closeButton />
             </AdminAuthProvider>

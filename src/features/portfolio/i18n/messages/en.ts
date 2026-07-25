@@ -198,6 +198,7 @@ export const dictionary: PortfolioDictionary = {
   },
   project: {
     backToHome: 'Back to portfolio',
+    breadcrumbLabel: 'Project breadcrumb',
     label: 'Project page',
     summaryTitle: 'What I built',
     overviewTitle: 'Overview',
@@ -564,5 +565,6 @@ export const dictionary: PortfolioDictionary = {
     lastUpdated: 'Last updated',
     technologies: 'Technologies',
     noTechnologies: 'No technologies listed yet',
+    skipToContent: 'Skip to main content',
   },
 };
