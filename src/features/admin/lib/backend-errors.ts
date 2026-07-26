@@ -5,22 +5,10 @@ export interface BackendErrorBody {
   statusCode?: number;
 }
 
-export function getBackendFieldErrors(body: BackendErrorBody | null) {
-  const fieldErrors: Record<string, string> = {};
-
-  if (!body?.errors) {
-    return fieldErrors;
-  }
-
-  for (const error of body.errors) {
-    const field = error.path?.join('.');
-
-    if (field && error.message) {
-      fieldErrors[field] = error.message;
-    }
-  }
-
-  return fieldErrors;
+export function getBackendFieldErrors(_body: BackendErrorBody | null): Record<string, string> {
+  // Server validation details can contain implementation language that is not suitable for the UI.
+  void _body;
+  return {};
 }
 
 export async function readBackendError(response: Response): Promise<BackendErrorBody | null> {
@@ -31,7 +19,7 @@ export async function readBackendError(response: Response): Promise<BackendError
   }
 }
 
-export function getBackendErrorMessage(body: BackendErrorBody | null, fallback: string) {
+function getRawBackendErrorMessage(body: BackendErrorBody | null, fallback: string) {
   if (!body) {
     return fallback;
   }
@@ -51,16 +39,21 @@ export function getBackendErrorMessage(body: BackendErrorBody | null, fallback: 
   return fallback;
 }
 
+export function getBackendErrorMessage(_body: BackendErrorBody | null, fallback: string) {
+  void _body;
+  return fallback;
+}
+
 function isConflictMessage(message: string, pattern: RegExp) {
   return pattern.test(message) && /already|unique|exists|use/i.test(message);
 }
 
 export function getProjectSlugConflictMessage(body: BackendErrorBody | null, fallback: string) {
-  const message = getBackendErrorMessage(body, '');
+  const message = getRawBackendErrorMessage(body, '');
   return isConflictMessage(message, /slug/i) ? fallback : null;
 }
 
 export function getEmailConflictMessage(body: BackendErrorBody | null, fallback: string) {
-  const message = getBackendErrorMessage(body, '');
+  const message = getRawBackendErrorMessage(body, '');
   return isConflictMessage(message, /email/i) ? fallback : null;
 }

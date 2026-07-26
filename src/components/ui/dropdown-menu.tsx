@@ -48,7 +48,7 @@ function DropdownMenuItem({
       data-slot="dropdown-menu-item"
       className={cn(
         [
-          'relative flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none',
+          'relative flex cursor-pointer select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none',
           'transition-colors focus:bg-secondary focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
           inset && 'pl-8',
         ],
@@ -91,7 +91,7 @@ function DropdownMenuCheckboxItem({
       checked={checked}
       className={cn(
         [
-          'relative flex cursor-default select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm outline-none',
+          'relative flex cursor-pointer select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm outline-none',
           'transition-colors focus:bg-secondary focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         ],
         className

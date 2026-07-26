@@ -271,6 +271,34 @@
     text-decoration: none;
   }
 
+  :where(
+      a[href],
+      button,
+      summary,
+      select,
+      label[for],
+      input[type='button'],
+      input[type='submit'],
+      input[type='reset'],
+      input[type='checkbox'],
+      input[type='radio'],
+      input[type='range'],
+      input[type='color'],
+      input[type='file'],
+      [role='button'],
+      [role='link'],
+      [role='tab'],
+      [role='menuitem'],
+      [role='menuitemcheckbox'],
+      [role='menuitemradio'],
+      [role='option'],
+      [role='switch'],
+      [role='checkbox'],
+      [role='radio']
+    ):not(:disabled):not([aria-disabled='true']):not([data-disabled]) {
+    cursor: pointer;
+  }
+
   ::selection {
     background: color-mix(in oklch, var(--primary) 28%, transparent);
     color: var(--foreground);
@@ -325,7 +353,10 @@
     top: calc(var(--safe-area-inset-top) + 0.75rem);
     right: calc(var(--safe-area-inset-right) + 0.75rem);
     bottom: calc(var(--safe-area-inset-bottom) + 0.75rem);
-    width: min(calc(100% - var(--safe-area-inset-left) - var(--safe-area-inset-right) - 1.5rem), 24rem);
+    width: min(
+      calc(100% - var(--safe-area-inset-left) - var(--safe-area-inset-right) - 1.5rem),
+      24rem
+    );
     max-height: calc(100dvh - var(--safe-area-inset-top) - var(--safe-area-inset-bottom) - 1.5rem);
   }
 
@@ -497,7 +528,11 @@
     content: '';
     width: 2rem;
     height: 1px;
-    background: linear-gradient(90deg, var(--primary), color-mix(in oklch, var(--accent) 72%, var(--primary)));
+    background: linear-gradient(
+      90deg,
+      var(--primary),
+      color-mix(in oklch, var(--accent) 72%, var(--primary))
+    );
   }
 
   .hero-stage {
@@ -515,7 +550,11 @@
     border-radius: calc(var(--radius) + 0.65rem);
     border: 1px solid color-mix(in oklch, var(--surface-border) 72%, transparent);
     background:
-      linear-gradient(135deg, color-mix(in oklch, var(--surface) 88%, transparent), transparent 56%),
+      linear-gradient(
+        135deg,
+        color-mix(in oklch, var(--surface) 88%, transparent),
+        transparent 56%
+      ),
       linear-gradient(180deg, color-mix(in oklch, var(--card) 64%, transparent), transparent);
     box-shadow: var(--surface-shadow-lg);
   }
@@ -537,7 +576,11 @@
     border: 1px solid var(--surface-border);
     border-radius: calc(var(--radius) + 0.45rem);
     background:
-      linear-gradient(145deg, color-mix(in oklch, var(--surface-solid) 92%, var(--primary)), var(--surface)),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--surface-solid) 92%, var(--primary)),
+        var(--surface)
+      ),
       var(--surface);
     box-shadow: var(--surface-shadow-lg);
     backdrop-filter: blur(18px) saturate(1.12);
@@ -555,7 +598,12 @@
 
   .hero-console-rail {
     height: 3px;
-    background: linear-gradient(90deg, var(--primary), color-mix(in oklch, var(--primary) 42%, var(--accent)), var(--accent));
+    background: linear-gradient(
+      90deg,
+      var(--primary),
+      color-mix(in oklch, var(--primary) 42%, var(--accent)),
+      var(--accent)
+    );
   }
 
   .hero-index {
@@ -611,7 +659,10 @@
     z-index: 0;
     left: 1.5rem;
     width: 1px;
-    background: linear-gradient(var(--primary), color-mix(in oklch, var(--accent) 66%, var(--primary)));
+    background: linear-gradient(
+      var(--primary),
+      color-mix(in oklch, var(--accent) 66%, var(--primary))
+    );
     opacity: 0.42;
   }
 
@@ -661,8 +712,16 @@
     border: 1px solid color-mix(in oklch, var(--primary) 34%, var(--surface-border));
     border-radius: calc(var(--radius) + 0.55rem);
     background:
-      radial-gradient(circle at 0 0, color-mix(in oklch, var(--primary) 22%, transparent), transparent 38%),
-      radial-gradient(circle at 100% 100%, color-mix(in oklch, var(--accent) 17%, transparent), transparent 35%),
+      radial-gradient(
+        circle at 0 0,
+        color-mix(in oklch, var(--primary) 22%, transparent),
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 100% 100%,
+        color-mix(in oklch, var(--accent) 17%, transparent),
+        transparent 35%
+      ),
       var(--surface);
     box-shadow: var(--surface-shadow-lg);
     backdrop-filter: blur(18px);
@@ -678,8 +737,7 @@
     border: 1px solid var(--surface-border);
     border-radius: calc(var(--radius) + 0.5rem);
     background:
-      radial-gradient(circle at 12% 4%, var(--page-wash), transparent 45%),
-      var(--surface);
+      radial-gradient(circle at 12% 4%, var(--page-wash), transparent 45%), var(--surface);
     box-shadow: var(--surface-shadow-lg);
     backdrop-filter: blur(18px);
   }

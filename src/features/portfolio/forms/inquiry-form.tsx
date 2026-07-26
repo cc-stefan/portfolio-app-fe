@@ -77,7 +77,16 @@ export function InquiryForm({ locale, copy }: InquiryFormProps) {
         }
       }
 
-      const message = errorPayload?.message ?? copy.errorDescription;
+      const message =
+        errorPayload?.message === copy.reviewError
+          ? copy.reviewError
+          : errorPayload?.message === copy.endpointUnavailableError
+            ? copy.endpointUnavailableError
+            : errorPayload?.message === copy.backendUnavailableError
+              ? copy.backendUnavailableError
+              : errorPayload?.message === copy.submitUnavailableError
+                ? copy.submitUnavailableError
+                : copy.errorDescription;
       setSubmissionError(message);
       toast.error(message);
       return;
