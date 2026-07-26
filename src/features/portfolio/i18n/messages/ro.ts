@@ -111,8 +111,8 @@ export const dictionary: PortfolioDictionary = {
     previousProjectsPage: 'Proiectele anterioare',
     nextProjectsPage: 'Mai multe proiecte',
     projectsPagePosition: 'Pagina {page} din {totalPages}',
-    emptyTitle: 'Nu există încă proiecte publicate.',
-    emptyDescription: 'Publică un proiect în zona de administrare și va apărea automat aici.',
+    emptyTitle: 'Pregătesc proiecte noi.',
+    emptyDescription: 'Mai multe studii de caz vor fi disponibile aici în curând.',
     capabilitiesLabel: 'Despre',
     capabilitiesTitle:
       'Lucrez acolo unde dezvoltarea frontend se întâlnește cu claritatea de produs.',

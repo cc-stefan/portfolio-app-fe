@@ -234,8 +234,13 @@ for (const location of sitemapLocations) {
   }
 }
 
-const manifestResponse = await fetchRoute('/manifest.webmanifest');
+const manifestPath = '/site.webmanifest';
+const manifestResponse = await fetchRoute(manifestPath);
 const manifest = await manifestResponse.json().catch(() => null);
+const requiredManifestIcons = new Map([
+  ['/android-chrome-192x192.png', '192x192'],
+  ['/android-chrome-512x512.png', '512x512'],
+]);
 
 if (
   manifestResponse.status !== 200 ||
@@ -244,7 +249,13 @@ if (
   !Array.isArray(manifest?.icons) ||
   manifest.icons.length === 0
 ) {
-  fail('/manifest.webmanifest: missing or incomplete manifest');
+  fail(`${manifestPath}: missing or incomplete manifest`);
+} else {
+  for (const [src, sizes] of requiredManifestIcons) {
+    if (!manifest.icons.some((icon) => icon.src === src && icon.sizes === sizes)) {
+      fail(`${manifestPath}: missing ${sizes} icon at ${src}`);
+    }
+  }
 }
 
 const auditResults = new Map();

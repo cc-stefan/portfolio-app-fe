@@ -66,7 +66,17 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       template: `%s | ${dictionary.meta.siteName}`,
     },
     description: dictionary.meta.description,
-    manifest: '/manifest.webmanifest',
+    manifest: '/site.webmanifest',
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
+        { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+        { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+        { url: '/favicon.ico', type: 'image/x-icon', sizes: '32x32' },
+      ],
+      shortcut: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+      apple: [{ url: '/apple-touch-icon.png', type: 'image/png', sizes: '180x180' }],
+    },
     robots: {
       index: true,
       follow: true,

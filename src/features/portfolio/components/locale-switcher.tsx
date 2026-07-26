@@ -39,7 +39,7 @@ export function LocaleSwitcher({ locale, localeNames, label, className }: Locale
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" className={cn('min-w-0', className)}>
           <Languages className="size-4" />

@@ -111,8 +111,8 @@ export const dictionary: PortfolioDictionary = {
     previousProjectsPage: 'Previous projects',
     nextProjectsPage: 'More projects',
     projectsPagePosition: 'Page {page} of {totalPages}',
-    emptyTitle: 'No published projects yet.',
-    emptyDescription: 'Publish a project in the admin area and it will appear here automatically.',
+    emptyTitle: 'New projects are on the way.',
+    emptyDescription: 'More case studies will be available here soon.',
     capabilitiesLabel: 'About',
     capabilitiesTitle: 'I work at the point where frontend development meets product clarity.',
     capabilitiesDescription:
