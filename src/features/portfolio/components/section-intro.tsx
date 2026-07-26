@@ -17,11 +17,11 @@ export function SectionIntro({
 }: SectionIntroProps) {
   return (
     <div className={cn('max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{label}</p>
-      <h2 className="mt-4 text-balance text-3xl font-semibold text-foreground leading-[1.1] sm:text-4xl lg:text-5xl">
+      <p className={cn('section-kicker', align === 'center' && 'justify-center')}>{label}</p>
+      <h2 className="mt-4 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-foreground sm:text-4xl lg:text-5xl">
         {title}
       </h2>
-      <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+      <p className="mt-4 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
         {description}
       </p>
     </div>

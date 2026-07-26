@@ -15,7 +15,6 @@ import { SiteFooter } from '@/features/portfolio/components/site-footer';
 import { ThemeToggle } from '@/features/portfolio/components/theme-toggle';
 import { localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
 import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
-import { getPortfolioHomeSectionLinks } from '@/features/portfolio/lib/portfolio-navigation';
 import { cn } from '@/lib/utils';
 import { useAdminAuth } from '../auth/use-admin-auth';
 import {
@@ -51,8 +50,6 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
   const nextParam = searchParams.get('next');
   const nextHref =
     nextParam && nextParam.startsWith('/') ? nextParam : localizeHref(lang, '/admin');
-  const footerNavItems = getPortfolioHomeSectionLinks(dictionary);
-
   useEffect(() => {
     if (status === 'authenticated') {
       router.replace(nextHref);
@@ -100,81 +97,95 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
           </div>
         </div>
 
-        <main id="main-content" className="flex flex-1 items-center justify-center py-10 sm:py-12">
-          <Card variant="solid" className="page-enter w-full max-w-md">
-            <CardContent className="grid gap-6 p-6 sm:p-8">
+        <main id="main-content" className="flex flex-1 items-center justify-center py-6 sm:py-10">
+          <div className="admin-login-stage page-enter grid w-full max-w-4xl lg:grid-cols-[minmax(0,0.9fr)_minmax(22rem,1.1fr)]">
+            <section className="relative flex flex-col justify-between border-b border-border/80 p-5 sm:p-7 lg:min-h-[28rem] lg:border-b-0 lg:border-r lg:p-9">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                  {dictionary.admin.loginLabel}
-                </p>
-                <h1 className="mt-3 text-3xl font-semibold text-foreground">
+                <span className="inline-flex size-11 items-center justify-center rounded-lg bg-[linear-gradient(145deg,var(--primary),color-mix(in_oklch,var(--primary)_84%,var(--accent)))] text-sm font-bold text-primary-foreground shadow-[var(--primary-shadow)]">
+                  {dictionary.header.avatarInitials}
+                </span>
+                <p className="section-kicker mt-7">{dictionary.admin.loginLabel}</p>
+                <h1 className="mt-4 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.045em] text-foreground sm:text-4xl">
                   {dictionary.admin.loginTitle}
                 </h1>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-4 max-w-md text-pretty text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
                   {dictionary.admin.loginDescription}
                 </p>
               </div>
+              <p className="hero-index mt-7">{dictionary.admin.brand}</p>
+            </section>
 
-              {rootError ? (
-                <div className="fade-enter rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                  {rootError}
+            <Card variant="ghost" className="justify-center rounded-none border-0 bg-card/52">
+              <CardContent className="grid gap-6 p-5 sm:p-7 lg:p-9">
+                <div>
+                  <p className="hero-index">{dictionary.header.brand}</p>
+                  <p className="mt-2 hidden text-sm leading-6 text-muted-foreground lg:block">
+                    {dictionary.admin.loginDescription}
+                  </p>
                 </div>
-              ) : null}
 
-              <form className="grid gap-4" onSubmit={onSubmit} noValidate>
-                <Field
-                  label={dictionary.admin.emailLabel}
-                  error={errors.email?.message}
-                  htmlFor="admin-email"
-                  description={dictionary.admin.emailPlaceholder}
-                >
-                  <Input
-                    id="admin-email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder={dictionary.admin.emailPlaceholder}
-                    aria-invalid={Boolean(errors.email)}
-                    aria-describedby={getFieldDescribedBy('admin-email', errors.email?.message)}
-                    {...form.register('email')}
-                  />
-                </Field>
+                {rootError ? (
+                  <div className="fade-enter rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                    {rootError}
+                  </div>
+                ) : null}
 
-                <Field
-                  label={dictionary.admin.passwordLabel}
-                  error={errors.password?.message}
-                  htmlFor="admin-password"
-                  description={dictionary.admin.passwordPlaceholder}
-                >
-                  <Input
-                    id="admin-password"
-                    type="password"
-                    autoComplete="current-password"
-                    placeholder={dictionary.admin.passwordPlaceholder}
-                    aria-invalid={Boolean(errors.password)}
-                    aria-describedby={getFieldDescribedBy(
-                      'admin-password',
-                      errors.password?.message
-                    )}
-                    {...form.register('password')}
-                  />
-                </Field>
+                <form className="grid gap-4" onSubmit={onSubmit} noValidate>
+                  <Field
+                    label={dictionary.admin.emailLabel}
+                    error={errors.email?.message}
+                    htmlFor="admin-email"
+                    description={dictionary.admin.emailPlaceholder}
+                  >
+                    <Input
+                      id="admin-email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder={dictionary.admin.emailPlaceholder}
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={getFieldDescribedBy('admin-email', errors.email?.message)}
+                      {...form.register('email')}
+                    />
+                  </Field>
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={form.formState.isSubmitting || status === 'loading'}
-                >
-                  {form.formState.isSubmitting
-                    ? dictionary.admin.signingIn
-                    : dictionary.admin.signIn}
-                  <ArrowRight className="size-4" />
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+                  <Field
+                    label={dictionary.admin.passwordLabel}
+                    error={errors.password?.message}
+                    htmlFor="admin-password"
+                    description={dictionary.admin.passwordPlaceholder}
+                  >
+                    <Input
+                      id="admin-password"
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder={dictionary.admin.passwordPlaceholder}
+                      aria-invalid={Boolean(errors.password)}
+                      aria-describedby={getFieldDescribedBy(
+                        'admin-password',
+                        errors.password?.message
+                      )}
+                      {...form.register('password')}
+                    />
+                  </Field>
+
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="mt-1"
+                    disabled={form.formState.isSubmitting || status === 'loading'}
+                  >
+                    {form.formState.isSubmitting
+                      ? dictionary.admin.signingIn
+                      : dictionary.admin.signIn}
+                    <ArrowRight className="size-4" />
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         </main>
 
-        <SiteFooter locale={lang} dictionary={dictionary} navItems={footerNavItems} />
+        <SiteFooter locale={lang} dictionary={dictionary} navItems={[]} />
       </div>
     </div>
   );

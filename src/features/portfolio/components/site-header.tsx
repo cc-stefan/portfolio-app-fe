@@ -49,7 +49,7 @@ export function SiteHeader({
       <div className="container-page">
         <header
           className={cn(
-            'pointer-events-auto surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4',
+            'navbar-glass pointer-events-auto relative overflow-hidden rounded-xl px-3 py-2.5 before:absolute before:inset-x-4 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent)] sm:px-4',
             className
           )}
         >
@@ -58,7 +58,7 @@ export function SiteHeader({
               href={localizeHref(locale, '/')}
               className="group flex min-w-0 items-center gap-3 rounded-lg pr-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary text-sm font-semibold text-primary-foreground shadow-[var(--primary-shadow)] transition-transform duration-200 group-hover:scale-95">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-[linear-gradient(145deg,var(--primary),color-mix(in_oklch,var(--primary)_84%,var(--accent)))] text-sm font-bold text-primary-foreground shadow-[var(--primary-shadow)] transition-transform duration-200 group-hover:rotate-[-3deg] group-hover:scale-95">
                 {dictionary.header.avatarInitials}
               </span>
               <span className="min-w-0">

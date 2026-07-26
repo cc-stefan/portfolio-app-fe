@@ -107,11 +107,11 @@ export async function PortfolioProjectScreen({
               />
             </div>
 
-            <div className="page-enter">
+            <div className="view-reveal">
               <ProjectContent locale={locale} dictionary={dictionary} project={project} />
             </div>
 
-            <div className="page-enter">
+            <div className="view-reveal">
               <ProjectRelated
                 locale={locale}
                 dictionary={dictionary}

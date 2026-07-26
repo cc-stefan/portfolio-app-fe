@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import type { AppLocale } from '../../i18n/routing';
 import { localizeHref } from '../../i18n/routing';
 import type { PortfolioDictionary } from '../../i18n/types';
@@ -16,13 +15,14 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
   return (
     <section
       id="home"
-      className="anchor-target grid gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(22rem,0.96fr)] lg:items-center"
+      className="hero-stage anchor-target grid gap-8 px-4 sm:px-7 lg:grid-cols-[minmax(0,1.04fr)_minmax(23rem,0.96fr)] lg:items-center lg:gap-10 lg:px-10"
     >
-      <div>
-        <h1 className="max-w-5xl text-balance text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
-          {copy.title}
-        </h1>
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">{copy.description}</p>
+      <div className="relative z-10">
+        <p className="section-kicker">{copy.profileSnapshotLabel}</p>
+        <h1 className="display-title mt-5 text-foreground">{copy.title}</h1>
+        <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+          {copy.description}
+        </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
@@ -39,16 +39,14 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
         </div>
       </div>
 
-      <Card className="relative overflow-hidden">
-        <CardContent className="p-0">
-          <div className="accent-rule h-1" />
-          <div className="border-b border-border bg-card/82 px-5 py-4">
+      <div className="hero-console">
+        <div className="hero-console-rail" />
+        <div className="relative">
+          <div className="border-b border-border/80 px-5 py-4 sm:px-6">
             <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {copy.profileSnapshotLabel}
-                </p>
-                <p className="mt-1 text-lg font-semibold text-foreground">
+                <p className="hero-index">{copy.profileSnapshotLabel}</p>
+                <p className="mt-1.5 text-lg font-semibold tracking-[-0.025em] text-foreground">
                   {copy.profileSnapshotTitle}
                 </p>
               </div>
@@ -62,12 +60,10 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
             </div>
           </div>
 
-          <div className="grid gap-4 p-5">
-            <div className="rounded-lg border border-border bg-secondary/70 p-4">
-              <p className="text-sm font-medium text-muted-foreground">
-                {copy.profileSummaryLabel}
-              </p>
-              <p className="mt-3 text-sm leading-7 text-foreground">{copy.profileSummary}</p>
+          <div className="grid gap-4 p-5 sm:p-6">
+            <div className="rounded-lg border border-border/80 bg-secondary/58 p-4 sm:p-5">
+              <p className="hero-index">{copy.profileSummaryLabel}</p>
+              <p className="mt-3 text-sm leading-7 text-foreground/92">{copy.profileSummary}</p>
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -77,9 +73,7 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {copy.metrics.technologies}
-              </p>
+              <p className="hero-index">{copy.metrics.technologies}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {copy.skillHighlights.map((technology) => (
                   <Badge key={technology} variant="outline">
@@ -89,19 +83,17 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   );
 }
 
 function MiniPanel({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card/78 p-4 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        {label}
-      </p>
-      <p className="mt-3 text-sm font-semibold text-foreground">{value}</p>
+    <div className="rounded-lg border border-border/80 bg-card/62 p-4 shadow-sm">
+      <p className="hero-index">{label}</p>
+      <p className="mt-3 text-sm font-semibold leading-6 text-foreground">{value}</p>
     </div>
   );
 }

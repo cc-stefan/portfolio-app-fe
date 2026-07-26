@@ -128,7 +128,7 @@ export function AdminShell({ lang, dictionary, children }: AdminShellProps) {
 
       <div className="safe-header-layer pointer-events-none fixed inset-x-0 top-0 z-40">
         <div className="container-page">
-          <header className="pointer-events-auto page-enter surface-card rounded-lg px-3 py-2.5 shadow-[var(--surface-shadow-lg)] sm:px-4">
+          <header className="navbar-glass pointer-events-auto page-enter rounded-lg px-3 py-2.5 sm:px-4">
             <div className="flex items-center gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <Link

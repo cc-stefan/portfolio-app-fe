@@ -52,15 +52,15 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
           <HomeHero locale={locale} copy={dictionary.home} />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeMetrics copy={dictionary.home} />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeCapabilities copy={dictionary.home} />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeShowcase
             locale={locale}
             dictionary={dictionary}
@@ -69,15 +69,15 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
           />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeProcess copy={dictionary.home} />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeCredentials copy={dictionary.home} />
         </div>
 
-        <div className="page-enter">
+        <div className="view-reveal">
           <HomeInquiry locale={locale} dictionary={dictionary} />
         </div>
       </main>

@@ -46,7 +46,7 @@ export function AdminMobileNavSheet({
           <Menu className="size-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="gap-7" closeLabel={dictionary.admin.closeMenu}>
+      <SheetContent className="mobile-nav-glass gap-7" closeLabel={dictionary.admin.closeMenu}>
         <div className="space-y-2 pr-10">
           <SheetTitle>{dictionary.admin.brand}</SheetTitle>
           <SheetDescription className="sr-only">{dictionary.admin.brand}</SheetDescription>

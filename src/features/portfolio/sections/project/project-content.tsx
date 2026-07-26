@@ -43,42 +43,42 @@ export function ProjectContent({ locale, dictionary, project }: ProjectContentPr
   return (
     <section id="overview" className="anchor-target">
       <div className="section-divider" />
-      <div className="grid gap-8 pt-16 xl:grid-cols-[minmax(0,1.05fr)_22rem]">
+      <div className="grid gap-8 pt-16 xl:grid-cols-[minmax(0,1.2fr)_21rem]">
         <div className="grid gap-6">
-          <Card variant="solid">
-            <CardHeader className="p-6 pb-0 sm:p-8 sm:pb-0">
+          <Card variant="solid" className="overflow-hidden">
+            <CardHeader className="p-5 pb-0 sm:p-6 sm:pb-0">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                 {dictionary.project.overviewTitle}
               </p>
-              <CardTitle as="h2" className="mt-3 text-3xl sm:text-4xl">
+              <CardTitle as="h2" className="mt-3 text-2xl tracking-[-0.04em] sm:text-3xl">
                 {dictionary.project.summaryTitle}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6 sm:p-8">
-              <p className="text-base leading-8 text-foreground/90">{project.summary}</p>
+            <CardContent className="p-5 sm:p-6">
+              <p className="text-base leading-7 text-foreground/90">{project.summary}</p>
             </CardContent>
           </Card>
 
-          <Card variant="solid">
-            <CardHeader className="p-6 pb-0 sm:p-8 sm:pb-0">
+          <Card variant="solid" className="overflow-hidden">
+            <CardHeader className="p-5 pb-0 sm:p-6 sm:pb-0">
               <CardTitle as="h2" className="text-2xl">
                 {dictionary.project.descriptionTitle}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6 sm:p-8">
+            <CardContent className="p-5 sm:p-6">
               {descriptionParagraphs.length > 0 ? (
                 <div className="grid gap-5">
                   {descriptionParagraphs.map((paragraph, index) => (
                     <p
                       key={`${paragraph.slice(0, 24)}-${index}`}
-                      className="text-base leading-8 text-foreground/90"
+                      className="text-base leading-7 text-foreground/90"
                     >
                       {paragraph}
                     </p>
                   ))}
                 </div>
               ) : (
-                <p className="text-base leading-8 text-muted-foreground">
+                <p className="text-base leading-7 text-muted-foreground">
                   {dictionary.project.noDescription}
                 </p>
               )}
@@ -86,7 +86,7 @@ export function ProjectContent({ locale, dictionary, project }: ProjectContentPr
           </Card>
         </div>
 
-        <aside className="grid gap-5">
+        <aside className="grid content-start gap-5 xl:sticky xl:top-28">
           <Card variant="solid">
             <CardContent className="p-5 sm:p-6">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">

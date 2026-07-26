@@ -28,7 +28,7 @@ export function ProjectRelated({
         title={dictionary.project.relatedTitle}
         description={dictionary.project.relatedDescription}
       />
-      <div className="stagger-list mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="stagger-list mt-8 grid gap-6 lg:grid-cols-2">
         {relatedProjects.map((project) => (
           <ProjectCard
             key={project.id}

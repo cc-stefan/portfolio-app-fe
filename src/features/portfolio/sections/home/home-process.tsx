@@ -18,26 +18,24 @@ export function HomeProcess({ copy }: HomeProcessProps) {
             description={copy.processDescription}
             className="lg:sticky lg:top-28"
           />
-          <div className="stagger-list grid gap-4">
+          <div className="process-timeline stagger-list grid gap-3">
             {copy.processCards.map((card, index) => (
-              <Card key={card.title} variant="solid" className="overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="grid gap-0 sm:grid-cols-[8rem_minmax(0,1fr)]">
-                    <div className="border-b border-border bg-secondary/70 p-5 sm:border-b-0 sm:border-r">
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                        {copy.processStepLabel}
-                      </p>
-                      <p className="mt-3 text-3xl font-semibold text-foreground">0{index + 1}</p>
-                    </div>
-                    <div className="p-5 sm:p-6">
-                      <h3 className="text-xl font-semibold text-foreground">{card.title}</h3>
-                      <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                        {card.description}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <div key={card.title} className="process-step">
+                <span className="process-step-index" aria-hidden="true">
+                  {index + 1}
+                </span>
+                <Card variant="solid" className="overflow-hidden">
+                  <CardContent className="p-5">
+                    <p className="hero-index text-primary">{copy.processStepLabel}</p>
+                    <h3 className="mt-2.5 text-lg font-semibold tracking-[-0.02em] text-foreground">
+                      {card.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-6 text-muted-foreground">
+                      {card.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>

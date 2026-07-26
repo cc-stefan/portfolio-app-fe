@@ -14,10 +14,7 @@ export function SheetOverlay({ className, ...props }: React.ComponentProps<typeo
   return (
     <Dialog.Overlay
       data-slot="sheet-overlay"
-      className={cn(
-        'fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-        className
-      )}
+      className={cn('sheet-overlay-motion fixed inset-0 z-50 bg-slate-950/48', className)}
       {...props}
     />
   );
@@ -36,9 +33,7 @@ export function SheetContent({
         data-slot="sheet-content"
         className={cn(
           [
-            'safe-sheet surface-card fixed z-50 flex flex-col overflow-y-auto rounded-lg p-5',
-            'data-[state=closed]:animate-out data-[state=open]:animate-in',
-            'data-[state=closed]:slide-out-to-right-8 data-[state=open]:slide-in-from-right-8',
+            'safe-sheet sheet-panel-motion fixed z-50 flex flex-col overflow-y-auto rounded-xl border border-border p-5 shadow-[var(--surface-shadow-lg)]',
           ],
           className
         )}

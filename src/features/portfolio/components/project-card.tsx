@@ -50,7 +50,7 @@ export function ProjectCard({
               fill
               unoptimized
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.035]"
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,var(--surface-muted),var(--card))] px-8 text-center">
@@ -74,11 +74,11 @@ export function ProjectCard({
       <CardContent className="flex flex-1 flex-col p-5">
         <Link
           href={projectHref}
-          className="text-xl font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+          className="text-xl font-semibold tracking-[-0.025em] text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
         >
           {project.title}
         </Link>
-        <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 line-clamp-3 max-w-xl text-sm leading-7 text-muted-foreground">
           {project.summary}
         </p>
 

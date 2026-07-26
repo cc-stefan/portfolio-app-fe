@@ -64,7 +64,7 @@ export function MobileNavSheet({
           <Menu className="size-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="gap-7" closeLabel={closeLabel}>
+      <SheetContent className="mobile-nav-glass gap-7" closeLabel={closeLabel}>
         <div className="space-y-2 pr-10">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

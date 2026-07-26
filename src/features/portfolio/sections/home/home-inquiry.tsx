@@ -15,14 +15,14 @@ export function HomeInquiry({ locale, dictionary }: HomeInquiryProps) {
     <section id="contact" className="anchor-target">
       <div className="section-divider" />
       <div className="pt-18 sm:pt-24">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start">
-          <div className="lg:sticky lg:top-28">
+        <div className="contact-stage grid gap-7 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start lg:p-8">
+          <div className="contact-sticky-panel lg:sticky lg:top-28">
             <SectionIntro
               label={dictionary.home.inquiryLabel}
               title={dictionary.home.inquiryTitle}
               description={dictionary.home.inquiryDescription}
             />
-            <Card variant="muted" className="mt-8">
+            <Card variant="muted" className="mt-6 bg-card/54">
               <CardContent className="grid gap-4 p-5">
                 {dictionary.home.inquiryHighlights.map((item) => (
                   <div key={item.title} className="flex gap-3">
@@ -50,8 +50,8 @@ export function HomeInquiry({ locale, dictionary }: HomeInquiryProps) {
             </Card>
           </div>
 
-          <Card variant="solid">
-            <CardContent className="p-5 sm:p-6 lg:p-8">
+          <Card variant="solid" className="bg-card/88">
+            <CardContent className="p-5 sm:p-6">
               <InquiryForm locale={locale} copy={dictionary.inquiryForm} />
             </CardContent>
           </Card>
