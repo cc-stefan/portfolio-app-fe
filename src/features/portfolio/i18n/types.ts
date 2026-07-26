@@ -477,5 +477,6 @@ export interface PortfolioDictionary {
     technologies: string;
     noTechnologies: string;
     skipToContent: string;
+    scrollToTop: string;
   };
 }

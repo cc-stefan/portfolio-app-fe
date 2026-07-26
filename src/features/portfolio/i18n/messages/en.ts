@@ -579,5 +579,6 @@ export const dictionary: PortfolioDictionary = {
     technologies: 'Technologies',
     noTechnologies: 'No technologies listed yet',
     skipToContent: 'Skip to main content',
+    scrollToTop: 'Scroll to top',
   },
 };

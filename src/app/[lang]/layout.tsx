@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { AdminAuthProvider } from '@/features/admin/auth/admin-auth-provider';
+import { ScrollToTopButton } from '@/features/portfolio/components/scroll-to-top-button';
 import { getDictionary } from '@/features/portfolio/i18n/dictionaries';
 import { appLocales, localeTags } from '@/features/portfolio/i18n/routing';
 import { getSiteUrl } from '@/features/seo/lib/site-url';
@@ -138,6 +139,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 {dictionary.common.skipToContent}
               </a>
               <div className="min-h-full">{children}</div>
+              <ScrollToTopButton label={dictionary.common.scrollToTop} />
               <Toaster position="top-right" richColors closeButton />
             </AdminAuthProvider>
           </ThemeProvider>

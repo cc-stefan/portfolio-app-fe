@@ -592,5 +592,6 @@ export const dictionary: PortfolioDictionary = {
     technologies: 'Tehnologii',
     noTechnologies: 'Nicio tehnologie listată momentan',
     skipToContent: 'Sari la conținutul principal',
+    scrollToTop: 'Înapoi sus',
   },
 };
