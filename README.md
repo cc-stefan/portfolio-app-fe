@@ -13,6 +13,7 @@ Next.js 16 frontend for the portfolio app. The current frontend is a server-rend
 - Schema.org JSON-LD for the portfolio profile and project detail pages
 - admin authentication against the backend JWT API
 - admin dashboard
+- admin-managed collaboration availability and optional return date
 - admin project management
 - admin inquiry management
 - theme switching
@@ -158,6 +159,7 @@ Romanian-prefixed admin routes also exist, for example:
 
 The portfolio pages fetch from the backend:
 
+- `GET /api/availability`
 - `GET /api/projects?locale=<locale>`
 - `GET /api/projects/:slug?locale=<locale>`
 
@@ -175,6 +177,7 @@ The admin UI uses the backend auth and admin APIs:
 
 - login, refresh, logout, and `me`
 - admin dashboard
+- collaboration availability
 - admin project CRUD
 - admin project image upload/remove
 - admin inquiry CRUD-style workflow

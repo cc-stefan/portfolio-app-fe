@@ -2,16 +2,21 @@ import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { AppLocale } from '../../i18n/routing';
-import { localizeHref } from '../../i18n/routing';
+import { localeTags, localizeHref } from '../../i18n/routing';
 import type { PortfolioDictionary } from '../../i18n/types';
+import type { PortfolioAvailability } from '../../model/types';
 import { SectionScrollLink } from '../../components/section-scroll-link';
 
 interface HomeHeroProps {
   locale: AppLocale;
   copy: PortfolioDictionary['home'];
+  availability: PortfolioAvailability;
 }
 
-export function HomeHero({ locale, copy }: HomeHeroProps) {
+export function HomeHero({ locale, copy, availability }: HomeHeroProps) {
+  const isAvailable = availability.availableForCollaboration;
+  const availableFrom = formatAvailabilityDate(availability.availableFrom, locale);
+
   return (
     <section
       id="home"
@@ -44,19 +49,25 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
         <div className="relative">
           <div className="border-b border-border/80 px-5 py-4 sm:px-6">
             <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="hero-index">{copy.profileSnapshotLabel}</p>
-                <p className="mt-1.5 text-lg font-semibold tracking-[-0.025em] text-foreground">
-                  {copy.profileSnapshotTitle}
-                </p>
+              <p className="text-lg font-semibold tracking-[-0.025em] text-foreground">
+                {copy.profileSnapshotTitle}
+              </p>
+              <div className="max-w-full sm:text-right" aria-live="polite">
+                <Badge
+                  variant={isAvailable ? 'success' : 'warning'}
+                  className="hero-availability-badge justify-center px-3.5 py-1.5 text-center font-semibold tracking-[0.16em]"
+                >
+                  <span className="hero-availability-dot" aria-hidden="true" />
+                  <span className="min-w-0">
+                    {isAvailable ? copy.profileSnapshotBadge : copy.profileSnapshotUnavailableBadge}
+                  </span>
+                </Badge>
+                {!isAvailable && availableFrom ? (
+                  <p className="mt-2 max-w-xs text-xs leading-5 text-muted-foreground sm:ml-auto">
+                    {copy.profileSnapshotReachOutFrom.replace('{date}', availableFrom)}
+                  </p>
+                ) : null}
               </div>
-              <Badge
-                variant="success"
-                className="hero-availability-badge justify-center self-start px-3.5 py-1.5 text-center font-semibold tracking-[0.16em] sm:self-auto"
-              >
-                <span className="hero-availability-dot" aria-hidden="true" />
-                <span className="min-w-0">{copy.profileSnapshotBadge}</span>
-              </Badge>
             </div>
           </div>
 
@@ -87,6 +98,25 @@ export function HomeHero({ locale, copy }: HomeHeroProps) {
       </div>
     </section>
   );
+}
+
+function formatAvailabilityDate(value: string | null, locale: AppLocale) {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(`${value}T00:00:00.000Z`);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat(localeTags[locale], {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
 }
 
 function MiniPanel({ label, value }: { label: string; value: string }) {

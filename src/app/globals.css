@@ -650,6 +650,8 @@
   .process-timeline {
     position: relative;
     --process-step-gap: 0.75rem;
+    overflow: visible;
+    padding-inline: 0.5rem 0.125rem;
   }
 
   .process-step::before,

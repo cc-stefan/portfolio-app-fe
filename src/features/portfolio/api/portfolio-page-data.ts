@@ -1,11 +1,17 @@
 import 'server-only';
-import { getPortfolioApiOrigin, getProjectBySlug, getPublishedProjects } from './portfolio-api';
+import {
+  getAvailability,
+  getPortfolioApiOrigin,
+  getProjectBySlug,
+  getPublishedProjects,
+} from './portfolio-api';
 import { getRelatedProjects } from '../lib/portfolio-selectors';
 import type { AppLocale } from '../i18n/routing';
 import type { ApiResult, PortfolioProject } from '../model/types';
 
 export interface PortfolioHomePageData {
   projectsResult: Awaited<ReturnType<typeof getPublishedProjects>>;
+  availabilityResult: Awaited<ReturnType<typeof getAvailability>>;
   apiOrigin: string;
 }
 
@@ -16,10 +22,14 @@ export interface PortfolioProjectPageData {
 }
 
 export async function getPortfolioHomePageData(locale: AppLocale): Promise<PortfolioHomePageData> {
-  const projectsResult = await getPublishedProjects(locale);
+  const [projectsResult, availabilityResult] = await Promise.all([
+    getPublishedProjects(locale),
+    getAvailability(),
+  ]);
 
   return {
     projectsResult,
+    availabilityResult,
     apiOrigin: getPortfolioApiOrigin(),
   };
 }

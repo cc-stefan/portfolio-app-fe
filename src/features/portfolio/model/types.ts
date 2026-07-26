@@ -32,6 +32,12 @@ export interface PortfolioProject {
   updatedAt: string;
 }
 
+export interface PortfolioAvailability {
+  availableForCollaboration: boolean;
+  availableFrom: string | null;
+  updatedAt: string;
+}
+
 export interface ApiResult<T> {
   ok: boolean;
   status: number | null;

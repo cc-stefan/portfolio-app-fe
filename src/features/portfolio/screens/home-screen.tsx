@@ -20,9 +20,14 @@ interface PortfolioHomeScreenProps {
 }
 
 export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeScreenProps) {
-  const { projectsResult, apiOrigin } = await getPortfolioHomePageData(locale);
+  const { projectsResult, availabilityResult, apiOrigin } = await getPortfolioHomePageData(locale);
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
   const projects = projectsResult.data ?? [];
+  const availability = availabilityResult.data ?? {
+    availableForCollaboration: true,
+    availableFrom: null,
+    updatedAt: '',
+  };
 
   return (
     <SiteShell
@@ -49,7 +54,7 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
         className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-clip pb-4 pt-[var(--main-content-offset)] sm:gap-24"
       >
         <div className="page-enter">
-          <HomeHero locale={locale} copy={dictionary.home} />
+          <HomeHero locale={locale} copy={dictionary.home} availability={availability} />
         </div>
 
         <div className="view-reveal">

@@ -56,6 +56,8 @@ export interface PortfolioDictionary {
     profileSnapshotLabel: string;
     profileSnapshotTitle: string;
     profileSnapshotBadge: string;
+    profileSnapshotUnavailableBadge: string;
+    profileSnapshotReachOutFrom: string;
     profileSummaryLabel: string;
     profileSummary: string;
     profilePanels: Array<{
@@ -177,6 +179,18 @@ export interface PortfolioDictionary {
     dashboardDescription: string;
     dashboardLoadErrorTitle: string;
     dashboardLoadErrorDescription: string;
+    availability: {
+      title: string;
+      description: string;
+      toggleDescription: string;
+      dateLabel: string;
+      dateDescription: string;
+      saveAction: string;
+      savingAction: string;
+      saved: string;
+      loadError: string;
+      saveError: string;
+    };
     dashboardGroups: {
       projectsTitle: string;
       projectsDescription: string;

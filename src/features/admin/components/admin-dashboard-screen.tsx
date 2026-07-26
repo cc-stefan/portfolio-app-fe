@@ -24,6 +24,7 @@ import { resolveProjectImageUrl } from '../lib/project-form';
 import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
 import type { AdminDashboardResponse, AdminInquiry } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminAvailabilityCard } from './admin-availability-card';
 import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminDashboardScreenProps {
@@ -270,6 +271,8 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
           {user?.email ? <Badge variant="neutral">{user.email}</Badge> : null}
         </div>
       </section>
+
+      <AdminAvailabilityCard dictionary={dictionary} />
 
       <section className="page-enter grid gap-4 xl:grid-cols-3">
         <SummaryPanel

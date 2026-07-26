@@ -81,6 +81,8 @@ export const dictionary: PortfolioDictionary = {
     profileSnapshotLabel: 'At a glance',
     profileSnapshotTitle: 'Production-Ready Interfaces',
     profileSnapshotBadge: 'Available for Collaboration',
+    profileSnapshotUnavailableBadge: 'Currently Unavailable',
+    profileSnapshotReachOutFrom: 'Reach out again from {date}',
     profileSummaryLabel: 'Where I add value',
     profileSummary:
       'Strong fit for products that need clear frontend structure, durable implementation, and interfaces that stay maintainable as requirements evolve.',
@@ -185,7 +187,7 @@ export const dictionary: PortfolioDictionary = {
       'I’m open to frontend roles, product engineering work, and contract projects where performance, clarity, and reliable delivery matter.',
     inquiryHighlights: [
       {
-        title: 'Contact',
+        title: 'Email',
         description: 'cc.stefan@icloud.com',
         href: 'mailto:cc.stefan@icloud.com',
       },
@@ -270,6 +272,18 @@ export const dictionary: PortfolioDictionary = {
     dashboardDescription: 'See your projects, new messages, and user access in one place.',
     dashboardLoadErrorTitle: 'Dashboard unavailable',
     dashboardLoadErrorDescription: 'The dashboard could not be loaded at the moment.',
+    availability: {
+      title: 'Client availability',
+      description: 'Let visitors know whether you are open to new work.',
+      toggleDescription: 'Turn this on when visitors can contact you about a new project.',
+      dateLabel: 'Available again from',
+      dateDescription: 'Optional. Visitors will see this date while you are unavailable.',
+      saveAction: 'Save availability',
+      savingAction: 'Saving...',
+      saved: 'Availability updated',
+      loadError: 'Your availability could not be loaded.',
+      saveError: 'Your availability could not be saved.',
+    },
     dashboardGroups: {
       projectsTitle: 'Projects',
       projectsDescription: 'See how many projects are published, featured, or still in draft.',

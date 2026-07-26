@@ -2,7 +2,12 @@ import 'server-only';
 import { cache } from 'react';
 import { buildBackendApiUrl, getBackendApiBaseUrl, getPublicBackendOrigin } from '@/lib/backend';
 import type { AppLocale } from '../i18n/routing';
-import type { ApiResult, PortfolioHealth, PortfolioProject } from '../model/types';
+import type {
+  ApiResult,
+  PortfolioAvailability,
+  PortfolioHealth,
+  PortfolioProject,
+} from '../model/types';
 
 class PortfolioApiRequestError extends Error {
   constructor(
@@ -87,6 +92,10 @@ async function safeRequest<T>(path: string): Promise<ApiResult<T>> {
 export function getBackendHealth() {
   return safeRequest<PortfolioHealth>('/health');
 }
+
+export const getAvailability = cache(function getAvailability() {
+  return safeRequest<PortfolioAvailability>('/availability');
+});
 
 export const getPublishedProjects = cache(function getPublishedProjects(locale: AppLocale) {
   return safeRequest<PortfolioProject[]>(appendLocale('/projects', locale));

@@ -80,6 +80,8 @@ export const dictionary: PortfolioDictionary = {
     profileSnapshotLabel: 'Pe scurt',
     profileSnapshotTitle: 'Interfețe gata de producție',
     profileSnapshotBadge: 'Disponibil pentru colaborări',
+    profileSnapshotUnavailableBadge: 'Momentan indisponibil',
+    profileSnapshotReachOutFrom: 'Mă poți contacta din nou începând cu {date}',
     profileSummaryLabel: 'Unde aduc valoare',
     profileSummary:
       'Sunt potrivit pentru produse care au nevoie de structură frontend clară, implementare durabilă și interfețe care rămân ușor de întreținut pe măsură ce cerințele evoluează.',
@@ -187,7 +189,7 @@ export const dictionary: PortfolioDictionary = {
       'Sunt deschis la roluri de frontend, proiecte de product engineering și colaborări contractuale în care contează performanța, claritatea și livrarea fiabilă.',
     inquiryHighlights: [
       {
-        title: 'Contact',
+        title: 'Email',
         description: 'cc.stefan@icloud.com',
         href: 'mailto:cc.stefan@icloud.com',
       },
@@ -272,6 +274,18 @@ export const dictionary: PortfolioDictionary = {
     dashboardDescription: 'Vezi proiectele, mesajele noi și accesul într-un singur loc.',
     dashboardLoadErrorTitle: 'Panoul nu este disponibil',
     dashboardLoadErrorDescription: 'Panoul nu a putut fi încărcat în acest moment.',
+    availability: {
+      title: 'Disponibilitate pentru clienți',
+      description: 'Spune-le vizitatorilor dacă ești deschis la proiecte noi.',
+      toggleDescription: 'Activează opțiunea când poți fi contactat pentru un proiect nou.',
+      dateLabel: 'Disponibil din nou începând cu',
+      dateDescription: 'Opțional. Vizitatorii vor vedea această dată cât timp nu ești disponibil.',
+      saveAction: 'Salvează disponibilitatea',
+      savingAction: 'Se salvează...',
+      saved: 'Disponibilitatea a fost actualizată',
+      loadError: 'Disponibilitatea nu a putut fi încărcată.',
+      saveError: 'Disponibilitatea nu a putut fi salvată.',
+    },
     dashboardGroups: {
       projectsTitle: 'Proiecte',
       projectsDescription: 'Vezi câte proiecte sunt publicate, recomandate sau încă în lucru.',
