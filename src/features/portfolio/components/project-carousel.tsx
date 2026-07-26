@@ -110,8 +110,17 @@ export function ProjectCarousel({
       return;
     }
 
+    const scrollPaddingStart =
+      Number.parseFloat(window.getComputedStyle(track).scrollPaddingInlineStart) || 0;
+
     track.scrollTo({
-      left: Math.min(target.offsetLeft - track.offsetLeft, track.scrollWidth - track.clientWidth),
+      left: Math.max(
+        0,
+        Math.min(
+          target.offsetLeft - track.offsetLeft - scrollPaddingStart,
+          track.scrollWidth - track.clientWidth
+        )
+      ),
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     });
     setActivePage(targetPage);

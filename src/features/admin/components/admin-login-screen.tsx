@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, type Resolver } from 'react-hook-form';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,6 +32,7 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
   const searchParams = useSearchParams();
   const { clearAccessDenied, login, status } = useAdminAuth();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const resolver = useMemo(
     () =>
       zodResolver(
@@ -154,18 +155,38 @@ export function AdminLoginScreen({ lang, dictionary }: AdminLoginScreenProps) {
                     htmlFor="admin-password"
                     description={dictionary.admin.passwordPlaceholder}
                   >
-                    <Input
-                      id="admin-password"
-                      type="password"
-                      autoComplete="current-password"
-                      placeholder={dictionary.admin.passwordPlaceholder}
-                      aria-invalid={Boolean(errors.password)}
-                      aria-describedby={getFieldDescribedBy(
-                        'admin-password',
-                        errors.password?.message
-                      )}
-                      {...form.register('password')}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="admin-password"
+                        type={passwordVisible ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        placeholder={dictionary.admin.passwordPlaceholder}
+                        className="pr-12"
+                        aria-invalid={Boolean(errors.password)}
+                        aria-describedby={getFieldDescribedBy(
+                          'admin-password',
+                          errors.password?.message
+                        )}
+                        {...form.register('password')}
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 inline-flex w-11 items-center justify-center rounded-r-lg text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-ring/45"
+                        aria-label={
+                          passwordVisible
+                            ? dictionary.admin.hidePassword
+                            : dictionary.admin.showPassword
+                        }
+                        aria-pressed={passwordVisible}
+                        onClick={() => setPasswordVisible((currentValue) => !currentValue)}
+                      >
+                        {passwordVisible ? (
+                          <EyeOff className="size-4.5" aria-hidden="true" />
+                        ) : (
+                          <Eye className="size-4.5" aria-hidden="true" />
+                        )}
+                      </button>
+                    </div>
                   </Field>
 
                   <Button

@@ -266,6 +266,8 @@ export const dictionary: PortfolioDictionary = {
     passwordLabel: 'Password',
     passwordPlaceholder: 'Enter your password',
     passwordValidation: 'Enter your password.',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
     signIn: 'Sign in',
     signingIn: 'Signing in...',
     unableToSignIn: 'Unable to sign in',

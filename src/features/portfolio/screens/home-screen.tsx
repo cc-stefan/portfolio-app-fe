@@ -78,7 +78,7 @@ export async function PortfolioHomeScreen({
       <JsonLd data={getHomeStructuredData(locale, dictionary)} />
       <main
         id="main-content"
-        className="flex min-w-0 w-full flex-1 flex-col gap-18 overflow-x-clip pb-4 pt-[var(--main-content-offset)] sm:gap-24"
+        className="flex min-w-0 w-full flex-1 flex-col gap-18 pb-4 pt-[var(--main-content-offset)] sm:gap-24"
       >
         <div className="page-enter">
           <HomeHero locale={locale} copy={dictionary.home} availability={availability} />

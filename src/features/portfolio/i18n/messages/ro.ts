@@ -268,6 +268,8 @@ export const dictionary: PortfolioDictionary = {
     passwordLabel: 'Parolă',
     passwordPlaceholder: 'Introdu parola',
     passwordValidation: 'Introdu parola.',
+    showPassword: 'Afișează parola',
+    hidePassword: 'Ascunde parola',
     signIn: 'Autentificare',
     signingIn: 'Se autentifică...',
     unableToSignIn: 'Autentificarea a eșuat',

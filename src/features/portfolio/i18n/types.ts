@@ -173,6 +173,8 @@ export interface PortfolioDictionary {
     passwordLabel: string;
     passwordPlaceholder: string;
     passwordValidation: string;
+    showPassword: string;
+    hidePassword: string;
     signIn: string;
     signingIn: string;
     unableToSignIn: string;
