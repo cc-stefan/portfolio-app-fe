@@ -1,29 +1,16 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight, ImagePlus, RefreshCcw, Trash2, X } from 'lucide-react';
+import { ArrowLeft, RefreshCcw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 import { StateCard } from '@/features/portfolio/components/state-card';
-import {
-  appLocales,
-  defaultLocale,
-  localizeHref,
-  type AppLocale,
-} from '@/features/portfolio/i18n/routing';
+import { defaultLocale, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
 import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
 import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
-import { cn } from '@/lib/utils';
 import { useAdminAuth } from '../auth/use-admin-auth';
 import {
   getBackendFieldErrors,
@@ -36,8 +23,9 @@ import {
   buildUpdateProjectPayload,
   createEmptyProjectFormValues,
   createProjectFormValues,
-  getProjectFileValidationError,
+  getFirstInvalidProjectLocale,
   getLocalizedProjectFieldPath,
+  getProjectFileValidationError,
   isUploadedProjectImage,
   resolveProjectImageUrl,
   validateProjectForm,
@@ -50,6 +38,8 @@ import type {
   ProjectLocalizedFieldName,
 } from '../model/types';
 import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
+import { AdminProjectForm } from './admin-project-form';
+import { AdminProjectImagePanel } from './admin-project-image-panel';
 
 interface AdminProjectEditorScreenProps {
   lang: AppLocale;
@@ -67,24 +57,6 @@ const projectErrorFieldByFormField: Partial<
   technologies: 'technologies',
   displayOrder: 'displayOrder',
 };
-
-function getLocalizedFieldError(
-  fieldErrors: ProjectFieldErrors,
-  locale: AppLocale,
-  field: ProjectLocalizedFieldName
-) {
-  return fieldErrors[getLocalizedProjectFieldPath(locale, field)];
-}
-
-function localeHasErrors(fieldErrors: ProjectFieldErrors, locale: AppLocale) {
-  const prefix = `translations.${locale}.`;
-
-  return Object.keys(fieldErrors).some((field) => field.startsWith(prefix));
-}
-
-function getFirstInvalidLocale(fieldErrors: ProjectFieldErrors) {
-  return appLocales.find((locale) => localeHasErrors(fieldErrors, locale));
-}
 
 export function AdminProjectEditorScreen({
   lang,
@@ -242,13 +214,6 @@ export function AdminProjectEditorScreen({
     );
   }
 
-  function handleTechnologyKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter' || event.key === ',') {
-      event.preventDefault();
-      addTechnology();
-    }
-  }
-
   function replaceSelectedFile(file: File | null) {
     setSelectedFile(file);
     setSelectedImagePreviewUrl((currentPreviewUrl) => {
@@ -258,6 +223,11 @@ export function AdminProjectEditorScreen({
 
       return file ? URL.createObjectURL(file) : null;
     });
+  }
+
+  function handleSelectedFileChange(file: File | null) {
+    replaceSelectedFile(file);
+    setFileError(getProjectFileValidationError(file, copy));
   }
 
   async function handleUploadImage() {
@@ -307,13 +277,13 @@ export function AdminProjectEditorScreen({
     setUploading(false);
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const validationErrors = validateProjectForm(formValues, copy);
 
     if (Object.keys(validationErrors).length > 0) {
       setFieldErrors(validationErrors);
-      const firstInvalidLocale = getFirstInvalidLocale(validationErrors);
+      const firstInvalidLocale = getFirstInvalidProjectLocale(validationErrors);
 
       if (firstInvalidLocale) {
         setActiveLocale(firstInvalidLocale);
@@ -353,7 +323,9 @@ export function AdminProjectEditorScreen({
 
       if (Object.keys(nextFieldErrors).length > 0) {
         setFieldErrors(nextFieldErrors as ProjectFieldErrors);
-        const firstInvalidLocale = getFirstInvalidLocale(nextFieldErrors as ProjectFieldErrors);
+        const firstInvalidLocale = getFirstInvalidProjectLocale(
+          nextFieldErrors as ProjectFieldErrors
+        );
 
         if (firstInvalidLocale) {
           setActiveLocale(firstInvalidLocale);
@@ -552,434 +524,45 @@ export function AdminProjectEditorScreen({
       ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <Card variant="solid" className="page-enter">
-          <CardContent className="p-5 sm:p-6 lg:p-8">
-            <form className="grid gap-8" onSubmit={handleSubmit} noValidate>
-              <section className="grid gap-5">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    {copy.coreFieldsLabel}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {copy.coreFieldsDescription}
-                  </p>
-                </div>
-                <Tabs
-                  value={activeLocale}
-                  onValueChange={(value) => setActiveLocale(value as AppLocale)}
-                  className="grid gap-4"
-                >
-                  <TabsList className="w-full sm:w-auto">
-                    {appLocales.map((locale) => (
-                      <TabsTrigger
-                        key={locale}
-                        value={locale}
-                        className={cn(
-                          localeHasErrors(fieldErrors, locale) &&
-                            'text-destructive data-[state=active]:text-destructive'
-                        )}
-                      >
-                        {dictionary.localeNames[locale]}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
+        <AdminProjectForm
+          copy={copy}
+          localeNames={dictionary.localeNames}
+          formValues={formValues}
+          fieldErrors={fieldErrors}
+          activeLocale={activeLocale}
+          technologyInput={technologyInput}
+          isEditing={isEditing}
+          saving={saving}
+          uploading={uploading}
+          onActiveLocaleChange={setActiveLocale}
+          onTechnologyInputChange={setTechnologyInput}
+          onAddTechnology={addTechnology}
+          onRemoveTechnology={removeTechnology}
+          onFieldChange={updateField}
+          onLocalizedFieldChange={updateLocalizedField}
+          onSubmit={handleSubmit}
+        />
 
-                  {appLocales.map((locale) => {
-                    const titleError = getLocalizedFieldError(fieldErrors, locale, 'title');
-                    const summaryError = getLocalizedFieldError(fieldErrors, locale, 'summary');
-                    const descriptionError = getLocalizedFieldError(
-                      fieldErrors,
-                      locale,
-                      'description'
-                    );
-
-                    return (
-                      <TabsContent key={locale} value={locale} className="mt-0">
-                        <div className="grid gap-4">
-                          <div className="grid gap-4 md:grid-cols-2">
-                            <Field
-                              label={copy.titleFieldLabel}
-                              error={titleError}
-                              description={copy.titleFieldDescription}
-                            >
-                              <Input
-                                value={formValues.translations[locale].title}
-                                onChange={(event) =>
-                                  updateLocalizedField(locale, 'title', event.target.value)
-                                }
-                                placeholder={copy.titleFieldPlaceholder}
-                                aria-invalid={Boolean(titleError)}
-                              />
-                            </Field>
-                            <Field
-                              label={copy.slugFieldLabel}
-                              error={fieldErrors.slug}
-                              description={copy.slugFieldDescription}
-                            >
-                              <Input
-                                value={formValues.slug}
-                                onChange={(event) => updateField('slug', event.target.value)}
-                                placeholder={copy.slugFieldPlaceholder}
-                                aria-invalid={Boolean(fieldErrors.slug)}
-                              />
-                            </Field>
-                          </div>
-
-                          <Field
-                            label={copy.summaryFieldLabel}
-                            error={summaryError}
-                            description={copy.summaryFieldDescription}
-                          >
-                            <Textarea
-                              value={formValues.translations[locale].summary}
-                              onChange={(event) =>
-                                updateLocalizedField(locale, 'summary', event.target.value)
-                              }
-                              placeholder={copy.summaryFieldPlaceholder}
-                              className="min-h-28"
-                              aria-invalid={Boolean(summaryError)}
-                            />
-                          </Field>
-
-                          <Field
-                            label={copy.descriptionFieldLabel}
-                            error={descriptionError}
-                            description={copy.descriptionFieldDescription}
-                          >
-                            <Textarea
-                              value={formValues.translations[locale].description}
-                              onChange={(event) =>
-                                updateLocalizedField(locale, 'description', event.target.value)
-                              }
-                              placeholder={copy.descriptionFieldPlaceholder}
-                              className="min-h-44"
-                              aria-invalid={Boolean(descriptionError)}
-                            />
-                          </Field>
-                        </div>
-                      </TabsContent>
-                    );
-                  })}
-                </Tabs>
-              </section>
-
-              <section className="grid gap-5 border-t border-border pt-8">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    {copy.linksSectionLabel}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {copy.linksSectionDescription}
-                  </p>
-                </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field
-                    label={copy.projectDateFieldLabel}
-                    error={fieldErrors.projectDate}
-                    description={copy.projectDateFieldDescription}
-                  >
-                    <Input
-                      type="date"
-                      value={formValues.projectDate}
-                      onChange={(event) => updateField('projectDate', event.target.value)}
-                      aria-invalid={Boolean(fieldErrors.projectDate)}
-                    />
-                  </Field>
-                  <Field
-                    label={copy.liveUrlFieldLabel}
-                    error={fieldErrors.liveUrl}
-                    description={copy.liveUrlFieldDescription}
-                  >
-                    <Input
-                      value={formValues.liveUrl}
-                      onChange={(event) => updateField('liveUrl', event.target.value)}
-                      placeholder={copy.liveUrlFieldPlaceholder}
-                      aria-invalid={Boolean(fieldErrors.liveUrl)}
-                    />
-                  </Field>
-                </div>
-                <Field
-                  label={copy.repositoryUrlFieldLabel}
-                  error={fieldErrors.repositoryUrl}
-                  description={copy.repositoryUrlFieldDescription}
-                >
-                  <Input
-                    value={formValues.repositoryUrl}
-                    onChange={(event) => updateField('repositoryUrl', event.target.value)}
-                    placeholder={copy.repositoryUrlFieldPlaceholder}
-                    aria-invalid={Boolean(fieldErrors.repositoryUrl)}
-                  />
-                </Field>
-              </section>
-
-              <section className="grid gap-5 border-t border-border pt-8">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    {copy.technologiesSectionLabel}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {copy.technologiesSectionDescription}
-                  </p>
-                </div>
-                <Field
-                  label={copy.technologyListLabel}
-                  error={fieldErrors.technologies}
-                  description={copy.technologyListDescription}
-                >
-                  <div className="flex flex-col gap-3">
-                    <div className="flex gap-2">
-                      <Input
-                        value={technologyInput}
-                        onChange={(event) => setTechnologyInput(event.target.value)}
-                        onKeyDown={handleTechnologyKeyDown}
-                        placeholder={copy.technologyInputPlaceholder}
-                      />
-                      <Button type="button" variant="outline" onClick={addTechnology}>
-                        {copy.addTechnologyAction}
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {formValues.technologies.length > 0 ? (
-                        formValues.technologies.map((technology) => (
-                          <button
-                            key={technology}
-                            type="button"
-                            className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted"
-                            onClick={() => removeTechnology(technology)}
-                          >
-                            {technology}
-                            <X className="size-3.5" />
-                          </button>
-                        ))
-                      ) : (
-                        <p className="text-sm text-muted-foreground">{copy.noTechnologiesAdded}</p>
-                      )}
-                    </div>
-                  </div>
-                </Field>
-              </section>
-
-              <section className="grid gap-5 border-t border-border pt-8">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                    {copy.publishingSectionLabel}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {copy.publishingSectionDescription}
-                  </p>
-                </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <ToggleField
-                    label={copy.publishedFieldLabel}
-                    description={copy.publishedFieldDescription}
-                    checked={formValues.published}
-                    onCheckedChange={(checked) => updateField('published', checked)}
-                  />
-                  <ToggleField
-                    label={copy.featuredFieldLabel}
-                    description={copy.featuredFieldDescription}
-                    checked={formValues.featured}
-                    onCheckedChange={(checked) => updateField('featured', checked)}
-                  />
-                </div>
-                <Field
-                  label={copy.displayOrderFieldLabel}
-                  error={fieldErrors.displayOrder}
-                  description={copy.displayOrderFieldDescription}
-                >
-                  <Input
-                    value={formValues.displayOrder}
-                    onChange={(event) => updateField('displayOrder', event.target.value)}
-                    inputMode="numeric"
-                    placeholder={copy.displayOrderFieldPlaceholder}
-                    aria-invalid={Boolean(fieldErrors.displayOrder)}
-                  />
-                </Field>
-              </section>
-
-              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-8">
-                <p className="text-sm leading-6 text-muted-foreground">{copy.payloadHint}</p>
-                <Button type="submit" size="lg" disabled={saving || uploading}>
-                  {saving
-                    ? isEditing
-                      ? copy.savingProjectAction
-                      : copy.creatingProjectAction
-                    : isEditing
-                      ? copy.saveChangesAction
-                      : copy.createProjectAction}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-
-        <div className="page-enter grid gap-6">
-          <Card variant="solid" className="overflow-hidden">
-            <CardHeader>
-              <CardTitle>{copy.imageTitle}</CardTitle>
-              <CardDescription>{copy.imageDescription}</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
-                {previewImageUrl ? (
-                  <Image
-                    src={previewImageUrl}
-                    alt={previewImageAlt}
-                    fill
-                    unoptimized
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-                    {copy.noImageUploaded}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {formValues.published ? (
-                  <Badge variant="success">{dictionary.admin.published}</Badge>
-                ) : (
-                  <Badge variant="warning">{dictionary.admin.draft}</Badge>
-                )}
-                {formValues.featured ? (
-                  <Badge variant="featured">{dictionary.admin.featured}</Badge>
-                ) : null}
-                {selectedFile ? (
-                  <Badge variant="outline">{copy.pendingUploadBadge}</Badge>
-                ) : usesUploadedImage ? (
-                  <Badge variant="outline">{copy.uploadedImageBadge}</Badge>
-                ) : null}
-              </div>
-
-              <Field
-                label={copy.uploadFieldLabel}
-                error={fileError ?? undefined}
-                description={copy.uploadFieldDescription}
-              >
-                <label
-                  className={cn(
-                    'flex items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-4 text-sm font-medium transition-colors',
-                    isEditing
-                      ? 'cursor-pointer bg-secondary text-foreground hover:bg-muted'
-                      : 'cursor-not-allowed bg-secondary/70 text-muted-foreground'
-                  )}
-                >
-                  <ImagePlus className="size-4" />
-                  {selectedFile ? selectedFile.name : copy.chooseImageAction}
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
-                    className="sr-only"
-                    disabled={!isEditing || uploading}
-                    onChange={(event) => {
-                      const file = event.target.files?.[0] ?? null;
-                      replaceSelectedFile(file);
-                      setFileError(getProjectFileValidationError(file, copy));
-                    }}
-                  />
-                </label>
-              </Field>
-
-              {isEditing ? (
-                <div className="grid gap-2">
-                  <Button
-                    type="button"
-                    disabled={!selectedFile || uploading}
-                    onClick={() => void handleUploadImage()}
-                  >
-                    {uploading ? copy.uploadingImageAction : copy.uploadImageAction}
-                  </Button>
-                  {selectedFile ? (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      disabled={uploading}
-                      onClick={() => {
-                        replaceSelectedFile(null);
-                        setFileError(null);
-                      }}
-                    >
-                      {copy.clearSelectionAction}
-                    </Button>
-                  ) : null}
-                </div>
-              ) : (
-                <p className="text-sm leading-6 text-muted-foreground">{copy.createFirstHint}</p>
-              )}
-
-              {usesUploadedImage && projectId ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={uploading}
-                  onClick={() => void handleRemoveUploadedImage()}
-                >
-                  {copy.removeUploadedImageAction}
-                </Button>
-              ) : null}
-
-              {formValues.liveUrl ? (
-                <Button asChild variant="ghost" size="sm">
-                  <Link href={formValues.liveUrl} target="_blank" rel="noopener noreferrer">
-                    {copy.openLiveUrlAction}
-                    <ArrowUpRight className="size-4" />
-                  </Link>
-                </Button>
-              ) : null}
-            </CardContent>
-          </Card>
-        </div>
+        <AdminProjectImagePanel
+          copy={copy}
+          publishedLabel={dictionary.admin.published}
+          draftLabel={dictionary.admin.draft}
+          featuredLabel={dictionary.admin.featured}
+          previewImageUrl={previewImageUrl}
+          previewImageAlt={previewImageAlt}
+          selectedFile={selectedFile}
+          fileError={fileError}
+          published={formValues.published}
+          featured={formValues.featured}
+          liveUrl={formValues.liveUrl}
+          isEditing={isEditing}
+          uploading={uploading}
+          usesUploadedImage={usesUploadedImage && Boolean(projectId)}
+          onSelectedFileChange={handleSelectedFileChange}
+          onUploadImage={() => void handleUploadImage()}
+          onRemoveUploadedImage={() => void handleRemoveUploadedImage()}
+        />
       </div>
     </div>
-  );
-}
-
-function Field({
-  label,
-  description,
-  error,
-  children,
-}: {
-  label: string;
-  description: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="grid gap-1.5">
-      <Label className="text-sm font-medium text-foreground">{label}</Label>
-      {children}
-      <p className={cn('text-xs leading-5 text-muted-foreground', error && 'text-destructive')}>
-        {error ?? description}
-      </p>
-    </div>
-  );
-}
-
-function ToggleField({
-  label,
-  description,
-  checked,
-  onCheckedChange,
-}: {
-  label: string;
-  description: string;
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
-}) {
-  return (
-    <label className="flex items-start gap-3 rounded-xl border border-border bg-background/70 p-4">
-      <input
-        type="checkbox"
-        className="mt-1 size-4 rounded border-border text-primary"
-        checked={checked}
-        onChange={(event) => onCheckedChange(event.target.checked)}
-      />
-      <span>
-        <span className="block text-sm font-medium text-foreground">{label}</span>
-        <span className="mt-1 block text-sm leading-6 text-muted-foreground">{description}</span>
-      </span>
-    </label>
   );
 }

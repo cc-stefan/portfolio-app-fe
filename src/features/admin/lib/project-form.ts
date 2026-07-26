@@ -126,6 +126,24 @@ export function getLocalizedProjectFieldPath(
   return `translations.${locale}.${field}`;
 }
 
+export function getLocalizedProjectFieldError(
+  fieldErrors: ProjectFieldErrors,
+  locale: AppLocale,
+  field: ProjectLocalizedFieldName
+) {
+  return fieldErrors[getLocalizedProjectFieldPath(locale, field)];
+}
+
+export function localeHasProjectErrors(fieldErrors: ProjectFieldErrors, locale: AppLocale) {
+  const prefix = `translations.${locale}.`;
+
+  return Object.keys(fieldErrors).some((field) => field.startsWith(prefix));
+}
+
+export function getFirstInvalidProjectLocale(fieldErrors: ProjectFieldErrors) {
+  return appLocales.find((locale) => localeHasProjectErrors(fieldErrors, locale));
+}
+
 export function createEmptyProjectFormValues(): ProjectFormValues {
   return {
     translations: createEmptyTranslationsByLocale(),
