@@ -35,6 +35,7 @@ export function ProjectCarousel({
   const trackRef = useRef<HTMLUListElement>(null);
   const animationFrameRef = useRef<number | null>(null);
   const [activePage, setActivePage] = useState(0);
+  const [isScrollable, setIsScrollable] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(1);
   const pageCount = Math.ceil(projects.length / slidesPerView);
 
@@ -55,15 +56,23 @@ export function ProjectCarousel({
     const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
     const nextSlidesPerView = Math.max(
       1,
-      Math.round((track.clientWidth + gap) / (firstSlide.offsetWidth + gap))
+      Math.floor((track.clientWidth + gap) / (firstSlide.offsetWidth + gap))
     );
-    const nextPageCount = Math.ceil(projects.length / nextSlidesPerView);
     const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    const nextIsScrollable = maxScrollLeft > 1;
+    const nextPageCount = Math.ceil(projects.length / nextSlidesPerView);
     const nextActivePage =
-      maxScrollLeft > 0 && nextPageCount > 1
+      nextIsScrollable && nextPageCount > 1
         ? Math.round((track.scrollLeft / maxScrollLeft) * (nextPageCount - 1))
         : 0;
 
+    if (!nextIsScrollable && track.scrollLeft !== 0) {
+      track.scrollLeft = 0;
+    }
+
+    setIsScrollable((currentValue) =>
+      currentValue === nextIsScrollable ? currentValue : nextIsScrollable
+    );
     setSlidesPerView((currentValue) =>
       currentValue === nextSlidesPerView ? currentValue : nextSlidesPerView
     );
@@ -141,27 +150,31 @@ export function ProjectCarousel({
   return (
     <div
       className="project-swiper"
-      role="region"
-      aria-roledescription="carousel"
-      aria-label={copy.carouselLabel}
+      role={isScrollable ? 'region' : undefined}
+      aria-roledescription={isScrollable ? 'carousel' : undefined}
+      aria-label={isScrollable ? copy.carouselLabel : undefined}
     >
       <ul
         ref={trackRef}
         className="project-swiper-track"
-        tabIndex={0}
-        onScroll={handleScroll}
-        onKeyDown={handleKeyDown}
+        tabIndex={isScrollable ? 0 : undefined}
+        onScroll={isScrollable ? handleScroll : undefined}
+        onKeyDown={isScrollable ? handleKeyDown : undefined}
       >
         {projects.map((project, index) => (
           <li
             key={project.id}
             className="project-swiper-slide"
-            role="group"
-            aria-roledescription="slide"
-            aria-label={formatMessage(copy.projectPosition, {
-              current: index + 1,
-              total: projects.length,
-            })}
+            role={isScrollable ? 'group' : undefined}
+            aria-roledescription={isScrollable ? 'slide' : undefined}
+            aria-label={
+              isScrollable
+                ? formatMessage(copy.projectPosition, {
+                    current: index + 1,
+                    total: projects.length,
+                  })
+                : undefined
+            }
           >
             <ProjectCard
               project={project}
@@ -174,7 +187,7 @@ export function ProjectCarousel({
         ))}
       </ul>
 
-      {pageCount > 1 ? (
+      {isScrollable && pageCount > 1 ? (
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Button
