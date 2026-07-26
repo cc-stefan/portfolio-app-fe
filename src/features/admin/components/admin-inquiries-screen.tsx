@@ -11,15 +11,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StateCard } from '@/features/portfolio/components/state-card';
 import { localeTags, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
 import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import type { PaginationMetadata } from '@/features/portfolio/model/types';
 import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
 import { dispatchAdminInquiriesUpdated } from '../lib/inquiry-events';
-import {
-  formatInquiryStatus,
-  getInquiryBadgeVariant,
-  inquiryStatusOrder,
-} from '../lib/inquiry-status';
-import type { AdminInquiry, InquiryStatus } from '../model/types';
+import { formatInquiryStatus, getInquiryBadgeVariant } from '../lib/inquiry-status';
+import type {
+  AdminInquiry,
+  AdminInquirySummary,
+  InquiryStatus,
+  PaginatedAdminResponse,
+} from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminListPagination } from './admin-list-pagination';
 import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminInquiriesScreenProps {
@@ -27,12 +30,27 @@ interface AdminInquiriesScreenProps {
   dictionary: PortfolioDictionary;
 }
 
+const adminInquiriesPageSize = 8;
+
 export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenProps) {
   const { authFetch, status } = useAdminAuth();
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pendingInquiryId, setPendingInquiryId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationMetadata>({
+    page: 1,
+    pageSize: adminInquiriesPageSize,
+    totalItems: 0,
+    totalPages: 0,
+  });
+  const [stats, setStats] = useState<AdminInquirySummary>({
+    total: 0,
+    unread: 0,
+    inReview: 0,
+    resolved: 0,
+  });
 
   const formatDate = useMemo(
     () => (value: string) =>
@@ -44,25 +62,18 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
     [lang]
   );
 
-  const stats = useMemo(
-    () => ({
-      total: inquiries.length,
-      unreadCount: inquiries.filter((inquiry) => !inquiry.isRead).length,
-      inReviewCount: inquiries.filter((inquiry) => inquiry.status === 'IN_REVIEW').length,
-      resolvedCount: inquiries.filter((inquiry) => inquiry.status === 'RESOLVED').length,
-    }),
-    [inquiries]
-  );
-
   const loadInquiries = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    const response = await authFetch('/admin/inquiries');
+    const [response, summaryResponse] = await Promise.all([
+      authFetch(`/admin/inquiries?page=${page}&pageSize=${adminInquiriesPageSize}`),
+      authFetch('/admin/inquiries/summary'),
+    ]);
 
-    if (!response.ok) {
+    if (!response.ok || !summaryResponse.ok) {
       if (response.status !== 401 && response.status !== 403) {
-        const errorBody = await readBackendError(response);
+        const errorBody = await readBackendError(response.ok ? summaryResponse : response);
         setError(
           getBackendErrorMessage(errorBody, dictionary.admin.inquiriesPage.loadErrorFallback)
         );
@@ -72,10 +83,19 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
       return;
     }
 
-    const payload = (await response.json()) as AdminInquiry[];
-    setInquiries(payload);
+    const payload = (await response.json()) as PaginatedAdminResponse<AdminInquiry>;
+    const summaryPayload = (await summaryResponse.json()) as AdminInquirySummary;
+
+    if (payload.pagination.totalPages > 0 && page > payload.pagination.totalPages) {
+      setPage(payload.pagination.totalPages);
+      return;
+    }
+
+    setInquiries(payload.items);
+    setPagination(payload.pagination);
+    setStats(summaryPayload);
     setLoading(false);
-  }, [authFetch, dictionary.admin.inquiriesPage.loadErrorFallback]);
+  }, [authFetch, dictionary.admin.inquiriesPage.loadErrorFallback, page]);
 
   useEffect(() => {
     if (status !== 'authenticated') {
@@ -210,19 +230,15 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
 
       <section className="page-enter grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label={dictionary.admin.statTotalInquiries} value={stats.total} tone="neutral" />
-        <StatCard
-          label={dictionary.admin.statUnreadInquiries}
-          value={stats.unreadCount}
-          tone="info"
-        />
+        <StatCard label={dictionary.admin.statUnreadInquiries} value={stats.unread} tone="info" />
         <StatCard
           label={dictionary.admin.statInReviewInquiries}
-          value={stats.inReviewCount}
+          value={stats.inReview}
           tone="warning"
         />
         <StatCard
           label={dictionary.admin.statResolvedInquiries}
-          value={stats.resolvedCount}
+          value={stats.resolved}
           tone="success"
         />
       </section>
@@ -236,17 +252,9 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
           />
         </div>
       ) : (
-        <section className="stagger-list grid gap-4">
-          {inquiries
-            .slice()
-            .sort(
-              (left, right) =>
-                Number(left.isRead) - Number(right.isRead) ||
-                inquiryStatusOrder.indexOf(left.status) -
-                  inquiryStatusOrder.indexOf(right.status) ||
-                new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()
-            )
-            .map((inquiry) => (
+        <>
+          <section className="stagger-list grid gap-4">
+            {inquiries.map((inquiry) => (
               <Card key={inquiry.id} variant="solid">
                 <CardContent className="grid gap-4 p-5 sm:p-6 xl:grid-cols-[minmax(0,1fr)_15rem]">
                   <div className="min-w-0">
@@ -323,7 +331,16 @@ export function AdminInquiriesScreen({ lang, dictionary }: AdminInquiriesScreenP
                 </CardContent>
               </Card>
             ))}
-        </section>
+          </section>
+          <AdminListPagination
+            pagination={pagination}
+            previousLabel={dictionary.admin.paginationPrevious}
+            nextLabel={dictionary.admin.paginationNext}
+            statusLabel={dictionary.admin.paginationStatus}
+            disabled={pendingInquiryId !== null}
+            onPageChange={setPage}
+          />
+        </>
       )}
     </div>
   );

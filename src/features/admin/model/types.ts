@@ -1,5 +1,5 @@
 import type { AppLocale } from '@/features/portfolio/i18n/routing';
-import type { ProjectTranslation } from '@/features/portfolio/model/types';
+import type { PaginationMetadata, ProjectTranslation } from '@/features/portfolio/model/types';
 
 export type UserRole = 'USER' | 'ADMIN';
 
@@ -49,6 +49,18 @@ export interface AdminInquiry {
   updatedAt: string;
 }
 
+export interface AdminInquirySummary {
+  total: number;
+  unread: number;
+  inReview: number;
+  resolved: number;
+}
+
+export interface PaginatedAdminResponse<T> {
+  items: T[];
+  pagination: PaginationMetadata;
+}
+
 export interface InquiryMutationPayload {
   status?: InquiryStatus;
   isRead?: boolean;
@@ -64,6 +76,10 @@ export interface AdminDashboardStats {
   totalUsers: number;
   adminUsers: number;
   regularUsers: number;
+  totalInquiries: number;
+  unreadInquiries: number;
+  inReviewInquiries: number;
+  resolvedInquiries: number;
 }
 
 export interface AdminDashboardResponse {
@@ -82,6 +98,7 @@ export interface AdminDashboardResponse {
       | 'updatedAt'
     >
   >;
+  recentInquiries: AdminInquiry[];
 }
 
 export interface ProjectTranslationFormValues {

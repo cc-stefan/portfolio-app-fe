@@ -3,14 +3,14 @@ import {
   getAvailability,
   getPortfolioApiOrigin,
   getProjectBySlug,
-  getPublishedProjects,
+  getPublishedProjectsPage,
 } from './portfolio-api';
 import { getRelatedProjects } from '../lib/portfolio-selectors';
 import type { AppLocale } from '../i18n/routing';
 import type { ApiResult, PortfolioProject } from '../model/types';
 
 export interface PortfolioHomePageData {
-  projectsResult: Awaited<ReturnType<typeof getPublishedProjects>>;
+  projectsResult: Awaited<ReturnType<typeof getPublishedProjectsPage>>;
   availabilityResult: Awaited<ReturnType<typeof getAvailability>>;
   apiOrigin: string;
 }
@@ -21,9 +21,12 @@ export interface PortfolioProjectPageData {
   relatedProjects: PortfolioProject[];
 }
 
-export async function getPortfolioHomePageData(locale: AppLocale): Promise<PortfolioHomePageData> {
+export async function getPortfolioHomePageData(
+  locale: AppLocale,
+  projectPage: number
+): Promise<PortfolioHomePageData> {
   const [projectsResult, availabilityResult] = await Promise.all([
-    getPublishedProjects(locale),
+    getPublishedProjectsPage(locale, projectPage, 9),
     getAvailability(),
   ]);
 
@@ -40,7 +43,7 @@ export async function getPortfolioProjectPageData(
 ): Promise<PortfolioProjectPageData> {
   const [projectResult, projectsResult] = await Promise.all([
     getProjectBySlug(slug, locale),
-    getPublishedProjects(locale),
+    getPublishedProjectsPage(locale, 1, 4),
   ]);
 
   const project = projectResult.data;
@@ -48,6 +51,8 @@ export async function getPortfolioProjectPageData(
   return {
     projectResult,
     project,
-    relatedProjects: project ? getRelatedProjects(projectsResult.data ?? [], project.slug) : [],
+    relatedProjects: project
+      ? getRelatedProjects(projectsResult.data?.items ?? [], project.slug)
+      : [],
   };
 }

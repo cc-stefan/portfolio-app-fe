@@ -10,6 +10,9 @@ import { getLanguageAlternates, getLocalizedUrl } from '@/features/seo/lib/site-
 
 interface HomePageProps {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{
+    projectsPage?: string | string[];
+  }>;
 }
 
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
@@ -47,7 +50,7 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
   };
 }
 
-export default async function HomePage({ params }: HomePageProps) {
+export default async function HomePage({ params, searchParams }: HomePageProps) {
   const { lang } = await params;
 
   if (!isAppLocale(lang)) {
@@ -57,10 +60,19 @@ export default async function HomePage({ params }: HomePageProps) {
   setRequestLocale(lang);
 
   const dictionary = await getDictionary(lang);
+  const { projectsPage } = await searchParams;
+  const projectPage = parsePositivePage(projectsPage);
 
   return (
     <Suspense fallback={<PortfolioHomeLoadingScreen />}>
-      <PortfolioHomeScreen locale={lang} dictionary={dictionary} />
+      <PortfolioHomeScreen locale={lang} dictionary={dictionary} projectPage={projectPage} />
     </Suspense>
   );
+}
+
+function parsePositivePage(value: string | string[] | undefined) {
+  const normalizedValue = Array.isArray(value) ? value[0] : value;
+  const parsedValue = Number(normalizedValue);
+
+  return Number.isInteger(parsedValue) && parsedValue > 0 ? parsedValue : 1;
 }

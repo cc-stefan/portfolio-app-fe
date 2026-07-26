@@ -38,6 +38,18 @@ export interface PortfolioAvailability {
   updatedAt: string;
 }
 
+export interface PaginationMetadata {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  pagination: PaginationMetadata;
+}
+
 export interface ApiResult<T> {
   ok: boolean;
   status: number | null;

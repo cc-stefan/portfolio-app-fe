@@ -71,6 +71,13 @@ export interface PortfolioDictionary {
     showcaseDescription: string;
     featuredTab: string;
     allTab: string;
+    projectCarouselLabel: string;
+    previousProject: string;
+    nextProject: string;
+    projectPosition: string;
+    previousProjectsPage: string;
+    nextProjectsPage: string;
+    projectsPagePosition: string;
     emptyTitle: string;
     emptyDescription: string;
     capabilitiesLabel: string;
@@ -174,6 +181,9 @@ export interface PortfolioDictionary {
     accessDeniedDescription: string;
     signInWithAnotherAccount: string;
     retry: string;
+    paginationPrevious: string;
+    paginationNext: string;
+    paginationStatus: string;
     dashboardLabel: string;
     dashboardTitle: string;
     dashboardDescription: string;

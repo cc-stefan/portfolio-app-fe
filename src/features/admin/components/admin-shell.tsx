@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 import { AdminMobileNavSheet } from './admin-mobile-nav-sheet';
 import { useAdminAuth } from '../auth/use-admin-auth';
 import { ADMIN_INQUIRIES_UPDATED_EVENT } from '../lib/inquiry-events';
-import type { AdminInquiry } from '../model/types';
+import type { AdminInquirySummary } from '../model/types';
 
 interface AdminShellProps {
   lang: AppLocale;
@@ -78,15 +78,15 @@ export function AdminShell({ lang, dictionary, children }: AdminShellProps) {
   }, [pathname]);
 
   const loadUnreadInquiryCount = useCallback(async () => {
-    const response = await authFetch('/admin/inquiries');
+    const response = await authFetch('/admin/inquiries/summary');
 
     if (!response.ok) {
       setUnreadInquiryCount(0);
       return;
     }
 
-    const payload = (await response.json()) as AdminInquiry[];
-    setUnreadInquiryCount(payload.filter((inquiry) => !inquiry.isRead).length);
+    const payload = (await response.json()) as AdminInquirySummary;
+    setUnreadInquiryCount(payload.unread);
   }, [authFetch]);
 
   useEffect(() => {

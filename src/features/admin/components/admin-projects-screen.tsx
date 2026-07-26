@@ -13,17 +13,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StateCard } from '@/features/portfolio/components/state-card';
 import { localeTags, localizeHref, type AppLocale } from '@/features/portfolio/i18n/routing';
 import type { PortfolioDictionary } from '@/features/portfolio/i18n/types';
+import type { PaginationMetadata } from '@/features/portfolio/model/types';
 import { getBackendErrorMessage, readBackendError } from '../lib/backend-errors';
 import { resolveProjectImageUrl } from '../lib/project-form';
 import { resolveProjectTranslation } from '@/features/portfolio/lib/project-translations';
-import type { AdminProject, ProjectMutationPayload } from '../model/types';
+import type { AdminProject, PaginatedAdminResponse, ProjectMutationPayload } from '../model/types';
 import { useAdminAuth } from '../auth/use-admin-auth';
+import { AdminListPagination } from './admin-list-pagination';
 import { AdminLoadingHeader, AdminLoadingPanel } from './admin-loading-primitives';
 
 interface AdminProjectsScreenProps {
   lang: AppLocale;
   dictionary: PortfolioDictionary;
 }
+
+const adminProjectsPageSize = 6;
 
 export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenProps) {
   const { authFetch, status } = useAdminAuth();
@@ -32,6 +36,13 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
   const [error, setError] = useState<string | null>(null);
   const [orderDrafts, setOrderDrafts] = useState<Record<string, string>>({});
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationMetadata>({
+    page: 1,
+    pageSize: adminProjectsPageSize,
+    totalItems: 0,
+    totalPages: 0,
+  });
 
   const formatDate = useMemo(
     () => (value: string) =>
@@ -47,7 +58,9 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
     setLoading(true);
     setError(null);
 
-    const response = await authFetch('/admin/projects');
+    const response = await authFetch(
+      `/admin/projects?page=${page}&pageSize=${adminProjectsPageSize}`
+    );
 
     if (!response.ok) {
       if (response.status !== 401 && response.status !== 403) {
@@ -61,13 +74,22 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
       return;
     }
 
-    const payload = (await response.json()) as AdminProject[];
-    setProjects(payload);
+    const payload = (await response.json()) as PaginatedAdminResponse<AdminProject>;
+
+    if (payload.pagination.totalPages > 0 && page > payload.pagination.totalPages) {
+      setPage(payload.pagination.totalPages);
+      return;
+    }
+
+    setProjects(payload.items);
+    setPagination(payload.pagination);
     setOrderDrafts(
-      Object.fromEntries(payload.map((project) => [project.id, project.displayOrder.toString()]))
+      Object.fromEntries(
+        payload.items.map((project) => [project.id, project.displayOrder.toString()])
+      )
     );
     setLoading(false);
-  }, [authFetch, dictionary.admin.projectsPage.loadErrorFallback]);
+  }, [authFetch, dictionary.admin.projectsPage.loadErrorFallback, page]);
 
   useEffect(() => {
     if (status !== 'authenticated') {
@@ -140,7 +162,11 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
     }
 
     toast.success(dictionary.admin.projectsPage.deleteSuccess);
-    setProjects((currentProjects) => currentProjects.filter((entry) => entry.id !== project.id));
+    if (projects.length === 1 && page > 1) {
+      setPage((currentPage) => currentPage - 1);
+    } else {
+      await loadProjects();
+    }
     setPendingProjectId(null);
   }
 
@@ -253,183 +279,197 @@ export function AdminProjectsScreen({ lang, dictionary }: AdminProjectsScreenPro
           />
         </div>
       ) : (
-        <section className="stagger-list grid gap-4">
-          {projects.map((project) => {
-            const imageUrl = resolveProjectImageUrl(project.imageUrl);
-            const isPending = pendingProjectId === project.id;
-            const localizedProject = resolveProjectTranslation(project.translations, lang);
-            const projectTitle = localizedProject?.title ?? project.slug;
-            const projectSummary = localizedProject?.summary ?? '';
+        <>
+          <section className="stagger-list grid gap-4">
+            {projects.map((project) => {
+              const imageUrl = resolveProjectImageUrl(project.imageUrl);
+              const isPending = pendingProjectId === project.id;
+              const localizedProject = resolveProjectTranslation(project.translations, lang);
+              const projectTitle = localizedProject?.title ?? project.slug;
+              const projectSummary = localizedProject?.summary ?? '';
 
-            return (
-              <Card key={project.id} variant="solid">
-                <CardContent className="grid gap-5 p-5 sm:p-6 xl:grid-cols-[7rem_minmax(0,1fr)_18rem]">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
-                    {imageUrl ? (
-                      <Image
-                        src={imageUrl}
-                        alt={projectTitle}
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
-                    ) : null}
-                  </div>
-
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <Link
-                          href={localizeHref(lang, `/admin/projects/${project.id}`)}
-                          className="inline-flex items-center gap-2 text-lg font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
-                        >
-                          <span className="truncate">{projectTitle}</span>
-                          <ArrowUpRight className="size-4 shrink-0" />
-                        </Link>
-                        <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                          {project.slug}
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant={project.published ? 'success' : 'warning'}>
-                          {project.published ? dictionary.admin.published : dictionary.admin.draft}
-                        </Badge>
-                        {project.featured ? (
-                          <Badge variant="featured">{dictionary.admin.featured}</Badge>
-                        ) : null}
-                      </div>
-                    </div>
-
-                    <p className="mt-4 text-sm leading-7 text-muted-foreground">{projectSummary}</p>
-
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {project.technologies.length > 0 ? (
-                        project.technologies.slice(0, 6).map((technology) => (
-                          <Badge key={technology} variant="outline">
-                            {technology}
-                          </Badge>
-                        ))
-                      ) : (
-                        <Badge variant="outline">
-                          {dictionary.admin.projectsPage.noTechnologies}
-                        </Badge>
-                      )}
-                    </div>
-
-                    <p className="mt-4 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                      {dictionary.admin.projectsPage.updatedLabel} {formatDate(project.updatedAt)}
-                    </p>
-                  </div>
-
-                  <div className="grid gap-4 rounded-xl border border-border bg-background/70 p-4">
-                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                      <Button
-                        type="button"
-                        variant={project.published ? 'secondary' : 'primary'}
-                        size="sm"
-                        disabled={isPending}
-                        onClick={() =>
-                          void patchProject(
-                            project.id,
-                            { published: !project.published },
-                            project.published
-                              ? dictionary.admin.projectsPage.movedToDraft
-                              : dictionary.admin.projectsPage.publishedSuccess
-                          )
-                        }
-                      >
-                        {project.published
-                          ? dictionary.admin.projectsPage.moveToDraftAction
-                          : dictionary.admin.projectsPage.publishAction}
-                      </Button>
-
-                      <Button
-                        type="button"
-                        variant={project.featured ? 'secondary' : 'outline'}
-                        size="sm"
-                        disabled={isPending}
-                        onClick={() =>
-                          void patchProject(
-                            project.id,
-                            { featured: !project.featured },
-                            project.featured
-                              ? dictionary.admin.projectsPage.featuredRemoved
-                              : dictionary.admin.projectsPage.featuredSuccess
-                          )
-                        }
-                      >
-                        {project.featured
-                          ? dictionary.admin.projectsPage.unfeatureAction
-                          : dictionary.admin.projectsPage.featureAction}
-                      </Button>
-                    </div>
-
-                    <div className="grid gap-2">
-                      <LabelRow>{dictionary.admin.projectsPage.displayOrderLabel}</LabelRow>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          value={orderDrafts[project.id] ?? ''}
-                          inputMode="numeric"
-                          onChange={(event) =>
-                            setOrderDrafts((currentDrafts) => ({
-                              ...currentDrafts,
-                              [project.id]: event.target.value,
-                            }))
-                          }
+              return (
+                <Card key={project.id} variant="solid">
+                  <CardContent className="grid gap-5 p-5 sm:p-6 xl:grid-cols-[7rem_minmax(0,1fr)_18rem]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary">
+                      {imageUrl ? (
+                        <Image
+                          src={imageUrl}
+                          alt={projectTitle}
+                          fill
+                          unoptimized
+                          className="object-cover"
                         />
+                      ) : null}
+                    </div>
+
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <Link
+                            href={localizeHref(lang, `/admin/projects/${project.id}`)}
+                            className="inline-flex items-center gap-2 text-lg font-semibold text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/45"
+                          >
+                            <span className="truncate">{projectTitle}</span>
+                            <ArrowUpRight className="size-4 shrink-0" />
+                          </Link>
+                          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                            {project.slug}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant={project.published ? 'success' : 'warning'}>
+                            {project.published
+                              ? dictionary.admin.published
+                              : dictionary.admin.draft}
+                          </Badge>
+                          {project.featured ? (
+                            <Badge variant="featured">{dictionary.admin.featured}</Badge>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                        {projectSummary}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {project.technologies.length > 0 ? (
+                          project.technologies.slice(0, 6).map((technology) => (
+                            <Badge key={technology} variant="outline">
+                              {technology}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="outline">
+                            {dictionary.admin.projectsPage.noTechnologies}
+                          </Badge>
+                        )}
+                      </div>
+
+                      <p className="mt-4 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                        {dictionary.admin.projectsPage.updatedLabel} {formatDate(project.updatedAt)}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-4 rounded-xl border border-border bg-background/70 p-4">
+                      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                         <Button
                           type="button"
-                          variant="outline"
+                          variant={project.published ? 'secondary' : 'primary'}
                           size="sm"
                           disabled={isPending}
-                          onClick={() => {
-                            const rawValue = orderDrafts[project.id] ?? '';
-                            const parsedValue = Number(rawValue);
-
-                            if (
-                              rawValue.trim().length === 0 ||
-                              !Number.isInteger(parsedValue) ||
-                              parsedValue < 0
-                            ) {
-                              toast.error(dictionary.admin.projectsPage.displayOrderInvalid);
-                              return;
-                            }
-
+                          onClick={() =>
                             void patchProject(
                               project.id,
-                              { displayOrder: parsedValue },
-                              dictionary.admin.projectsPage.displayOrderSaved
-                            );
-                          }}
+                              { published: !project.published },
+                              project.published
+                                ? dictionary.admin.projectsPage.movedToDraft
+                                : dictionary.admin.projectsPage.publishedSuccess
+                            )
+                          }
                         >
-                          {dictionary.admin.projectsPage.saveAction}
+                          {project.published
+                            ? dictionary.admin.projectsPage.moveToDraftAction
+                            : dictionary.admin.projectsPage.publishAction}
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant={project.featured ? 'secondary' : 'outline'}
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() =>
+                            void patchProject(
+                              project.id,
+                              { featured: !project.featured },
+                              project.featured
+                                ? dictionary.admin.projectsPage.featuredRemoved
+                                : dictionary.admin.projectsPage.featuredSuccess
+                            )
+                          }
+                        >
+                          {project.featured
+                            ? dictionary.admin.projectsPage.unfeatureAction
+                            : dictionary.admin.projectsPage.featureAction}
+                        </Button>
+                      </div>
+
+                      <div className="grid gap-2">
+                        <LabelRow>{dictionary.admin.projectsPage.displayOrderLabel}</LabelRow>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={orderDrafts[project.id] ?? ''}
+                            inputMode="numeric"
+                            onChange={(event) =>
+                              setOrderDrafts((currentDrafts) => ({
+                                ...currentDrafts,
+                                [project.id]: event.target.value,
+                              }))
+                            }
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={isPending}
+                            onClick={() => {
+                              const rawValue = orderDrafts[project.id] ?? '';
+                              const parsedValue = Number(rawValue);
+
+                              if (
+                                rawValue.trim().length === 0 ||
+                                !Number.isInteger(parsedValue) ||
+                                parsedValue < 0
+                              ) {
+                                toast.error(dictionary.admin.projectsPage.displayOrderInvalid);
+                                return;
+                              }
+
+                              void patchProject(
+                                project.id,
+                                { displayOrder: parsedValue },
+                                dictionary.admin.projectsPage.displayOrderSaved
+                              );
+                            }}
+                          >
+                            {dictionary.admin.projectsPage.saveAction}
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+                        <Button asChild variant="outline" size="sm">
+                          <Link href={localizeHref(lang, `/admin/projects/${project.id}`)}>
+                            {dictionary.admin.projectsPage.editProjectAction}
+                          </Link>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() => void handleDelete(project)}
+                        >
+                          <Trash2 className="size-4" />
+                          {dictionary.admin.projectsPage.deleteAction}
                         </Button>
                       </div>
                     </div>
-
-                    <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
-                      <Button asChild variant="outline" size="sm">
-                        <Link href={localizeHref(lang, `/admin/projects/${project.id}`)}>
-                          {dictionary.admin.projectsPage.editProjectAction}
-                        </Link>
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        disabled={isPending}
-                        onClick={() => void handleDelete(project)}
-                      >
-                        <Trash2 className="size-4" />
-                        {dictionary.admin.projectsPage.deleteAction}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </section>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </section>
+          <AdminListPagination
+            pagination={pagination}
+            previousLabel={dictionary.admin.paginationPrevious}
+            nextLabel={dictionary.admin.paginationNext}
+            statusLabel={dictionary.admin.paginationStatus}
+            disabled={pendingProjectId !== null}
+            onPageChange={setPage}
+          />
+        </>
       )}
     </div>
   );

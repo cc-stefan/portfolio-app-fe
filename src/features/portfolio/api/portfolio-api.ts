@@ -4,6 +4,7 @@ import { buildBackendApiUrl, getBackendApiBaseUrl, getPublicBackendOrigin } from
 import type { AppLocale } from '../i18n/routing';
 import type {
   ApiResult,
+  PaginatedResponse,
   PortfolioAvailability,
   PortfolioHealth,
   PortfolioProject,
@@ -30,6 +31,13 @@ export function getPortfolioApiOrigin() {
 function appendLocale(path: string, locale: AppLocale) {
   const url = new URL(path, 'https://portfolio.local');
   url.searchParams.set('locale', locale);
+  return `${url.pathname}${url.search}`;
+}
+
+function appendProjectPagination(path: string, page: number, pageSize: number) {
+  const url = new URL(path, 'https://portfolio.local');
+  url.searchParams.set('page', page.toString());
+  url.searchParams.set('pageSize', pageSize.toString());
   return `${url.pathname}${url.search}`;
 }
 
@@ -99,6 +107,16 @@ export const getAvailability = cache(function getAvailability() {
 
 export const getPublishedProjects = cache(function getPublishedProjects(locale: AppLocale) {
   return safeRequest<PortfolioProject[]>(appendLocale('/projects', locale));
+});
+
+export const getPublishedProjectsPage = cache(function getPublishedProjectsPage(
+  locale: AppLocale,
+  page: number,
+  pageSize: number
+) {
+  return safeRequest<PaginatedResponse<PortfolioProject>>(
+    appendProjectPagination(appendLocale('/projects', locale), page, pageSize)
+  );
 });
 
 export const getProjectBySlug = cache(function getProjectBySlug(slug: string, locale: AppLocale) {

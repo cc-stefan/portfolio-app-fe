@@ -35,13 +35,6 @@ interface AdminDashboardScreenProps {
 export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenProps) {
   const { authFetch, status, user } = useAdminAuth();
   const [dashboard, setDashboard] = useState<AdminDashboardResponse | null>(null);
-  const [recentInquiries, setRecentInquiries] = useState<AdminInquiry[]>([]);
-  const [inquiryStats, setInquiryStats] = useState({
-    total: 0,
-    unread: 0,
-    inReview: 0,
-    resolved: 0,
-  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const formatDate = useCallback(
@@ -58,10 +51,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
     setLoading(true);
     setError(null);
 
-    const [dashboardResponse, inquiriesResponse] = await Promise.all([
-      authFetch('/admin/dashboard'),
-      authFetch('/admin/inquiries'),
-    ]);
+    const dashboardResponse = await authFetch('/admin/dashboard');
 
     if (!dashboardResponse.ok) {
       if (dashboardResponse.status !== 401 && dashboardResponse.status !== 403) {
@@ -73,34 +63,9 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
       return;
     }
 
-    if (!inquiriesResponse.ok) {
-      if (inquiriesResponse.status !== 401 && inquiriesResponse.status !== 403) {
-        const errorBody = await readBackendError(inquiriesResponse);
-        setError(getBackendErrorMessage(errorBody, dictionary.admin.dashboardLoadErrorDescription));
-      }
-
-      setLoading(false);
-      return;
-    }
-
     const dashboardPayload = (await dashboardResponse.json()) as AdminDashboardResponse;
-    const inquiriesPayload = (await inquiriesResponse.json()) as AdminInquiry[];
 
     setDashboard(dashboardPayload);
-    setInquiryStats({
-      total: inquiriesPayload.length,
-      unread: inquiriesPayload.filter((inquiry) => !inquiry.isRead).length,
-      inReview: inquiriesPayload.filter((inquiry) => inquiry.status === 'IN_REVIEW').length,
-      resolved: inquiriesPayload.filter((inquiry) => inquiry.status === 'RESOLVED').length,
-    });
-    setRecentInquiries(
-      inquiriesPayload
-        .slice()
-        .sort(
-          (left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()
-        )
-        .slice(0, 5)
-    );
     setLoading(false);
   }, [authFetch, dictionary.admin.dashboardLoadErrorDescription]);
 
@@ -226,17 +191,17 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
   const inquiryRows = [
     {
       label: dictionary.admin.statUnreadInquiries,
-      value: inquiryStats.unread,
+      value: dashboard.stats.unreadInquiries,
       tone: 'info',
     },
     {
       label: dictionary.admin.statInReviewInquiries,
-      value: inquiryStats.inReview,
+      value: dashboard.stats.inReviewInquiries,
       tone: 'warning',
     },
     {
       label: dictionary.admin.statResolvedInquiries,
-      value: inquiryStats.resolved,
+      value: dashboard.stats.resolvedInquiries,
       tone: 'success',
     },
   ] as const;
@@ -288,7 +253,7 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
           title={dictionary.admin.dashboardGroups.inquiriesTitle}
           description={dictionary.admin.dashboardGroups.inquiriesDescription}
           totalLabel={dictionary.admin.statTotalInquiries}
-          totalValue={inquiryStats.total}
+          totalValue={dashboard.stats.totalInquiries}
           rows={inquiryRows}
         />
         <SummaryPanel
@@ -373,13 +338,13 @@ export function AdminDashboardScreen({ lang, dictionary }: AdminDashboardScreenP
             <CardDescription>{dictionary.admin.recentInquiriesDescription}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            {recentInquiries.length === 0 ? (
+            {dashboard.recentInquiries.length === 0 ? (
               <EmptyPanel
                 title={dictionary.admin.recentInquiriesEmptyTitle}
                 description={dictionary.admin.recentInquiriesEmptyDescription}
               />
             ) : (
-              recentInquiries.map((inquiry) => (
+              dashboard.recentInquiries.map((inquiry) => (
                 <RecentInquiryRow
                   key={inquiry.id}
                   inquiry={inquiry}

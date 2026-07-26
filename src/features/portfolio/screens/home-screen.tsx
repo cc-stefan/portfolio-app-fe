@@ -1,6 +1,8 @@
 import { SiteShell } from '../components/site-shell';
 import { SiteHeader } from '../components/site-header';
+import { redirect } from 'next/navigation';
 import type { AppLocale } from '../i18n/routing';
+import { localizeHref } from '../i18n/routing';
 import type { PortfolioDictionary } from '../i18n/types';
 import { HomeCapabilities } from '../sections/home/home-capabilities';
 import { HomeCredentials } from '../sections/home/home-credentials';
@@ -17,12 +19,37 @@ import { getHomeStructuredData } from '@/features/seo/lib/structured-data';
 interface PortfolioHomeScreenProps {
   locale: AppLocale;
   dictionary: PortfolioDictionary;
+  projectPage: number;
 }
 
-export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeScreenProps) {
-  const { projectsResult, availabilityResult, apiOrigin } = await getPortfolioHomePageData(locale);
+export async function PortfolioHomeScreen({
+  locale,
+  dictionary,
+  projectPage,
+}: PortfolioHomeScreenProps) {
+  const { projectsResult, availabilityResult, apiOrigin } = await getPortfolioHomePageData(
+    locale,
+    projectPage
+  );
   const sectionLinks = getPortfolioHomeSectionLinks(dictionary);
-  const projects = projectsResult.data ?? [];
+  const projects = projectsResult.data?.items ?? [];
+  const projectPagination = projectsResult.data?.pagination ?? {
+    page: projectPage,
+    pageSize: 9,
+    totalItems: 0,
+    totalPages: 0,
+  };
+
+  if (projectPagination.totalPages > 0 && projectPage > projectPagination.totalPages) {
+    redirect(
+      localizeHref(
+        locale,
+        projectPagination.totalPages === 1
+          ? '/#projects'
+          : `/?projectsPage=${projectPagination.totalPages}#projects`
+      )
+    );
+  }
   const availability = availabilityResult.data ?? {
     availableForCollaboration: true,
     availableFrom: null,
@@ -70,6 +97,7 @@ export async function PortfolioHomeScreen({ locale, dictionary }: PortfolioHomeS
             locale={locale}
             dictionary={dictionary}
             projects={projects}
+            pagination={projectPagination}
             apiOrigin={apiOrigin}
           />
         </div>

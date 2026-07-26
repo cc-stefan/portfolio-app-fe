@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { appLocales, type AppLocale } from '@/features/portfolio/i18n/routing';
 import {
   getPortfolioApiOrigin,
-  getPublishedProjects,
+  getPublishedProjectsPage,
 } from '@/features/portfolio/api/portfolio-api';
 import { resolvePortfolioAssetUrl } from '@/features/portfolio/lib/resolve-portfolio-asset-url';
 import type { PortfolioProject } from '@/features/portfolio/model/types';
@@ -41,13 +41,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projectResults = await Promise.all(
     appLocales.map(async (locale) => ({
       locale,
-      result: await getPublishedProjects(locale),
+      projects: await getAllPublishedProjects(locale),
     }))
   );
   const localizedProjects: LocalizedProject[] = [];
 
-  for (const { locale, result } of projectResults) {
-    for (const project of result.data ?? []) {
+  for (const { locale, projects } of projectResults) {
+    for (const project of projects) {
       if (project.availableLocales.includes(locale)) {
         localizedProjects.push({ locale, project });
       }
@@ -64,4 +64,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   return [...homeEntries, ...getProjectEntries(localizedProjects)];
+}
+
+async function getAllPublishedProjects(locale: AppLocale) {
+  const firstPageResult = await getPublishedProjectsPage(locale, 1, 50);
+  const firstPage = firstPageResult.data;
+
+  if (!firstPage) {
+    return [];
+  }
+
+  const remainingPageNumbers = Array.from(
+    { length: Math.max(0, firstPage.pagination.totalPages - 1) },
+    (_, index) => index + 2
+  );
+  const remainingPageResults = await Promise.all(
+    remainingPageNumbers.map((page) => getPublishedProjectsPage(locale, page, 50))
+  );
+
+  return [
+    ...firstPage.items,
+    ...remainingPageResults.flatMap((result) => result.data?.items ?? []),
+  ];
 }

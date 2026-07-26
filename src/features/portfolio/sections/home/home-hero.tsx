@@ -16,6 +16,7 @@ interface HomeHeroProps {
 export function HomeHero({ locale, copy, availability }: HomeHeroProps) {
   const isAvailable = availability.availableForCollaboration;
   const availableFrom = formatAvailabilityDate(availability.availableFrom, locale);
+  const availabilityMessage = copy.profileSnapshotReachOutFrom.split('{date}');
 
   return (
     <section
@@ -64,7 +65,9 @@ export function HomeHero({ locale, copy, availability }: HomeHeroProps) {
                 </Badge>
                 {!isAvailable && availableFrom ? (
                   <p className="mt-2 max-w-xs text-xs leading-5 text-muted-foreground sm:ml-auto">
-                    {copy.profileSnapshotReachOutFrom.replace('{date}', availableFrom)}
+                    {availabilityMessage[0]}
+                    <span className="whitespace-nowrap">{availableFrom}</span>
+                    {availabilityMessage[1]}
                   </p>
                 ) : null}
               </div>
