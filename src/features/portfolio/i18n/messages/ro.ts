@@ -197,8 +197,8 @@ export const dictionary: PortfolioDictionary = {
     inquiryHighlights: [
       {
         title: 'Email',
-        description: 'cc.stefan@icloud.com',
-        href: 'mailto:cc.stefan@icloud.com',
+        description: 'contact@ccstefan.com',
+        href: 'mailto:contact@ccstefan.com',
       },
       {
         title: 'Colaborare potrivită',

@@ -13,7 +13,7 @@ function getPerson(dictionary: PortfolioDictionary): JsonLdObject {
     '@id': PERSON_ID,
     name: dictionary.header.brand,
     url: getAbsoluteUrl(),
-    email: 'mailto:cc.stefan@icloud.com',
+    email: 'mailto:contact@ccstefan.com',
     jobTitle: dictionary.header.tagline,
     knowsAbout: dictionary.home.skillHighlights,
   };
